@@ -1,0 +1,189 @@
+body
+{
+    margin: 0px;
+    padding: 0px;
+    
+	background-size: 20%;
+	background-position: center;
+	background-repeat: no-repeat;
+	background-attachment: fixed;
+
+	font-family: "Segoe UI", sans-serif;
+
+}
+
+#background
+{
+    width: 100%;
+    height: 100%;
+	background-color: #2b1d2c;
+	background-image: url(https://c.wallhere.com/photos/4b/93/Core_Roleplay_Grand_Theft_Auto_Grand_Theft_Auto_V_Roleplaying_FiveM_city-1854767.jpg!d);
+    background-size: cover;
+    filter: blur(5px);
+    position: fixed;
+    left: 0;
+    right: 0;
+    z-index: 1;
+    transform: scale(1.03);
+    transition: all 20s linear;
+    background-position: 0px 0px;
+
+    display: block;
+}
+
+#logo
+{
+    width: 100%;
+    height: 100%;
+    background-image: url(https://i.imgur.com/oR6RWE8.png);
+    background-size: 30%;
+    background-position: center;
+    background-repeat: no-repeat;
+    position: fixed;
+    left: 0;
+    right: 0;
+    z-index: 9999;
+}
+
+.log
+{
+    color: rgba(255, 255, 255, 0.46);
+    position: absolute;
+    left: 20px;
+    top: 20px;
+}
+
+.log-top-right
+{
+    top: 20px;
+    right: 20px;
+    text-align: right;
+    display: none;
+}
+
+.loading-container
+{
+    position: absolute;
+    left: 5%;
+    right: 5%;
+    bottom: 10%;
+
+    z-index: 5;
+
+    color: #fff;
+
+    font-family: Arial;
+}
+
+.loading-labels
+{
+    width: 100%;
+    height: 20px;
+
+    margin-left: 2px;
+    margin-right: 3px;
+
+    margin-top: 5px;
+    margin-bottom: 12px;
+
+    padding: 5px;
+    text-align: center;
+    position: relative;
+    display: inline;
+    white-space: nowrap;
+}
+
+.loading-labels div
+{
+    display: none;
+    text-align: left;
+    font-size: 20px;
+    position: relative;
+    
+}
+
+.loading-bar-container
+{
+    width: 100%;
+    background-color: rgba(140, 140, 140, .9);
+    height: 20px;
+
+    margin-left: 2px;
+    margin-right: 3px;
+
+    margin-top: 5px;
+    margin-bottom: 5px;
+
+    box-shadow: 0 1px 5px #000 inset, 0 1px 0 #444;
+    background-color: #1a1a1a;
+
+    border-radius: 6px;
+    padding: 5px;
+    text-align: left;
+    overflow: hidden;
+    position: relative;
+    display: block;
+    white-space: nowrap;
+}
+
+.loading-bar
+{
+    width: 0%;
+    height: 20px;
+    border-radius: 3px;
+
+    background-size: 30px 30px;      
+    background-image: linear-gradient(135deg, rgba(255, 255, 255, .15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .15) 50%, rgba(255, 255, 255, .15) 75%, transparent 75%, transparent);
+    -webkit-animation: animate-stripes 3s linear infinite;
+
+    display: none;
+
+    transition: width 0.3s;
+    transition-timing-function: ease-out;
+}
+
+.bgcolor-first 
+{
+    background-color: #D95B43;
+}
+
+.bgcolor-second 
+{
+    background-color: #C02942;
+}
+
+.bgcolor-third 
+{
+    background-color: #542437;
+}
+
+.bgcolor-fourth 
+{
+    background-color: #53777A;
+}
+
+
+.color-first 
+{
+    color: #D95B43;
+}
+
+.color-second 
+{
+    color: #C02942;
+}
+
+.color-third 
+{
+    color: #bd517c;
+}
+
+.color-fourth 
+{
+    color: #53777A;
+}
+
+
+@keyframes animate-stripes {
+    0% {background-position: 0 0;} 100% {background-position: 60px 0;}
+}

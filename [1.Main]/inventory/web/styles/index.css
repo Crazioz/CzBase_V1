@@ -1,0 +1,95 @@
+@import url(./inventory.css);
+@import url(./actions.css);
+@import url(./hotbar.css);
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-smooth: auto;
+    text-rendering: optimizeLegibility;
+    font-family: 'Montserrat', sans-serif;
+    user-select: none;
+}
+
+
+.app {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    width: 100vw;
+    height: 100vh;
+}
+
+.app-enter {
+    opacity: 0;
+}
+
+.app-enter-active {
+    opacity: 1;
+    transition: opacity 150ms;
+}
+
+.app-exit {
+    opacity: 1;
+}
+
+.app-exit-active {
+    opacity: 0;
+    transition: opacity 100ms;
+}
+
+.spacer {width: 100px;}
+
+.Toastify__toast {
+    padding: 1vh !important;
+    min-height: fit-content !important;
+    margin-bottom: 5px !important;
+    border-radius: 3vh !important;
+    background-color: rgba(0, 0, 0, 0.5) !important;
+    color: white !important;
+}
+
+.Toastify__progress-bar--info {
+    background-color: rgb(70, 149, 223) !important;
+}
+
+.Toastify__progress-bar--warning {
+    background-color: rgb(223, 187, 70) !important;
+}
+
+.Toastify__progress-bar--error {
+    background-color: rgba(223, 70, 70, 1) !important;
+}
+
+.Toastify__progress-bar--success {
+    background-color: rgb(85, 189, 107) !important;
+}
+
+@media only screen and (max-height: 900px) {
+    .app {
+      transform: scale(0.8) !important;
+    }
+    .hotbar-wrapper .hotbar {
+        transform: scale(0.8) !important;
+    }
+}
+
+@media only screen and (max-height: 720px) {
+    .app {
+      transform: scale(0.7) !important;
+    }
+    .hotbar-wrapper .hotbar {
+        transform: scale(0.7) !important;
+    }
+}
+
+@media only screen and (max-height: 600px) {
+    .app {
+      transform: scale(0.6) !important;
+    }
+    .hotbar-wrapper .hotbar {
+        transform: scale(0.6) !important;
+    }
+}

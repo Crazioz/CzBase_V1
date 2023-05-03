@@ -1,0 +1,153 @@
+.actions {
+    position: relative;
+    display: flex;
+    gap: 5px;
+    width: 650px;
+    height: fit-content;
+    background-color: rgba(0, 0, 0, 0.5);
+    margin-bottom: 30px;
+    border-radius: 3vh;
+    padding: 10px;
+}
+
+.actions button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 50%;
+    padding: 8px;
+    border-radius: 3vh;
+    outline: none;
+    border: none;
+    background-color: rgba(255, 255, 255, 0.15);
+    color: white;
+    font-size: 16pt;
+    transition: 100ms background;
+    max-width: 200px;
+}
+
+.actions button:disabled {
+    opacity: .3;
+    background-color: rgba(255, 255, 255, 0.15) !important;
+}
+
+.actions button:enabled {
+    background-color: rgba(255, 255, 255, 0.3);
+}
+
+.actions input {
+    width: 100%;
+    height: 100%;
+    padding: 8px;
+    border-radius: 3vh;
+    outline: none;
+    border: none;
+    background-color: rgba(255, 255, 255, 0.15);
+    color: white;
+    font-size: 16pt;
+    text-align: center;
+    transition: 100ms background;
+}
+
+.actions input:focus {
+    background-color: rgba(255, 255, 255, 0.3);
+}
+
+.actions input:hover {
+    background-color: rgba(255, 255, 255, 0.3);
+}
+
+.actions input::-webkit-outer-spin-button,
+.actions input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+#use {
+    background-color: rgb(82, 150, 82);
+}
+
+#use:hover {
+    background-color: rgb(63, 124, 63);
+}
+
+#give {
+    background-color: rgb(177, 151, 80);
+}
+
+#give:hover {
+    background-color: rgb(145, 123, 62);
+}
+
+#giveArea {
+    width: 50%;
+}
+
+#giveArea button {
+    width: 100%;
+    height: 100%;
+    max-width: 200px;
+}
+
+/* Player Menu */
+
+.playerMenu {
+    position: absolute;
+    right: 0;
+    margin-top: 15px;
+    background-color: rgb(43, 43, 43);
+    color: white;
+    width: 100%;
+    height: fit-content;
+    border-radius: 2vh;
+    padding: 10px;
+    z-index: 20;
+    box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.5);
+}
+
+.players {
+    position: relative;
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    max-height: 92px;
+    overflow-y: auto;
+    gap: 5px;
+}
+
+.players::-webkit-scrollbar {
+    display: none;
+}
+
+.player {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    border-radius: 2vh;
+    width: 100%;
+    padding: 10px;
+    font-size: 14pt;
+    background-color: rgba(255, 255, 255, 0.15);
+}
+
+.player:hover {
+    background-color: rgba(255, 255, 255, 0.3);
+}
+
+.no-players {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    border-radius: 2vh;
+    padding: 10px;
+    font-size: 14pt;
+    background-color: rgba(255, 255, 255, 0.15);
+}
+
+.no-players:hover {
+    background-color: rgba(255, 255, 255, 0.3);
+}

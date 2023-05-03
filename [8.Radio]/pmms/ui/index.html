@@ -1,0 +1,388 @@
+<html>
+	<head>
+		<title>pmms</title>
+		<link rel="stylesheet" href="style.css">
+		<script src="https://kit.fontawesome.com/5537a772c3.js" crossorigin="anonymous"></script>
+		<script src="mediaelement.min.js"></script>
+		<script src="wave.js"></script>
+		<script src="script.js"></script>
+	</head>
+	<body>
+		<div class="notifications"></div>
+		<div id="ui">
+			<div id="drag-top"></div>
+			<div id="loading">
+				<img src="loading.svg">
+			</div>
+			<div id="active-media-players-container">
+				<div class="tooltip">
+					<div class="tooltip-title">Lecteurs multimédias actifs</div>
+					<div class="tooltip-para">Une liste des lecteurs multimédias actifs à proximité.</div>
+					<div class="icon-descriptions">
+						<div class="icon">&#xf0c1;</div>
+						<div>Copiez l'URL du média dans votre presse-papiers.</div>
+						<div class="icon">&#xf04a; / &#xf04e;</div>
+						<div>Retourne en arrière/ou avancer de 10 secondes.</div>
+						<div class="icon">&#xf051;</div>
+						<div>Lire l'élément suivant dans la file d'attente.</div>
+						<div class="icon">&#xf023; / &#xf09c;</div>
+						<div>Le lecteur multimédia est verrouillé/déverrouillé. Cliquez pour basculer.</div>
+						<div class="icon">&#xf24d;</div>
+						<div>Copiez ce qui est en cours de lecture sur un autre lecteur multimédia.</div>
+						<div class="icon">&#xf079; / &#xf061;</div>
+						<div>La boucle est activée/désactivée. Cliquez pour basculer.</div>
+						<div class="icon">&#xf03d; / &#xf4e2;</div>
+						<div>La vidéo est activée/désactivée (RedM uniquement).</div>
+						<div class="icon">&#xf028; / &#xf6a9;</div>
+						<div>Le son est activé/désactivé.</div>
+						<div class="icon">&#xf04c; / &#xf04b;</div>
+						<div>Mettre en pause/reprendre le lecteur multimédia.</div>
+						<div class="icon">&#xf04d;</div>
+						<div>Arrêtez le lecteur multimédia.</div>
+					</div>
+				</div>
+				<div id="active-media-players"></div>
+			</div>
+			<div id="start-media-player" class="start-on-enter">
+				<div id="usable-media-players-container">
+					<div class="tooltip">
+						<div class="tooltip-title">Lecteurs multimédia utilisables</div>
+						<div class="tooltip-para">Une liste des lecteurs multimédias à proximité sur lesquels vous pouvez jouer.</div>
+					</div>
+					<select id="usable-media-players"></select>
+				</div>
+				<div id="presets-container">
+					<div class="tooltip">
+						<div class="tooltip-title">Préconfigurations</div>
+						<div class="tooltip-para">Une liste de médias prédéfinis que vous pouvez lire.</div>
+					</div>
+					<select id="preset"></select>
+				</div>
+				<div id="url-container">
+					<div class="tooltip">
+						<div class="tooltip-title">URL du média</div>
+						<div class="tooltip-para">L'URL du média que vous voulez lire.</div>
+					</div>
+					<input id="url" type="text" placeholder="Entrer l'URL...">
+				</div>
+				<div id="loop-container">
+					<div class="tooltip">
+						<div class="tooltip-title">Boucle</div>
+						<div class="tooltip-para">Si coché, le média sera lu en boucle.</div>
+					</div>
+					<i class="fas fa-retweet"></i>
+					<input id="loop" type="checkbox">
+				</div>
+				<div id="filter-container">
+					<div class="tooltip">
+						<div class="tooltip-title">Filtre</div>
+						<div class="tooltip-para">Active un filtre immersif pour l'audio et la vidéo.</div>
+					</div>
+					<i class="fas fa-filter"></i>
+					<input id="filter" type="checkbox" checked>
+				</div>
+				<div id="muted-container">
+					<div class="tooltip">
+						<div class="tooltip-title">Mute</div>
+						<div class="tooltip-para">Si coché, le son sera coupé.</div>
+					</div>
+					<i class="fas fa-volume-mute"></i>
+					<input id="muted" type="checkbox">
+				</div>
+				<div id="video-container">
+					<div class="tooltip">
+						<div class="tooltip-title">Video</div>
+						<div class="tooltip-para">Si coché, la vidéo sera activée (RedM uniquement)</div>
+					</div>
+					<i class="fas fa-video"></i>
+					<input id="video" type="checkbox" disabled>
+					<input hidden id="video-size" type="number" min="10" max="100" step="10" value="30" disabled>
+				</div>
+				<div id="locked-container">
+					<div class="tooltip">
+						<div class="tooltip-title">Lock</div>
+						<div class="tooltip-para">Si coché, ce lecteur multimédia sera verrouillé, de sorte que seuls les gestionnaires peuvent le contrôler.</div>
+					</div>
+					<i class="fas fa-lock"></i>
+					<input id="locked" type="checkbox">
+				</div>
+				<button id="advanced-settings-button" class="control-button">
+					<div class="tooltip">
+						<div class="tooltip-title">Réglages avancés</div>
+						<div class="tooltip-para">Bascule l'affichage de la section des paramètres avancés.</div>
+					</div>
+					<i class="fas fa-sliders-h"></i>
+				</button>
+				<div id="play-button-container">
+					<div class="tooltip">
+						<div class="tooltip-title">Jouer</div>
+						<div class="tooltip-para">Démarre la lecture du média sélectionné.</div>
+						<div class="tooltip-para">Si quelque chose est en cours de lecture sur le lecteur multimédia sélectionné, le média sera mis en file d'attente à la place.</div>
+					</div>
+					<button id="play-button" class="control-button">
+						<i class="fas fa-play"></i>
+					</button>
+				</div>
+			</div>
+			<div id="advanced-settings" style="display: none;" class="start-on-enter">
+				<div id="main-advanced-settings">
+					<div id="offset-container">
+						<div class="tooltip">
+							<div class="tooltip-title">Heure de début</div>
+							<div class="tooltip-para">Un décalage horaire pour commencer à lire le média à.</div>
+							<div class="tooltip-para">Peut être donné en secondes (par exemple, <span class="literal">120</span>) ou un code temporel sous la forme de hh:mm:ss (par exemple, <span class="literal">00:02:00</span>).</div>
+						</div>
+						<i class="fas fa-clock"></i>
+						<input id="offset" type="text" size="8" value="00:00:00">
+					</div>
+					<div id="attenuation-container">
+						<div>
+							<div class="tooltip">
+								<div class="tooltip-title">Atténuation de la même pièce</div>
+								<div class="tooltip-para">La vitesse à laquelle le son s'estompe dans la même pièce que le lecteur multimédia.</div>
+								<div class="tooltip-para">Une valeur de<span class="literal">0</span> signifie que le son ne s'estompera pas.</div>
+							</div>
+							<i class="fas fa-door-closed"></i>
+							<input id="same-room-attenuation" class="set-attenuation" type="number" min="0" max="10" step="0.1" value="4">
+						</div>
+						<div>
+							<div class="tooltip">
+								<div class="tooltip-title">Atténuation différente de la pièce</div>
+								<div class="tooltip-para">La vitesse à laquelle le son s'estompe dans une pièce différente de celle du lecteur multimédia.</div>
+								<div class="tooltip-para">Une valeur de <span class="literal">0</span> signifie que le son ne s'estompera pas.</div>
+							</div>
+							<i class="fas fa-door-open"></i>
+							<input id="diff-room-attenuation" class="set-attenuation" type="number" min="0" max="10" step="0.1" value="6">
+						</div>
+					</div>
+					<div id="range-container">
+						<div class="tooltip">
+							<div class="tooltip-title">Distance</div>
+							<div class="tooltip-para">La distance à laquelle le lecteur multimédia est visible/audible.</div>
+						</div>
+						<i class="fas fa-walking"></i>
+						<input id="range" type="number" min="5" max="200" step="5" value="50"/>
+					</div>
+					<div id="volume-container">
+						<div class="tooltip">
+							<div class="tooltip-title">Volume</div>
+							<div class="tooltip-para">Le volume de base du lecteur multimédia.</div>
+						</div>
+						<i class="fas fa-volume-up"></i>
+						<input id="volume" type="number" min="0" max="100" step="5" value="100">
+					</div>
+					<div id="diff-room-volume-container">
+						<div class="tooltip">
+							<div class="tooltip-title">Volume de pièce différent</div>
+							<div class="tooltip-para">Le ratio par lequel le volume de base du lecteur multimédia est diminué lors de l'entrée dans une pièce différente.</div>
+							<div class="tooltip-para">Une valeur de<span class="literal">1</span> signifie que le volume sera le même même en entrant dans une pièce différente.</div>
+						</div>
+						<i class="fas fa-volume-down"></i>
+						<input id="diff-room-volume" type="number" min="0" max="1" step="0.01" value="0.25">
+					</div>
+					<div id="is-vehicle-container">
+						<div class="tooltip">
+							<div class="tooltip-title">Mode véhicule</div>
+							<div class="tooltip-para">Si cette case est cochée, l'entité est traitée comme un véhicule, ce qui signifie qu'être à l'intérieur du véhicule compte comme étant dans la même pièce, et être à l'extérieur compte comme étant dans une pièce différente.</div>
+							<div class="tooltip-para">Décochez cette case pour jouer le son à l'extérieur du véhicule.</div>
+						</div>
+						<i class="fas fa-car"></i>
+						<input id="is-vehicle" type="checkbox">
+					</div>
+					<div id="scaleform-container">
+						<div class="tooltip">
+							<div class="tooltip-title">Utiliser la forme d'échelle</div>
+							<div class="tooltip-para">Lire le média sur une échelle au lieu de la cible de rendu sur un objet.</div>
+						</div>
+						<i class="fas fa-tv"></i>
+						<input id="scaleform" type="checkbox">
+					</div>
+					<div id="visualization-container">
+						<div class="tooltip">
+							<div class="tooltip-title">Visualisation audio</div>
+							<div class="tooltip-para">Afficher une visualisation audio au lieu d'une vidéo.</div>
+						</div>
+						<i class="fas fa-signal"></i>
+						<select id="visualization">
+							<option></option>
+						</select>
+					</div>
+					<button id="save" class="control-button">
+						<div class="tooltip">
+							<div class="tooltip-title">Enregistrer les paramètres</div>
+							<div class="tooltip-para">Ajouter un nouveau modèle ou enregistrer les paramètres sélectionnés pour un modèle ou une entité.</div>
+						</div>
+						<i class="fas fa-save"></i>
+					</button>
+					<button id="delete" class="control-button">
+						<div class="tooltip">
+							<div class="tooltip-title">Supprimer les paramètres</div>
+							<div class="tooltip-para">Supprimer les paramètres enregistrés pour un modèle ou une entité.</div>
+						</div>
+						<i class="fas fa-trash-alt"></i>
+					</button>
+					<button id="revert-settings" class="control-button">
+						<div class="tooltip">
+							<div class="tooltip-title">Réinitialiser les options</div>
+							<div class="tooltip-para">Réinitialiser les paramètres à ceux enregistrés pour le modèle ou l'entité sélectionné.</div>
+						</div>
+						<i class="fas fa-undo"></i>
+					</button>
+					<button id="restore-ui-position" class="control-button">
+						<div class="tooltip">
+							<div class="tooltip-title">Réinitialiser la position de l'interface utilisateur</div>
+							<div class="tooltip-para">Réinitialise la position de l'interface utilisateur au centre de l'écran.</div>
+						</div>
+						<i class="fas fa-window-restore"></i>
+					</button>
+					<button id="fix" class="control-button">
+						<div class="tooltip">
+							<div class="tooltip-title">Réinitialiser les lecteurs multimédias</div>
+							<div class="tooltip-para">Réinitialise tous les lecteurs multimédias, ce qui peut résoudre certains problèmes.</div>
+						</div>
+						<i class="fas fa-sync"></i>
+					</button>
+					<div id="toggle-tips-container">
+						<div class="tooltip">
+							<div class="tooltip-title">Info-bulles</div>
+							<div class="tooltip-para">Activer ou désactiver ces info-bulles.</div>
+						</div>
+						<i class="fas fa-question-circle"></i>
+						<input id="toggle-tips" type="checkbox">
+					</div>
+					<button id="toggle-status" class="control-button">
+						<div class="tooltip">
+							<div class="tooltip-title">Affichage d'état</div>
+							<div class="tooltip-para">Bascule l'affichage de la barre d'état, qui indique l'état actuel du lecteur multimédia le plus proche.</div>
+						</div>
+						<i class="fas fa-info-circle"></i>
+					</button>
+				</div>
+				<div id="scaleform-settings" style="display: none;">
+					<div id="scaleform-title">Paramètres de la forme d'échelle</div>
+					<div id="scaleform-name-container">
+						<div class="tooltip">
+							<div class="tooltip-title">Nom de la forme d'échelle</div>
+							<div class="tooltip-para">Le nom de la forme d'échelle (nom de fichier .gfx moins l'extension).</div>
+						</div>
+						<input id="scaleform-name" type="text" placeholder="Name">
+					</div>
+					<div id="scaleform-position">
+						<div class="tooltip">
+							<div class="tooltip-title">Position de l'échelle</div>
+							<div class="tooltip-para">Les coordonnées XYZ où la forme d'échelle sera dessinée.</div>
+						</div>
+						<i class="fas fa-map-marker-alt"></i>
+						<input id="scaleform-position-x" type="number" placeholder="x" class="scaleform-setting" min="-16000" max="16000" step="0.01">
+						<input id="scaleform-position-y" type="number" placeholder="y" class="scaleform-setting" min="-16000" max="16000" step="0.01">
+						<input id="scaleform-position-z" type="number" placeholder="z" class="scaleform-setting" min="-16000" max="16000" step="0.01">
+					</div>
+					<div id="scaleform-rotation">
+						<div class="tooltip">
+							<div class="tooltip-title">Rotation de la forme d'échelle</div>
+							<div class="tooltip-para">La rotation XYZ de la forme d'échelle.</div>
+						</div>
+						<i class="fas fa-compass"></i>
+						<input id="scaleform-rotation-x" type="number" placeholder="x" class="scaleform-setting" min="-360" max="360" step="0.1">
+						<input id="scaleform-rotation-y" type="number" placeholder="y" class="scaleform-setting" min="-360" max="360" step="0.1">
+						<input id="scaleform-rotation-z" type="number" placeholder="z" class="scaleform-setting" min="-360" max="360" step="0.1">
+					</div>
+					<div id="scaleform-scale">
+						<div class="tooltip">
+							<div class="tooltip-title">Échelle de forme d'échelle</div>
+							<div class="tooltip-para">L'échelle XYZ de la forme d'échelle.</div>
+						</div>
+						<i class="fas fa-arrows-alt"></i>
+						<input id="scaleform-scale-x" type="number" placeholder="x" class="scaleform-setting" min="0" max="1" step="0.01" value="0.1">
+						<input id="scaleform-scale-y" type="number" placeholder="y" class="scaleform-setting" min="0" max="1" step="0.01" value="0.05">
+						<input id="scaleform-scale-z" type="number" placeholder="z" class="scaleform-setting" min="0" max="1" step="0.01" value="0">
+					</div>
+					<div id="scaleform-auto">
+						<button id="scaleform-auto-my-position">
+							<div class="tooltip">
+								<div class="tooltip-title">Ma position</div>
+								<div class="tooltip-para">Réglez la position et la rotation de la forme d'échelle sur votre position et votre rotation actuelles.</div>
+							</div>
+							<i class="fas fa-street-view"></i>
+						</button>
+						<button id="scaleform-auto-entity">
+							<div class="tooltip">
+								<div class="tooltip-title">Position de l'entité</div>
+								<div class="tooltip-param">Définissez la position et la rotation de la forme d'échelle sur la position et la rotation de l'entité de lecteur multimédia sélectionnée.</div>
+							</div>
+							<i class="fas fa-cube"></i>
+						</button>
+						<div id="scaleform-attached-container">
+							<div class="tooltip">
+								<div class="tooltip-title">Attacher à l'entité</div>
+								<div class="tooltip-para">Attacher la forme d'échelle à l'entité sélectionnée.</div>
+							</div>
+							<i class="fas fa-magnet"></i>
+							<input id="scaleform-attached" class="scaleform-setting" type="checkbox">
+						</div>
+					</div>
+				</div>
+				<div id="save-settings" style="display: none;">
+					<div>Save:</div>
+					<div id="save-model-container">
+						<div class="save-input-label">Modèle</div>
+						<input id="save-model" type="text">
+					</div>
+					<div id="save-render-target-container">
+						<div class="save-input-label">Cible de rendu</div>
+						<input id="save-render-target" type="text">
+					</div>
+					<div>
+						<div class="save-input-label">Nom :</div>
+						<input id="save-label" type="text">
+					</div>
+					<div>
+						<button id="save-server-model" class="save-method" data-save-method="server-model" style="display: none;">
+							<i class="fas fa-cubes"></i>
+							<span>Modèle</span>
+						</button>
+						<button id="save-server-entity" class="save-method" data-save-method="server-entity" style="display: none;">
+							<i class="fas fa-cube"></i>
+							<span>Entité</span>
+						</button>
+						<button id="save-new-model" class="save-method" data-save-method="new-model">
+							<i class="fas fa-plus"></i>
+							<span>Ajouter</span>
+						</button>
+						<button id="save-cancel">
+							<i class="fas fa-times"></i>
+							<span>Annuler</span>
+						</button>
+					</div>
+				</div>
+				<div id="delete-settings" style="display: none;">
+					<div>Delete:</div>
+					<button id="delete-server-model" class="delete-method" data-delete-method="server-model">
+						<i class="fas fa-cubes"></i>
+						<span>Modèle</span>
+					</button>
+					<button id="delete-server-entity" class="delete-method" data-delete-method="server-entity">
+						<i class="fas fa-cube"></i>
+						<span>Entité</span>
+					</button>
+					<button id="delete-cancel">
+						<i class="fas fa-times"></i>
+						<span>Annuler</span>
+					</button>
+				</div>
+			</div>
+			<div id="base-volume-container">
+				<div class="tooltip">
+					<div class="tooltip-title">Volume personnel</div>
+					<div class="tooltip-para">Définit votre volume de base personnel pour tous les lecteurs multimédias.</div>
+				</div>
+				<i class="fas fa-volume-off"></i>
+				<div id="base-volume">100</div>
+				<input id="set-base-volume" type="range" min="0" max="100" step="1" value="100">
+			</div>
+			<button id="close-ui">Fermer</button>
+			<div id="drag-bottom"></div>
+		</div>
+		<div id="status" style="display: none;"></div>
+	</body>
+</html>

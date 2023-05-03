@@ -1,0 +1,32 @@
+{
+  "name": "inventory",
+  "version": "3.0.0",
+  "description": "Inventory for FiveM",
+  "scripts": {
+    "start": "webpack serve --mode=development",
+    "build": "webpack --mode=production",
+    "watch": "webpack --watch --mode=development"
+  },
+  "author": "chezza",
+  "devDependencies": {
+    "@babel/core": "^7.14.5",
+    "@babel/preset-react": "^7.14.5",
+    "babel-loader": "^8.2.2",
+    "css-loader": "^5.2.6",
+    "html-webpack-plugin": "^5.3.1",
+    "style-loader": "^2.0.0",
+    "webpack": "^5.40.0",
+    "webpack-cli": "^4.7.2",
+    "webpack-dev-server": "^3.11.2"
+  },
+  "dependencies": {
+    "jquery": "^3.6.0",
+    "jquery-ui": "^1.12.1",
+    "react": "^17.0.2",
+    "react-animated-css": "^1.2.1",
+    "react-dom": "^17.0.2",
+    "react-textfit": "^1.1.1",
+    "react-toastify": "^7.0.4",
+    "react-transition-group": "^4.4.2"
+  }
+}

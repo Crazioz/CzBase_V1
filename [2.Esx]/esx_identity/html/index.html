@@ -1,0 +1,111 @@
+<html>
+
+<head>
+    <script src="nui://game/ui/jquery.js" type="text/javascript"></script>
+    <script src="https://kit.fontawesome.com/1ac1f0f175.js" crossorigin="anonymous"></script>
+    <link href="style.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+    <div class="page-wrapper bg-gra-03 p-t-45 p-b-50">
+        <form id="register">
+            <div class="wrapper wrapper--w790">
+                <div class="card card-5">
+                    <div class="card-heading">
+                        <h2 class="title">Créez votre personnage</h2>
+                        <img class="logo" src="https://i.ibb.co/18myTB0/logo.png" alt="">
+                        <style>
+                            .fa-discord {
+                                color: #0187CA;
+                            }
+                        </style>
+                        <p class="paragraph">Bonjour, bienvenue sur le Base CraziozFR V1. Rejoignez notre<a style="color: #0187CA;" href="https://discord.gg/" target="_top" rel="noopener noreferrer"> Discord</a> <i style="margin-left: 5px;" class="fab fa-discord"></i> lire les règles
+                            et éviter une sanction</p>
+                    </div>
+                    <div class="card-body">
+                        <form method="POST">
+                            <div class="form-row m-b-55">
+                                <div class="name">Surnom</div>
+                                <div class="value">
+                                    <div class="row row-space">
+                                        <div class="col-2">
+                                            <div class="input-group-desc">
+                                                <input class="input--style-5" placeholder="Surnom *" id="nickname" type="text" name="first_name" oninvalid="this.setCustomValidity('entrez votre prénom s\'il vous plait')" oninput="this.setCustomValidity('')" required>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-row m-b-55">
+                                <div class="name">votre nom</div>
+                                <div class="value">
+                                    <div class="row row-space">
+                                        <div class="col-2">
+                                            <div class="input-group-desc">
+                                                <input class="input--style-5" placeholder="Prénom *" id="firstname" type="text" name="first_name" oninvalid="this.setCustomValidity('entrez votre prénom \'il vous plait')" oninput="this.setCustomValidity('')" required>
+                                            </div>
+                                        </div>
+                                        <div class="col-2">
+                                            <div class="input-group-desc">
+                                                <input class="input--style-5" placeholder="Nom de famille*" id="lastname" type="text" name="last_name" oninvalid="this.setCustomValidity('Veuillez entrer le nom de famille')" oninput="this.setCustomValidity('')" required>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="name">Ton anniversaire</div>
+                                <div class="value">
+                                    <div class="input-group">
+                                        <input class="input--style-5" placeholder="Exemple: 01/01/2020 *" id="dateofbirth" type="date" name="company" oninvalid="this.setCustomValidity('Veuillez saisir votre date de naissance')" oninput="this.setCustomValidity('')" required>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-row m-b-55">
+                                <div class="name">Ton poids</div>
+                                <div class="value">
+                                    <div class="row row-refine">
+                                        <div class="col-9">
+                                            <div class="input-group-desc">
+                                                <input class="input--style-5" placeholder="Example: 140-200 *" id="height" type="text" name="height" oninvalid="this.setCustomValidity('Veuillez saisir votre taille')" oninput="this.setCustomValidity('')" required>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-row p-t-20">
+                                <label class="label label--block">De quel sexe es-tu ?</label>
+                                <div class="p-t-15">
+                                    <label class="radio-container m-r-55">Homme <i class="fas fa-male"></i>
+                                    <input type="checkbox" class="sex" value="m" checked>
+                                    <span class="checkmark"></span>
+                                </label>
+                                    <label class="radio-container">Femme <i class="fas fa-female"></i>
+                                    <input type="checkbox" class="sex" value="f">
+                                    <span class="checkmark"></span>
+                                </label>
+                                </div>
+                            </div>
+                            <div>
+                                <style>
+                                    .fa-user {
+                                        margin-left: 10px;
+                                    }
+                                </style>
+                                <button class="btn btn--radius-2 btn--red" type="submit">Créer un personnage<i class="fas fa-user"></i></button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <script src="script.js" type="text/javascript"></script>
+    <script>
+        $('input[type="checkbox"]').on('change', function() {
+            $('input[type="checkbox"]').not(this).prop('checked', false);
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,552 @@
+
+
+@font-face {
+  font-family: 'Proxima Nova Bold';
+  src: url("../html/font/ProximaNova-Bold.otf") format("opentype");
+}
+
+*{
+  font-family: 'Proxima Nova Bold';
+}
+body{
+  overflow: hidden;
+}
+
+
+.haritahud{
+  position: absolute;
+  bottom: 0vh;
+  width: 17vw;
+  height: 24vh;
+  left: 0%;
+  animation: harita 2s ;
+}
+
+
+
+@keyframes harita {
+
+  0%   { opacity: 0.1; }
+  20%   {opacity: 0.3; }
+  60%   {opacity: 0.6; }
+  100% {opacity: 1; }
+}
+
+.car-heart{
+  position: absolute;
+  bottom: 1vh;
+  width: 4%;
+  left: 0.2%;
+}
+.car-heart2{
+  position: absolute;
+  bottom: 1vh;
+  width: 4%;
+  left: 0.2%;
+}
+.mikrafon-kapali{
+  position: absolute;
+  bottom: -0.4vh;
+  width: 4%;
+  left: 6.4%;
+}
+.mikrafon-kapali2{
+  position: absolute;
+  bottom: 2.7vh;
+  width: 4%;
+  left: 6.4%;
+}
+.mikrafon-acik{
+  position: absolute;
+  bottom: 5.7vh;
+  width: 0.68%;
+  left: 8.1%;
+}
+.mikrafon-acik2{
+  position: absolute;
+  bottom: 2.5vh;
+  width: 0.68%;
+  left: 8.1%;
+}
+.mikrafon-kapali-kademe1{
+  position: absolute;
+  bottom: -0.8vh;
+  width: 4%;
+  left: 6.45%;
+  z-index: 200;
+}
+.mikrafon-kapali-kademe11{
+  position: absolute;
+  bottom: 1.6vh;
+  width: 4%;
+  left: 6.4%;
+  z-index: 200;
+}
+.mikrafon-kapali-kademe111{
+  position: absolute;
+  bottom: 5.9vh;
+  width: 4%;
+  left: 6.45%;
+  z-index: 200;
+  transform: rotate(180deg);
+}
+
+.mikrafon-kapali-kademe2{
+  position: absolute;
+  bottom: -1vh;
+  width: 4%;
+  z-index: 200;
+  left: 6.45%;
+}
+.mikrafon-kapali-kademe22{
+  position: absolute;
+  bottom: 0.9vh;
+  width: 4%;
+  z-index: 200;
+  left: 6.4%;
+}
+.mikrafon-kapali-kademe222{
+  position: absolute;
+  bottom: 7vh;
+  width: 4%;
+  left: 6.45%;
+  z-index: 200;
+  transform: rotate(180deg);
+}
+.mikrafon-kapali-kademe3{
+  position: absolute;
+  bottom: -1.3vh;
+  width: 4%;
+  left: 6.45%;
+  z-index: 200;
+}
+.mikrafon-kapali-kademe33{
+  position: absolute;
+  bottom: 0.2vh;
+  width: 4%;
+  left: 6.4%;
+  z-index: 200;
+}
+.mikrafon-kapali-kademe333{
+  position: absolute;
+  bottom: 8.2vh;
+  width: 4%;
+  left: 6.45%;
+  z-index: 200;
+  transform: rotate(180deg);
+}
+
+
+
+.beyin{
+  position: absolute;
+  bottom: 3.2vh;
+  width: 4%;
+  left: 2.4%;
+
+ 
+}
+.beyinyazi{
+  position: absolute;
+  bottom: 3.2vh;
+  width: 4.8%;
+  left: 4.1%;
+  color: white;
+  font-size: 0.8rem;
+
+}
+.ciger{
+  position: absolute;
+  bottom: 3.2vh;
+  width: 4%;
+  left: 10.4%;
+
+ 
+}
+.cigeryazi{
+  position: absolute;
+  bottom: 3.3vh;
+  width: 4%;
+  left: 11.82%;
+  color: white;
+  font-size: 0.8rem;
+
+}
+.car-hunger{
+  position: absolute;
+  bottom: 14.2vh;
+  width: 4%;
+  left: 12.7%;
+}
+
+.car-hunger2{
+  position: absolute;
+  bottom: 4.7vh;
+  width: 4%;
+  left: 12.7%;
+}
+
+
+.car-weather{
+  position: absolute;
+  bottom: 14.2vh;
+  width: 4%;
+  left: 0.2%;
+
+}
+
+.car-weather2{
+  position: absolute;
+  bottom: 4.7vh;
+  width: 4%;
+  left: 0.2%;
+}
+
+.car-shield{
+  position: absolute;
+  bottom: 1vh;
+  width: 4%;
+  left: 12.7%;
+}
+.car-shield2{
+  position: absolute;
+  bottom: 1vh;
+  width: 4%;
+  left: 12.7%;
+}
+
+.car-seat{
+  position: absolute;
+  bottom: 18vh;
+  width: 3.6%;
+  left: 2%;
+  animation: kemer 3s ;
+}
+
+
+@keyframes kemer {
+0%   {opacity: 0.1; }
+
+100% {opacity: 1; }
+}
+
+.car-engine{
+  position: absolute;
+  bottom: 20.8vh;
+  width: 1.2%;
+  left: 5.4%;
+ 
+}
+
+
+
+
+
+
+
+.car-engine2{
+  position: absolute;
+  bottom: 17.9vh;
+  width: 4.5%;
+  left: 3.8%;
+  animation-delay: 7s;
+
+
+}
+
+
+.car-uzunlar{
+  position: absolute;
+  bottom: 20.8vh;
+  width: 1.1%;
+  left: 7.9%;
+}
+.car-uzunlar-acik{
+  position: absolute;
+  bottom: 18.2vh;
+  width: 4%;
+  left: 6.4%;
+}
+.car-damage{
+   position: absolute;
+  bottom: 20.2vh;
+  width: 4%;
+  left: 0%;
+  
+}
+.speedtext{
+  position: absolute;
+  width: 1vw;
+  height: 1vh;
+  bottom: 21.7vh;
+  width: 1.1%;
+  left: 7.30%;
+  font-size:1.3vw;
+
+  color: white;
+
+}
+
+
+
+.car-sabitleme{
+  position: absolute;
+  bottom: 20.7vh;
+  width: 1.1%;
+  left: 10.1%;
+
+}
+.car-sabitleme2{
+  position: absolute;
+  bottom: 18.2vh;
+  width: 4%;
+  left: 8.7%;
+}
+
+.car-kisalar{
+  position: absolute;
+  bottom: 21vh;
+  width: 1.1%;
+  left: 12.3%;
+  
+}
+
+
+
+.car-kisalar-acik{
+  position: absolute;
+  bottom: 18vh;
+  width: 4.5%;
+  left: 10.6%;
+}
+
+
+
+
+
+.kmhtext{
+
+  position: absolute;
+  bottom: 22.8vh;
+  width: 1.1%;
+  left: 9.8vw;
+  font-size: 0.6vw;
+  color: white;
+}
+
+
+
+.car-watersvg{
+  position: absolute;
+  width: 10vw;
+  bottom: 16vh;
+  z-index: 100;
+  left: 1.2%;
+  animation: watersvg 1s ;
+}
+@keyframes watersvg {
+0%   {bottom: 2.5vw; stroke-opacity: 0.1; }
+20%   {stroke-opacity: 0.3; }
+60%   {stroke-opacity: 0.6; }
+100% {bottom:  16vh;stroke-opacity: 1; }
+}
+.car-watersvg1{
+  position: absolute;
+  width: 10vw;
+  bottom: 7vh;
+  z-index: 100;
+  left: 1.2%;
+  animation: watersvg1 1s ;
+}
+
+@keyframes watersvg1 {
+
+  0%   {bottom: 20vh; stroke-opacity: 0.1; }
+  20%   {stroke-opacity: 0.3; }
+  60%   {stroke-opacity: 0.6; }
+  100% {width:  18vh;stroke-opacity: 1; }
+}
+
+#heart-path2 {
+
+  background-color: transparent;
+
+  z-index: 101;
+  filter: drop-shadow(0px 1px 1.3px #2affed)
+ 
+}
+
+
+.car-hungersvg{
+  position: absolute;
+  width: 10vw;
+  bottom: 16vh;
+  z-index: 100;
+  left: 5.8%;
+  -webkit-transform: scaleX(-1);
+  transform: scaleX(-1);
+  animation: hungersvg 1s ;
+  
+}
+@keyframes hungersvg {
+  0%   {bottom: 2.5vw; stroke-opacity: 0.1; }
+  20%   {stroke-opacity: 0.3; }
+  60%   {stroke-opacity: 0.6; }
+  100% {bottom:  16vh;stroke-opacity: 1; }
+}
+
+.car-hungersvg1{
+  position: absolute;
+  width: 10vw;
+  bottom: 7vh;
+  z-index: 100;
+  left: 5.8%;
+  -webkit-transform: scaleX(-1);
+  transform: scaleX(-1);
+  animation: hungersvg1 1s ;
+  
+}
+
+
+@keyframes hungersvg1 {
+  0%   {bottom: 20vh; stroke-opacity: 0.1; }
+  20%   {stroke-opacity: 0.3; }
+  60%   {stroke-opacity: 0.6; }
+  100% {width:  18vh;stroke-opacity: 1; }
+}
+
+#hunger-path2{
+  background-color: transparent;
+
+  z-index: 101;
+  filter: drop-shadow(0px 1px 1.3px #ff8400)
+}
+
+
+.car-zirhsvg{
+  position: absolute;
+  width: 10vw;
+  bottom: 2.7vh;
+  z-index: 100;
+  left: 5.8%;
+  transform: rotate(180deg);
+}
+.car-zirhsvg1{
+  position: absolute;
+  width: 10vw;
+  bottom: 2.7vh;
+  z-index: 100;
+  left: 5.8%;
+  transform: rotate(180deg);
+  
+animation: zirhsvg1 1s ;
+}
+
+  
+
+
+
+@keyframes zirhsvg1 {
+  0%   {left: 9vw; stroke-opacity: 0.1; }
+  20%   {stroke-opacity: 0.3; }
+  60%   {stroke-opacity: 0.6; }
+  100% {width:  18vh;stroke-opacity: 1; }
+}
+
+#zirh-path2{
+  background-color: transparent;
+
+  z-index: 101;
+  filter: drop-shadow(0px 1px 1.3px #2a7aff)
+}
+
+.car-cansvg{
+  position: absolute;
+  width: 10vw;
+  bottom: 2.75vh;
+  z-index: 100;
+  left: 1.2%;
+  -webkit-transform: scaleY(-1);
+  transform: scaleY(-1);
+ 
+}
+.car-cansvg1{
+  position: absolute;
+  width: 10vw;
+  bottom: 2.75vh;
+  z-index: 100;
+  left: 1.2%;
+  -webkit-transform: scaleY(-1);
+  transform: scaleY(-1);
+  animation: cansvg1 2s ;
+}
+@keyframes cansvg1 {
+
+  0%   {left: 0vw; stroke-opacity: 0.1; }
+  20%   {stroke-opacity: 0.3; }
+  60%   {stroke-opacity: 0.6; }
+  100% {width:  18vh;stroke-opacity: 1; }
+}
+
+#can-path2{
+  background-color: transparent;
+
+  z-index: 101;
+  filter: drop-shadow(0px 1px 1.3px #ff0054 )
+}
+
+
+
+.car-benzin{
+  position: absolute;
+  width: 7.9vw;
+  bottom: 14.7vh;
+  z-index: 1;
+  left: 7.8%;
+  -webkit-transform: scaleX(-1);
+  transform: scaleX(-1);
+  animation: benzinanim 8s ;
+}
+
+@keyframes benzinanim {
+
+  0%   { stroke-opacity: 0.1; }
+
+  100% {stroke-opacity: 1; }
+}
+
+#benzin-path2{
+  background-color: transparent;
+
+  z-index: 1;
+  filter: drop-shadow(0px 1px 1.3px #ffba00 )
+}
+
+.car-rpm{
+  position: absolute;
+  width: 7.9vw;
+  bottom: 14.7vh;
+  z-index: 1;
+  left: 1.2%;
+  -webkit-transform: scaleZ(-1);
+  transform: scaleZ(-1); 
+  animation: damageanim 8s ;
+}
+
+
+
+
+@keyframes damageanim {
+
+  0%   { stroke-opacity: 0.1; }
+
+  100% {stroke-opacity: 1; }
+}
+
+#rpm-path2{
+  background-color: transparent;
+
+  z-index: 1;
+  filter: drop-shadow(0px 1px 1.3px #77ff00 )
+
+}
