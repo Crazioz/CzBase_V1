@@ -51,34 +51,17 @@ Citizen.CreateThread(function()
     end
 end)
 
+DensityMultiplier = 0.8
 Citizen.CreateThread(function()
-    while true do
-    local plyPed = PlayerPedId()
-    if IsPedSittingInAnyVehicle(plyPed) then
-    local plyVehicle = GetVehiclePedIsIn(plyPed, false)
-    CarSpeed = GetEntitySpeed(plyVehicle) * 3.6 -- On définit la vitesse du véhicule en km/h
-    if CarSpeed <= 300.0 then -- On ne peux pas changer de place si la vitesse du véhicule est au dessus ou égale à 300 km/h
-    if IsControlJustReleased(0, 157) then -- conducteur : 1
-    SetPedIntoVehicle(plyPed, plyVehicle, -1)
-    Citizen.Wait(10)
-    end
-    if IsControlJustReleased(0, 158) then -- avant droit : 2
-    SetPedIntoVehicle(plyPed, plyVehicle, 0)
-    Citizen.Wait(10)
-    end
-    if IsControlJustReleased(0, 160) then -- arriere gauche : 3
-    SetPedIntoVehicle(plyPed, plyVehicle, 1)
-    Citizen.Wait(10)
-    end
-    if IsControlJustReleased(0, 164) then -- arriere droite : 4
-    SetPedIntoVehicle(plyPed, plyVehicle, 2)
-    Citizen.Wait(10)
-    end
-    end
-    end
-    Citizen.Wait(10) -- anti crash
-    end
-   end)
+	while true do
+	    Citizen.Wait(0)
+	    SetVehicleDensityMultiplierThisFrame(DensityMultiplier)
+	    SetPedDensityMultiplierThisFrame(DensityMultiplier)
+	    SetRandomVehicleDensityMultiplierThisFrame(DensityMultiplier)
+	    SetParkedVehicleDensityMultiplierThisFrame(DensityMultiplier)
+	    SetScenarioPedDensityMultiplierThisFrame(DensityMultiplier, DensityMultiplier)
+	end
+end)
 
 Citizen.CreateThread(function()
     while true do
@@ -96,3 +79,82 @@ AddEventHandler("playerSpawned", function()
     NetworkSetFriendlyFireOption(true)
     SetCanAttackFriendly(PlayerPedId(), true, true)
 end)
+
+
+function generateBlips()
+    if PL.ActivateSingle then
+        for _, v in pairs(PL.BlipsSingle) do
+            blip = AddBlipForCoord(v.coords.x, v.coords.y, v.coords.z)
+            SetBlipDisplay(blip, 4)
+            SetBlipSprite(blip, v.sprite)
+            SetBlipColour(blip, v.color)
+            SetBlipScale(blip, v.scale)
+            SetBlipAsShortRange(blip, true)
+            BeginTextCommandSetBlipName("STRING")
+            AddTextComponentString(v.name)
+            EndTextCommandSetBlipName(blip)
+        end
+    end
+
+    if PL.ActivateRadius then
+        for _, v in pairs(PL.BlipsRadius) do
+            blip = AddBlipForRadius(v.coords.x, v.coords.y, v.coords.z, v.radius)
+            SetBlipSprite(blip, v.sprite)
+            SetBlipColour(blip, v.color)
+            SetBlipAlpha(blip, v.transparency)
+        end
+    end
+end
+
+-------------------------------------------------------------------------------------------
+
+PL = {}
+
+PL.ActivateSingle = true
+PL.ActivateRadius = true
+
+PL.BlipsSingle = {
+    --[1] = {
+    --    name = "Frontière Los santos",                                 --display name
+    --    sprite = 461,                                   --https://docs.fivem.net/docs/game-references/blips/
+    --    color = 44,                                      --https://docs.fivem.net/docs/game-references/blips/
+    --    scale = 0.6,                                    --scale
+    --    coords = vector3(1446.7485351563,-2621.4538574219,48.442108154297)       --coordinates
+    --},
+--
+    --[2] = {
+    --    name = "Frontière Cayo Perico",
+    --    sprite = 461,
+    --    color = 44,
+    --    scale = 0.6,
+    --    coords = vector3(4588.7827148438,-4322.0502929688,9.9577894210815),
+    --},
+
+    [3] = {
+        name = "Maze Bank Arena",
+        sprite = 304,
+        color = 0,
+        scale = 0.6,
+        coords = vector3(-254.26171875,-2027.1669921875,29.940134048462),
+    },
+    
+}
+--Radius---------------------------------------------------------------------------------------------------------------------------------------
+
+--PL.BlipsRadius = {
+   -- [1] = {
+   --     sprite = 9,                                    --https://docs.fivem.net/docs/game-references/blips/
+   --     color = 1,                                     --https://docs.fivem.net/docs/game-references/blips/
+   --     coords = vector3(1446.7485351563,-2621.4538574219,48.435733795166),     --coordinates
+   --     radius = 100.0,                                --radius. float value
+   --     transparency = 90,                             --transparency. 0-255
+   -- },
+--
+   -- [2] = {
+   --     sprite = 9,                                    --https://docs.fivem.net/docs/game-references/blips/
+   --     color = 1,                                     --https://docs.fivem.net/docs/game-references/blips/
+   --     coords = vector3(4583.4331054688,-4317.1811523438,12.135783195496),     --coordinates
+   --     radius = 100.0,                                --radius. float value
+   --     transparency = 90,                             --transparency. 0-255
+   -- },
+--}
