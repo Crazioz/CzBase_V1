@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Spectate Menu</title>
+    <title>Menu Spectate</title>
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
       rel="stylesheet"
@@ -33,7 +33,7 @@
         <div class="main p-1 bg-dark text-light rounded">
           <h6 class="header d-flex justify-content-between align-items-center">
             <div>
-              Spectate Menu
+              Menu Spectate 
               <a @click="update()" href="#" class="text-primary">
                 <i class="fas fa-sync"></i>
               </a>
@@ -45,8 +45,8 @@
           <div class="player-list pe-1">
             <div class="row text-center">
               <div class="col col-1">ID</div>
-              <div class="col col-3">Name</div>
-              <div class="col col-1">Group</div>
+              <div class="col col-3">Nom</div>
+              <div class="col col-1">Grade</div>
               <div class="col col-5">Job</div>
               <div class="col col-5">Faction</div>
               <div class="col col-2">{{ players.length }} <i class="fas fa-dot-circle text-success blinking"></i></div>
@@ -75,7 +75,7 @@
             </span>
             <input v-model="search" type="text" class="form-control" aria-label="Search" placeholder="Search" />
           </div>
-          <button v-if="currentPlayer" @click="off" class="btn btn-sm btn-danger mt-1 w-100">Spectate Off</button>
+          <button v-if="currentPlayer" @click="off" class="btn btn-sm btn-danger mt-1 w-100">Couper le spectate</button>
         </div>
       </div>
     </div>

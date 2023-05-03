@@ -7,7 +7,6 @@ lua54 'yes'
 
 
 shared_scripts {
-	'config.lua',
 	'@ox_lib/init.lua'
 }
 files({
@@ -25,7 +24,7 @@ client_scripts {
 
 server_scripts {
 	'@oxmysql/lib/MySQL.lua',
-	'server/admin_list.lua',
+	'server/admin_list.cfg',
 	'server/server.lua',
 	'server/spectate_serv.lua'
 }

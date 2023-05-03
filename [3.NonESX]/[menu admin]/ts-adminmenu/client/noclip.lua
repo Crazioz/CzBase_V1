@@ -91,7 +91,7 @@ function SetNoClip(val)
         if (isNoClipping) then
 
             SetEntityAlpha(noClippingEntity, 51, 0)
-            lib.showTextUI('SHIFT GAUCHE - ALLER À LA VITESSE ACTUELLE\nH - CHANGEMENT DE VITESSE\nVitesse actuelle - '..Speeds[index].label, {
+            lib.showTextUI('SHIFT G - VITESSE ACTUELLE '..Speeds[index].label.." \nH - CHANGEMENT DE VITESSE\n", {
                 position = "right-center",
             })
             -- Start a No CLip thread
@@ -105,8 +105,8 @@ function SetNoClip(val)
                 local data = {
                     ['Player'] = GetPlayerServerId(playerId), -- You need to set source here
                     ['Log'] = 'adminmenu-noclip', -- Log name
-                    ['Title'] = 'Noclip Logs', -- Title
-                    ['Message'] = GetPlayerName(playerId)..' turned on Noclip', -- Message
+                    ['Title'] = 'Logs Noclip', -- Title
+                    ['Message'] = GetPlayerName(playerId)..' à activer le Noclip', -- Message
                     ['Color'] = 'green', -- Set your color here check Config.Colors for available colors
                 }
                 TriggerServerEvent('Boost-Logs:SendLog', data)
@@ -131,13 +131,13 @@ function SetNoClip(val)
                             lib.hideTextUI()
                             index = index+1
                             NO_CLIP_FAST_SPEED = Speeds[index].speed
-                            lib.showTextUI('SHIFT GAUCHE - ALLER À LA VITESSE ACTUELLE\nH - CHANGEMENT DE VITESSE\nVitesse actuelle - '..Speeds[index].label, {
+                            lib.showTextUI('SHIFT G - VITESSE ACTUELLE '..Speeds[index].label.." \nH - CHANGEMENT DE VITESSE\n", {
                                 position = "right-center",
                             })
                         else
                             lib.hideTextUI()
                             NO_CLIP_FAST_SPEED = Speeds[1].speed
-                            lib.showTextUI('SHIFT GAUCHE - ALLER À LA VITESSE ACTUELLE\nH - CHANGEMENT DE VITESSE\nVitesse actuelle - '..Speeds[index].label, {
+                            lib.showTextUI('SHIFT G - VITESSE ACTUELLE '..Speeds[index].label.." \nH - CHANGEMENT DE VITESSE\n", {
                                 position = "right-center",
                             })
                             index = 1
@@ -218,8 +218,8 @@ function SetNoClip(val)
             local data = {
                 ['Player'] = GetPlayerServerId(playerId), -- You need to set source here
                 ['Log'] = 'adminmenu-noclip', -- Log name
-                ['Title'] = 'Noclip Logs', -- Title
-                ['Message'] = GetPlayerName(playerId)..' turned off Noclip', -- Message
+                ['Title'] = 'Logs Noclip', -- Title
+                ['Message'] = GetPlayerName(playerId)..' à désactiver le noclip', -- Message
                 ['Color'] = 'red', -- Set your color here check Config.Colors for available colors
             }
             TriggerServerEvent('Boost-Logs:SendLog', data)

@@ -207,7 +207,7 @@ RegisterNetEvent('ts-adminmenu:server:HealPlayer', function(pid)
             ['Player'] = xPlayer.source, -- You need to set source here
             ['Target'] = yPlayer.source, -- You need to set source here
             ['Log'] = 'adminmenu-heal', -- Log name
-            ['Title'] = 'Heal Logs', -- Title
+            ['Title'] = 'Logs de guérison', -- Title
             ['Message'] = yPlayer.getName() .. ' was healed by ' .. xPlayer.getName(), -- Message
             ['Color'] = 'blue' -- Set your color here check Config.Colors for available colors
         }
@@ -219,7 +219,7 @@ RegisterNetEvent('ts-adminmenu:server:HealPlayer', function(pid)
             ['Player'] = xPlayer.source, -- You need to set source here
             ['Target'] = yPlayer.source, -- You need to set source here
             ['Log'] = 'adminmenu-heal-err', -- Log name
-            ['Title'] = 'Heal Logs - ERR', -- Title
+            ['Title'] = 'Logs de guérison - ERR', -- Title
             ['Message'] = "Unauthorized player triggered event: ts-adminmenu:server:HealPlayer, Triggered By: " ..
                 xPlayer.getName(), -- Message
             ['Color'] = 'red' -- Set your color here check Config.Colors for available colors
@@ -252,8 +252,8 @@ RegisterNetEvent('ts-adminmenu:server:SetJob', function(pid, job, grade)
                 ['Player'] = xPlayer.source, -- You need to set source here
                 ['Target'] = yPlayer.source, -- You need to set source here
                 ['Log'] = 'adminmenu-setjob', -- Log name
-                ['Title'] = 'Job Logs', -- Title
-                ['Message'] = yPlayer.getName() .. ' was assigned job ' .. job .. ' grade: ' .. grade .. ' by ' ..
+                ['Title'] = 'Logs Job', -- Title
+                ['Message'] = yPlayer.getName() .. ' s\'est vu attribuer un job' .. job .. ' grade: ' .. grade .. ' par ' ..
                     xPlayer.getName(), -- Message
                 ['Color'] = 'blue' -- Set your color here check Config.Colors for available colors
             }
@@ -291,8 +291,8 @@ RegisterNetEvent('ts-adminmenu:server:SetFaction', function(pid, faction, grade)
                 ['Player'] = xPlayer.source, -- You need to set source here
                 ['Target'] = yPlayer.source, -- You need to set source here
                 ['Log'] = 'adminmenu-setfaction', -- Log name
-                ['Title'] = 'Faction Logs', -- Title
-                ['Message'] = yPlayer.getName() .. ' was assigned faction ' .. faction .. ' grade: ' .. grade .. ' by ' ..
+                ['Title'] = 'Logs Faction', -- Title
+                ['Message'] = yPlayer.getName() .. ' a été affecté à une faction ' .. faction .. ' grade : ' .. grade .. ' par ' ..
                     xPlayer.getName(), -- Message
                 ['Color'] = 'blue' -- Set your color here check Config.Colors for available colors
             }
@@ -329,8 +329,8 @@ RegisterNetEvent('ts-adminmenu:server:GiveAccMoney', function(pid, acc, amount)
             ['Player'] = xPlayer.source, -- You need to set source here
             ['Target'] = yPlayer.source, -- You need to set source here
             ['Log'] = 'adminmenu-giveaccm', -- Log name
-            ['Title'] = 'Give Account Money Logs', -- Title
-            ['Message'] = yPlayer.getName() .. ' recieved money in ' .. account .. ' from ' .. xPlayer.getName(), -- Message
+            ['Title'] = 'Logs Give argent compte bancaire', -- Title
+            ['Message'] = yPlayer.getName() .. ' reçu de l\'argent en ' .. account .. ' de ' .. xPlayer.getName(), -- Message
             ['Color'] = 'blue' -- Set your color here check Config.Colors for available colors
         }
 
@@ -365,8 +365,8 @@ RegisterNetEvent('ts-adminmenu:server:RemoveAccMoney', function(pid, acc, amount
             ['Player'] = xPlayer.source, -- You need to set source here
             ['Target'] = yPlayer.source, -- You need to set source here
             ['Log'] = 'adminmenu-removeaccm', -- Log name
-            ['Title'] = 'Remove Account Money Logs', -- Title
-            ['Message'] = xPlayer.getName() .. ' removed money from ' .. account .. ' of ' .. yPlayer.getName(), -- Message
+            ['Title'] = 'Logs Sup l\'argent du compte', -- Title
+            ['Message'] = xPlayer.getName() .. ' à retiré de l\'argent de : ' .. account .. ' of ' .. yPlayer.getName(), -- Message
             ['Color'] = 'blue' -- Set your color here check Config.Colors for available colors
         }
 
@@ -399,8 +399,8 @@ RegisterNetEvent('ts-adminmenu:server:RevivePlayer', function(pid)
             ['Player'] = xPlayer.source, -- You need to set source here
             ['Target'] = yPlayer.source, -- You need to set source here
             ['Log'] = 'adminmenu-revivep', -- Log name
-            ['Title'] = 'Revive Logs', -- Title
-            ['Message'] = xPlayer.getName() .. ' revived ' .. yPlayer.getName(), -- Message
+            ['Title'] = 'Logs Revive', -- Title
+            ['Message'] = xPlayer.getName() .. ' à revive ' .. yPlayer.getName(), -- Message
             ['Color'] = 'blue' -- Set your color here check Config.Colors for available colors
         }
 
@@ -430,8 +430,8 @@ RegisterNetEvent('ts-adminmenu:server:Goto', function(pid)
             ['Player'] = xPlayer.source, -- You need to set source here
             ['Target'] = yPlayer.source, -- You need to set source here
             ['Log'] = 'adminmenu-goto', -- Log name
-            ['Title'] = 'Goto Logs', -- Title
-            ['Message'] = xPlayer.getName() .. ' teleported to ' .. yPlayer.getName(), -- Message
+            ['Title'] = 'Logs Goto', -- Title
+            ['Message'] = xPlayer.getName() .. ' se téléporte sur : ' .. yPlayer.getName(), -- Message
             ['Color'] = 'blue' -- Set your color here check Config.Colors for available colors
         }
 
@@ -443,7 +443,7 @@ RegisterNetEvent('ts-adminmenu:server:Goto', function(pid)
             ['Target'] = yPlayer.source, -- You need to set source here
             ['Log'] = 'adminmenu-goto-err', -- Log name
             ['Title'] = 'Goto Logs -ERR', -- Title
-            ['Message'] = xPlayer.getName() .. ' tried to teleport without authorization to ' .. yPlayer.getName(), -- Message
+            ['Message'] = xPlayer.getName() .. ' a pas les perms mais a essayer de se tp sur : ' .. yPlayer.getName(), -- Message
             ['Color'] = 'red' -- Set your color here check Config.Colors for available colors
         }
 
@@ -461,8 +461,8 @@ RegisterNetEvent('ts-adminmenu:server:Bring', function(pid)
             ['Player'] = xPlayer.source, -- You need to set source here
             ['Target'] = yPlayer.source, -- You need to set source here
             ['Log'] = 'adminmenu-bring', -- Log name
-            ['Title'] = 'Bring Logs', -- Title
-            ['Message'] = xPlayer.getName() .. ' brought ' .. yPlayer.getName(), -- Message
+            ['Title'] = 'Logs Bring', -- Title
+            ['Message'] = xPlayer.getName() .. ' bring :  ' .. yPlayer.getName(), -- Message
             ['Color'] = 'blue' -- Set your color here check Config.Colors for available colors
         }
 
@@ -473,7 +473,7 @@ RegisterNetEvent('ts-adminmenu:server:Bring', function(pid)
             ['Player'] = xPlayer.source, -- You need to set source here
             ['Target'] = yPlayer.source, -- You need to set source here
             ['Log'] = 'adminmenu-bring-err', -- Log name
-            ['Title'] = 'Bring Logs - ERR', -- Title
+            ['Title'] = 'Logs Bring - ERR', -- Title
             ['Message'] = xPlayer.getName() .. ' tried to bring without authorization ' .. yPlayer.getName(), -- Message
             ['Color'] = 'red' -- Set your color here check Config.Colors for available colors
         }
@@ -715,8 +715,8 @@ RegisterNetEvent('ts-adminmenu:server:GiveItem', function(pid, item, count)
             ['Player'] = xPlayer.source, -- You need to set source here
             ['Target'] = yPlayer.source, -- You need to set source here
             ['Log'] = 'adminmenu-giveitem', -- Log name
-            ['Title'] = 'Give Item Logs', -- Title
-            ['Message'] = xPlayer.getName() .. ' gave item: ' .. titem .. ' to ' .. yPlayer.getName(), -- Message
+            ['Title'] = 'Logs Give Item', -- Title
+            ['Message'] = xPlayer.getName() .. ' a donné l\'item : ' .. titem .. ' à ' .. yPlayer.getName(), -- Message
             ['Color'] = 'blue' -- Set your color here check Config.Colors for available colors
         }
 
@@ -728,8 +728,7 @@ RegisterNetEvent('ts-adminmenu:server:GiveItem', function(pid, item, count)
             ['Target'] = yPlayer.source, -- You need to set source here
             ['Log'] = 'adminmenu-giveitem-err', -- Log name
             ['Title'] = 'Give Item Logs -ERR', -- Title
-            ['Message'] = xPlayer.getName() .. ' tried to give item: ' .. titem .. ' without authorization to ' ..
-                yPlayer.getName(), -- Message
+            ['Message'] = xPlayer.getName() .. ' tried to give item: ' .. titem .. ' without authorization to ' ..yPlayer.getName(), -- Message
             ['Color'] = 'red' -- Set your color here check Config.Colors for available colors
         }
 
@@ -764,8 +763,7 @@ RegisterNetEvent('ts-adminmenu:server:RemoveItem', function(pid, item, count)
             ['Target'] = yPlayer.source, -- You need to set source here
             ['Log'] = 'adminmenu-removeitem', -- Log name
             ['Title'] = 'Remove Item Logs', -- Title
-            ['Message'] = xPlayer.getName() .. ' removed item: ' .. titem .. ' x' .. amount .. ' from ' ..
-                yPlayer.getName(), -- Message
+            ['Message'] = xPlayer.getName() .. ' items supprimé : ' .. titem .. ' x' .. amount .. ' par ' ..yPlayer.getName(), -- Message
             ['Color'] = 'blue' -- Set your color here check Config.Colors for available colors
         }
 
@@ -827,16 +825,6 @@ RegisterNetEvent('ts-adminmenu:server:SpawnVehicle', function(veh)
     end
 end)
 
-RegisterNetEvent('ts-adminmenu:server:PlayerFart', function(type)
-    local src = source
-    local farttype = type
-    local plyList = TSGetPlayers()
-    local allowed = CheckAllowed(src, 'TSAdmin.TrollMenu.Fart')
-    if allowed then
-        TriggerClientEvent('ts-adminmenu:client:PlayFart', src, plyList, farttype)
-    end
-end)
-
 RegisterNetEvent('ts-adminmenu:server:propspawner', function()
     local src = source
     local allowed = CheckAllowed(src, 'TSAdmin.MiscSettings.PropSpawn')
@@ -861,325 +849,10 @@ RegisterNetEvent('ts-adminmenu:server:SendStaff', function(txt)
     end
 end)
 
-RegisterNetEvent('ts-adminmenu:server:PlayFartFromServer', function(data)
-    print(data)
-    local src = source
-    local xPlayer = ESX.GetPlayerFromId(src)
-    local farttype = data.type
-    local ply = data.ply
-    local yPlayer = ESX.GetPlayerFromId(ply)
-    local netId = NetworkGetNetworkIdFromEntity(GetPlayerPed(yPlayer.source))
-    local allowed = CheckAllowed(src, 'TSAdmin.TrollMenu.Fart')
-    if allowed then
-        local data = {
-            ['Player'] = xPlayer.source, -- You need to set source here
-            ['Target'] = yPlayer.source, -- You need to set source here
-            ['Log'] = 'adminmenu-playfart', -- Log name
-            ['Title'] = 'Fart Logs', -- Title
-            ['Message'] = xPlayer.getName() .. ' played fart on ' .. yPlayer.getName(), -- Message
-            ['Color'] = 'blue' -- Set your color here check Config.Colors for available colors
-        }
-
-        TriggerEvent('Boost-Logs:SendLog', data)
-        if farttype == 'bbfart' then
-            TriggerEvent('chHyperSound:playOnEntity', netId, -1, 'bassboostedfart', false, 40.0, -1)
-        elseif farttype == 'cmfart' then
-            TriggerEvent('chHyperSound:playOnEntity', netId, -1, 'commonfart', false, 40.0, -1)
-        elseif farttype == 'pwrfart' then
-            TriggerEvent('chHyperSound:playOnEntity', netId, -1, 'peverfulfart', false, 40.0, -1)
-        elseif farttype == 'smfart' then
-            TriggerEvent('chHyperSound:playOnEntity', netId, -1, 'smellyfart', false, 40.0, -1)
-        end
-    else
-        local data = {
-            ['Player'] = xPlayer.source, -- You need to set source here
-            ['Target'] = yPlayer.source, -- You need to set source here
-            ['Log'] = 'adminmenu-playfart-err', -- Log name
-            ['Title'] = 'Fart Logs -ERR', -- Title
-            ['Message'] = xPlayer.getName() .. ' tried to play fart without authorization on ' .. yPlayer.getName(), -- Message
-            ['Color'] = 'red' -- Set your color here check Config.Colors for available colors
-        }
-
-        TriggerEvent('Boost-Logs:SendLog', data)
-    end
-end)
-
-RegisterNetEvent('ts-adminmenu:server:TruckPunchlinePly', function(data)
-    local xPlayer = ESX.GetPlayerFromId(source)
-    local yPlayer = ESX.GetPlayerFromId(data.plyid)
-    local allowed = CheckAllowed(xPlayer.source, 'TSAdmin.TrollMenu.Truck')
-    if allowed then
-        local data = {
-            ['Player'] = xPlayer.source, -- You need to set source here
-            ['Target'] = yPlayer.source, -- You need to set source here
-            ['Log'] = 'adminmenu-truckpunch', -- Log name
-            ['Title'] = 'Truck Punchline Logs', -- Title
-            ['Message'] = xPlayer.getName() .. ' did a truck punchline on ' .. yPlayer.getName(), -- Message
-            ['Color'] = 'blue' -- Set your color here check Config.Colors for available colors
-        }
-
-        TriggerEvent('Boost-Logs:SendLog', data)
-        TriggerClientEvent('ts-adminmenu:troll:TruckPunchline', yPlayer.source)
-    else
-        local data = {
-            ['Player'] = xPlayer.source, -- You need to set source here
-            ['Target'] = yPlayer.source, -- You need to set source here
-            ['Log'] = 'adminmenu-truckpunch-err', -- Log name
-            ['Title'] = 'Truck Punchline Logs -ERR', -- Title
-            ['Message'] = xPlayer.getName() .. ' tried a truck punchline without authorization on ' .. yPlayer.getName(), -- Message
-            ['Color'] = 'red' -- Set your color here check Config.Colors for available colors
-        }
-
-        TriggerEvent('Boost-Logs:SendLog', data)
-    end
-end)
-
-RegisterNetEvent('ts-adminmenu:server:ClownAttackPly', function(data)
-    local xPlayer = ESX.GetPlayerFromId(source)
-    local yPlayer = ESX.GetPlayerFromId(data.plyid)
-    local allowed = CheckAllowed(xPlayer.source, 'TSAdmin.TrollMenu.Clown')
-    if allowed then
-        local data = {
-            ['Player'] = xPlayer.source, -- You need to set source here
-            ['Target'] = yPlayer.source, -- You need to set source here
-            ['Log'] = 'adminmenu-clownattack', -- Log name
-            ['Title'] = 'Clown Attack Logs', -- Title
-            ['Message'] = xPlayer.getName() .. ' did a clown attack on ' .. yPlayer.getName(), -- Message
-            ['Color'] = 'blue' -- Set your color here check Config.Colors for available colors
-        }
-
-        TriggerEvent('Boost-Logs:SendLog', data)
-        TriggerClientEvent('ts-adminmenu:troll:ClownAttack', yPlayer.source)
-    else
-        local data = {
-            ['Player'] = xPlayer.source, -- You need to set source here
-            ['Target'] = yPlayer.source, -- You need to set source here
-            ['Log'] = 'adminmenu-clownattack-err', -- Log name
-            ['Title'] = 'Clown Attack Logs -ERR', -- Title
-            ['Message'] = xPlayer.getName() .. ' tried a clown attack without authorization on ' .. yPlayer.getName(), -- Message
-            ['Color'] = 'red' -- Set your color here check Config.Colors for available colors
-        }
-
-        TriggerEvent('Boost-Logs:SendLog', data)
-    end
-end)
-
-RegisterNetEvent('ts-adminmenu:server:MerryAttackPly', function(data)
-    local xPlayer = ESX.GetPlayerFromId(source)
-    local yPlayer = ESX.GetPlayerFromId(data.plyid)
-    local allowed = CheckAllowed(xPlayer.source, 'TSAdmin.TrollMenu.Merry')
-    if allowed then
-        local data = {
-            ['Player'] = xPlayer.source, -- You need to set source here
-            ['Target'] = yPlayer.source, -- You need to set source here
-            ['Log'] = 'adminmenu-merryattack', -- Log name
-            ['Title'] = 'Merry Attack Logs', -- Title
-            ['Message'] = xPlayer.getName() .. ' did a merry attack on ' .. yPlayer.getName(), -- Message
-            ['Color'] = 'blue' -- Set your color here check Config.Colors for available colors
-        }
-
-        TriggerEvent('Boost-Logs:SendLog', data)
-        TriggerClientEvent('ts-adminmenu:troll:MerryAttack', yPlayer.source)
-    else
-        local data = {
-            ['Player'] = xPlayer.source, -- You need to set source here
-            ['Target'] = yPlayer.source, -- You need to set source here
-            ['Log'] = 'adminmenu-merryattack-err', -- Log name
-            ['Title'] = 'Merry Attack Logs -ERR', -- Title
-            ['Message'] = xPlayer.getName() .. ' tried a merry attack without authorization on ' .. yPlayer.getName(), -- Message
-            ['Color'] = 'red' -- Set your color here check Config.Colors for available colors
-        }
-
-        TriggerEvent('Boost-Logs:SendLog', data)
-    end
-end)
-
-RegisterNetEvent('ts-adminmenu:server:FlashPly', function(data)
-    local xPlayer = ESX.GetPlayerFromId(source)
-    local yPlayer = ESX.GetPlayerFromId(data.plyid)
-    local allowed = CheckAllowed(xPlayer.source, 'TSAdmin.TrollMenu.Flash')
-    if allowed then
-        local data = {
-            ['Player'] = xPlayer.source, -- You need to set source here
-            ['Target'] = yPlayer.source, -- You need to set source here
-            ['Log'] = 'adminmenu-flash', -- Log name
-            ['Title'] = 'Flashbang Logs', -- Title
-            ['Message'] = xPlayer.getName() .. ' did a flashbang on ' .. yPlayer.getName(), -- Message
-            ['Color'] = 'blue' -- Set your color here check Config.Colors for available colors
-        }
-
-        TriggerEvent('Boost-Logs:SendLog', data)
-        TriggerClientEvent('ts-adminmenu:troll:FlashPly', yPlayer.source)
-    else
-        local data = {
-            ['Player'] = xPlayer.source, -- You need to set source here
-            ['Target'] = yPlayer.source, -- You need to set source here
-            ['Log'] = 'adminmenu-flash-err', -- Log name
-            ['Title'] = 'Flashbang Logs -ERR', -- Title
-            ['Message'] = xPlayer.getName() .. ' tried a flashbang without authorization on ' .. yPlayer.getName(), -- Message
-            ['Color'] = 'red' -- Set your color here check Config.Colors for available colors
-        }
-
-        TriggerEvent('Boost-Logs:SendLog', data)
-    end
-end)
-
 RegisterNetEvent('ts-adminmenu:server:Announce', function(txt)
     local allowed = CheckAllowed(source, 'TSAdmin.MiscSettings.Announce')
     if allowed then
-        TriggerClientEvent('bvrtck_announce:annouce', -1, txt)
-    end
-end)
-
-RegisterNetEvent('ts-adminmenu:server:FakeCallply', function(data2)
-    print(data2.plyid, data2.type)
-    local xPlayer = ESX.GetPlayerFromId(source)
-    local yPlayer = ESX.GetPlayerFromId(data2.plyid)
-    local allowed = CheckAllowed(xPlayer.source, 'TSAdmin.TrollMenu.FakeSound')
-    if allowed then
-        local data = {
-            ['Player'] = xPlayer.source, -- You need to set source here
-            ['Target'] = yPlayer.source, -- You need to set source here
-            ['Log'] = 'adminmenu-fakecall', -- Log name
-            ['Title'] = 'Fake Call Logs', -- Title
-            ['Message'] = xPlayer.getName() .. ' did a fake call on ' .. yPlayer.getName(), -- Message
-            ['Color'] = 'blue' -- Set your color here check Config.Colors for available colors
-        }
-
-        TriggerEvent('Boost-Logs:SendLog', data)
-        TriggerClientEvent('ts-adminmenu:troll:FakeCall', yPlayer.source, data2.type)
-    else
-        local data = {
-            ['Player'] = xPlayer.source, -- You need to set source here
-            ['Target'] = yPlayer.source, -- You need to set source here
-            ['Log'] = 'adminmenu-fakecall-err', -- Log name
-            ['Title'] = 'Fake Call Logs -ERR', -- Title
-            ['Message'] = xPlayer.getName() .. ' tried a fake call without authorization on ' .. yPlayer.getName(), -- Message
-            ['Color'] = 'red' -- Set your color here check Config.Colors for available colors
-        }
-
-        TriggerEvent('Boost-Logs:SendLog', data)
-    end
-end)
-
-RegisterNetEvent('ts-adminmenu:server:LagGame', function(data2)
-    local xPlayer = ESX.GetPlayerFromId(source)
-    local yPlayer = ESX.GetPlayerFromId(data2.plyid)
-    local allowed = CheckAllowed(xPlayer.source, 'TSAdmin.TrollMenu.Lag')
-    if allowed then
-        local data = {
-            ['Player'] = xPlayer.source, -- You need to set source here
-            ['Target'] = yPlayer.source, -- You need to set source here
-            ['Log'] = 'adminmenu-laggame', -- Log name
-            ['Title'] = 'Lag Game Logs', -- Title
-            ['Message'] = xPlayer.getName() .. ' did a Lag Game on ' .. yPlayer.getName(), -- Message
-            ['Color'] = 'blue' -- Set your color here check Config.Colors for available colors
-        }
-
-        TriggerEvent('Boost-Logs:SendLog', data)
-        TriggerClientEvent('ts-adminmenu:troll:LagGame', yPlayer.source)
-    else
-        local data = {
-            ['Player'] = xPlayer.source, -- You need to set source here
-            ['Target'] = yPlayer.source, -- You need to set source here
-            ['Log'] = 'adminmenu-laggame-err', -- Log name
-            ['Title'] = 'Lag Game Logs -ERR', -- Title
-            ['Message'] = xPlayer.getName() .. ' tried a Lag Game without authorization on ' .. yPlayer.getName(), -- Message
-            ['Color'] = 'red' -- Set your color here check Config.Colors for available colors
-        }
-
-        TriggerEvent('Boost-Logs:SendLog', data)
-    end
-end)
-
-RegisterNetEvent('ts-adminmenu:server:BlowPly', function(data2)
-    local xPlayer = ESX.GetPlayerFromId(source)
-    local yPlayer = ESX.GetPlayerFromId(data2.plyid)
-    local allowed = CheckAllowed(xPlayer.source, 'TSAdmin.TrollMenu.BlowTyre')
-    if allowed then
-        local data = {
-            ['Player'] = xPlayer.source, -- You need to set source here
-            ['Target'] = yPlayer.source, -- You need to set source here
-            ['Log'] = 'adminmenu-blowtyre', -- Log name
-            ['Title'] = 'Blow Tyre Logs', -- Title
-            ['Message'] = xPlayer.getName() .. ' blowed tyres of car of ' .. yPlayer.getName(), -- Message
-            ['Color'] = 'blue' -- Set your color here check Config.Colors for available colors
-        }
-
-        TriggerEvent('Boost-Logs:SendLog', data)
-        TriggerClientEvent('ts-adminmenu:troll:BlowPly', yPlayer.source)
-    else
-        local data = {
-            ['Player'] = xPlayer.source, -- You need to set source here
-            ['Target'] = yPlayer.source, -- You need to set source here
-            ['Log'] = 'adminmenu-blowtyre-err', -- Log name
-            ['Title'] = 'Blow Tyre Logs -ERR', -- Title
-            ['Message'] = xPlayer.getName() .. ' tried to blow tyres of car of ' .. yPlayer.getName(), -- Message
-            ['Color'] = 'red' -- Set your color here check Config.Colors for available colors
-        }
-
-        TriggerEvent('Boost-Logs:SendLog', data)
-    end
-end)
-
-RegisterNetEvent('ts-adminmenu:server:EjectPly', function(data2)
-    local xPlayer = ESX.GetPlayerFromId(source)
-    local yPlayer = ESX.GetPlayerFromId(data2.plyid)
-    local allowed = CheckAllowed(xPlayer.source, 'TSAdmin.TrollMenu.Eject')
-    if allowed then
-        local data = {
-            ['Player'] = xPlayer.source, -- You need to set source here
-            ['Target'] = yPlayer.source, -- You need to set source here
-            ['Log'] = 'adminmenu-eject', -- Log name
-            ['Title'] = 'Eject From Car Logs', -- Title
-            ['Message'] = yPlayer.getName() .. ' was ejected from car by ' .. xPlayer.getName(), -- Message
-            ['Color'] = 'blue' -- Set your color here check Config.Colors for available colors
-        }
-
-        TriggerEvent('Boost-Logs:SendLog', data)
-        TriggerClientEvent('ts-adminmenu:troll:EjectPly', yPlayer.source)
-    else
-        local data = {
-            ['Player'] = xPlayer.source, -- You need to set source here
-            ['Target'] = yPlayer.source, -- You need to set source here
-            ['Log'] = 'adminmenu-eject-err', -- Log name
-            ['Title'] = 'Eject From Car Logs -ERR', -- Title
-            ['Message'] = xPlayer.getName() .. ' tried to eject ' .. yPlayer.getName() .. 'without authorization', -- Message
-            ['Color'] = 'red' -- Set your color here check Config.Colors for available colors
-        }
-
-        TriggerEvent('Boost-Logs:SendLog', data)
-    end
-end)
-
-RegisterNetEvent('ts-adminmenu:server:Crashply', function(data2)
-    local xPlayer = ESX.GetPlayerFromId(source)
-    local yPlayer = ESX.GetPlayerFromId(data2.plyid)
-    local allowed = CheckAllowed(xPlayer.source, 'TSAdmin.TrollMenu.Crash')
-    if allowed then
-        local data = {
-            ['Player'] = xPlayer.source, -- You need to set source here
-            ['Target'] = yPlayer.source, -- You need to set source here
-            ['Log'] = 'adminmenu-crash', -- Log name
-            ['Title'] = 'Crash Logs', -- Title
-            ['Message'] = yPlayer.getName() .. ' was crashed by ' .. xPlayer.getName(), -- Message
-            ['Color'] = 'blue' -- Set your color here check Config.Colors for available colors
-        }
-
-        TriggerEvent('Boost-Logs:SendLog', data)
-        TriggerClientEvent('ts-adminmenu:troll:Crashply', yPlayer.source)
-    else
-
-        local data = {
-            ['Player'] = xPlayer.source, -- You need to set source here
-            ['Target'] = yPlayer.source, -- You need to set source here
-            ['Log'] = 'adminmenu-crash-err', -- Log name
-            ['Title'] = 'Crash Logs -ERR', -- Title
-            ['Message'] = xPlayer.getName() .. ' tried to crash without authorization ' .. yPlayer.getName(), -- Message
-            ['Color'] = 'red' -- Set your color here check Config.Colors for available colors
-        }
-
-        TriggerEvent('Boost-Logs:SendLog', data)
+        TriggerClientEvent('setroannounce:Initialize', -1, txt)
     end
 end)
 
