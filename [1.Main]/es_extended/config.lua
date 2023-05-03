@@ -18,7 +18,7 @@ Config.Accounts = {
 
 Config.StartingAccountMoney 	= {bank = 50000}
 
-Config.DefaultSpawn 			= {x = -269.4, y = -955.3, z = 31.2, heading = 205.8}
+Config.DefaultSpawn 			= {x = -206.48030090332, y = -1014.3167724609, z = 30.138031005859, heading = 340.0}
 
 Config.EnablePaycheck			= true -- enable paycheck
 Config.EnableSocietyPayouts 	= true -- pay from the society account that the player is employed at? Requirement: esx_society
