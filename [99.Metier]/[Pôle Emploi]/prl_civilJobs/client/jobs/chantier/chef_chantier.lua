@@ -1,0 +1,49 @@
+RMenu.Add('Chantier', 'main', RageUI.CreateMenu("Chantier", " "))
+RMenu:Get('Chantier', 'main'):SetSubtitle("~b~Manager du chantier")
+RMenu:Get('Chantier', 'main').EnableMouse = false;
+RMenu:Get('Chantier', 'main').Closed = function()
+    RenderScriptCams(0, 1, 1500, 1, 1)
+    DestroyCam(cam, 1)
+    SetBlockingOfNonTemporaryEvents(Ped, 1)
+end
+
+RageUI.CreateWhile(1.0, function()
+    local distance = GetDistanceBetweenCoords(GetEntityCoords(PlayerPedId()), zone.Chantier, true)
+    if distance <= 3.0 then
+        HelpMsg("Appuyer sur ~b~E~w~ pour parler avec la personne.")
+        if IsControlJustPressed(1, 51) and distance <= 3.0 then
+            RageUI.Visible(RMenu:Get('Chantier', 'main'), not RageUI.Visible(RMenu:Get('Chantier', 'main')))
+            CreateCamera()
+        end
+    end
+
+    if RageUI.Visible(RMenu:Get('Chantier', 'main')) then
+        RageUI.DrawContent({ header = true, glare = true, instructionalButton = true }, function()
+            RageUI.Button("Demander à travailler sur le chantier", "", {}, true, function(Hovered, Active, Selected)
+                if (Selected) then
+                    RageUI.Popup({
+                        message = "Alors comme ça tu veux bosser sur le ~g~chantier~w~ hein ? Très bien, met un casque et prends t'es outils ! Je te préviens c'est pas pour les petite merdes !",
+                    })
+                    RageUI.Visible(RMenu:Get('Chantier', 'main'), not RageUI.Visible(RMenu:Get('Chantier', 'main')))
+                    RenderScriptCams(0, 1, 1500, 1, 1)
+                    DestroyCam(cam, 1)
+                    AuTravailleChantier = true
+                    StartTravailleChantier()
+                end
+            end)
+            RageUI.Button("Arreter de travailler", "", {}, true, function(Hovered, Active, Selected)
+                if (Selected) then
+                    RageUI.Popup({
+                        message = "haha ! Tu stop déja ! Allez prends ta paye feignant ! Merci de ton aide, revient quand tu veux.",
+                    })
+                    RageUI.Visible(RMenu:Get('Chantier', 'main'), not RageUI.Visible(RMenu:Get('Chantier', 'main')))
+                    RenderScriptCams(0, 1, 1500, 1, 1)
+                    DestroyCam(cam, 1)
+                    AuTravailleChantier = false
+                end
+            end)
+        end, function()
+            ---Panels
+        end)
+    end
+end, 1)
