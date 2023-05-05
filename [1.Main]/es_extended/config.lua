@@ -22,7 +22,7 @@ Config.DefaultSpawn 			= {x = -206.48030090332, y = -1014.3167724609, z = 30.138
 
 Config.EnablePaycheck			= true -- enable paycheck
 Config.EnableSocietyPayouts 	= true -- pay from the society account that the player is employed at? Requirement: esx_society
-Config.MaxWeight            	= 24   -- the max inventory weight without backpack
+Config.MaxWeight            	= 54   -- the max inventory weight without backpack
 Config.PaycheckInterval         = 7 * 60000 -- how often to recieve pay checks in milliseconds
 Config.EnableDebug              = false -- Use Debug options?
 Config.EnableDefaultInventory   = false -- Display the default Inventory ( F2 )
