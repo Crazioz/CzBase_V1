@@ -6,7 +6,7 @@ Framework.PlayerData = ESX.GetPlayerData()
 RegisterNetEvent("esx:playerLoaded", function(xPlayer)
     Framework.PlayerData = xPlayer
     client.job = Framework.PlayerData.job
-    client.gang = Framework.PlayerData.faction
+    client.gang = Framework.PlayerData.gang
     client.citizenid = Framework.PlayerData.identifier
     InitAppearance()
 end)
@@ -18,7 +18,7 @@ end)
 RegisterNetEvent("esx:setJob", function(job)
 	Framework.PlayerData.job = job
     client.job = Framework.PlayerData.job
-    client.gang = Framework.PlayerData.faction
+    client.gang = Framework.PlayerData.job
 end)
 
 function Framework.GetPlayerGender()
@@ -34,7 +34,7 @@ function Framework.UpdatePlayerData()
     if data.job then
         Framework.PlayerData = data
         client.job = Framework.PlayerData.job
-        client.gang = Framework.PlayerData.faction
+        client.gang = Framework.PlayerData.job
     end
     client.citizenid = Framework.PlayerData.identifier
 end
@@ -67,7 +67,7 @@ function Framework.GetGangGrade()
 end
 
 function Framework.CachePed()
-    ESX.SetPlayerData("ped", PlayerPedId())
+    ESX.SetPlayerData("ped", cache.ped)
 end
 
 function Framework.RestorePlayerArmour()

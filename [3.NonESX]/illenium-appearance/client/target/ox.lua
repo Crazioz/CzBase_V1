@@ -1,3 +1,5 @@
+if not Config.UseTarget then return end
+
 if not Target.IsOX() then return end
 
 local ZoneIDMap = {}
@@ -35,6 +37,14 @@ function Target.AddBoxZone(name, coords, size, parameters)
         coords = coords,
         size = size,
         rotation = rotation,
+        debug = Config.Debug,
+        options = convert(parameters)
+    })
+end
+
+function Target.AddPolyZone(name, points, parameters)
+    ZoneIDMap[name] = exports["ox_target"]:addPolyZone({
+        points = points,
         debug = Config.Debug,
         options = convert(parameters)
     })

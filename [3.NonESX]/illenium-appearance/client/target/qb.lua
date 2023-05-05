@@ -1,3 +1,5 @@
+if not Config.UseTarget then return end
+
 if not Target.IsQB() then return end
 
 function Target.RemoveZone(zone)
@@ -15,6 +17,15 @@ function Target.AddBoxZone(name, coords, size, parameters)
         minZ = coords.z - 2,
         maxZ = coords.z + 2,
         heading = coords.w
+    }, parameters)
+end
+
+function Target.AddPolyZone(name, points, parameters)
+    exports["qb-target"]:AddPolyZone(name, points, {
+        name = name,
+        debugPoly = Config.Debug,
+        minZ = points[1].z - 2,
+        maxZ = points[1].z + 2
     }, parameters)
 end
 

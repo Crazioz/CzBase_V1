@@ -35,6 +35,7 @@ RegisterNetEvent("skinchanger:loadSkin", function(skin, cb)
     else -- add validation invisible when failed registration (maybe server restarted when apply skin)
         SetInitialClothes(Config.InitialPlayerClothes[Framework.GetGender(true)])
     end
+    TriggerEvent("esx:restoreLoadout")
     Framework.CachePed()
 	if cb ~= nil then
 		cb()
@@ -42,12 +43,11 @@ RegisterNetEvent("skinchanger:loadSkin", function(skin, cb)
 end)
 
 RegisterNetEvent("skinchanger:loadClothes", function(_, clothes)
-    local playerPed = PlayerPedId()
-    local components = Framework.ConvertComponents(clothes, client.getPedComponents(playerPed))
-    local props = Framework.ConvertProps(clothes, client.getPedProps(playerPed))
+    local components = Framework.ConvertComponents(clothes, client.getPedComponents(cache.ped))
+    local props = Framework.ConvertProps(clothes, client.getPedProps(cache.ped))
 
-    client.setPedComponents(playerPed, components)
-    client.setPedProps(playerPed, props)
+    client.setPedComponents(cache.ped, components)
+    client.setPedProps(cache.ped, props)
 end)
 
 RegisterNetEvent("esx_skin:openSaveableMenu", function(onSubmit, onCancel)

@@ -9,8 +9,8 @@ Config = {
 
 	Locale                     = 'fr',
 
-	RespawnPoint = { coords = vector3(-1863.0026855469,-329.140625,49.450031280518), heading = 266.00 }, -- L'endroit ou tu respawn apers la mort
-
+	RespawnPoint = { coords = vector3(325.23040771484,-593.12585449219,43.284049987793), heading = 80.00 }, -- L'endroit ou tu respawn apers la mort
+    
 	EarlyRespawnFine           = false, 
     EarlyRespawnFineAmount     = 5000, 
 
@@ -20,7 +20,7 @@ Config = {
 
     BleedoutTimer              = 5 * minute, -- Temp de l'effet quand tu respawn 
 
-	ReviveReward               = 150,  -- Price du revive
+	ReviveReward               = 300,  -- Price du revive
     AntiCombatLog              = true, -- enable anti-combat logging?
 
     MarkerType = 22, -- Pour voir les différents type de marker: https://docs.fivem.net/docs/game-references/markers/
@@ -46,13 +46,13 @@ Config = {
 	
 
 AmbuVehiculesAmbulance = { 
-	{buttoname = "Dodge Charger", rightlabel = "→→", spawnname = "emscharger", spawnzone = vector3(-1829.2667236328,-383.70599365234,40.673652648926), headingspawn = 82.49}, -- Garage Voiture
-	{buttoname = "Ford Explorer", rightlabel = "→→", spawnname = "emsfpiu", spawnzone = vector3(-1823.9721679688,-389.14056396484,40.632816314697), headingspawn = 82.49}, -- Garage Voiture
-    {buttoname = "Chevrolet Tahoe", rightlabel = "→→", spawnname = "emstahoe", spawnzone = vector3(-1823.9721679688,-389.14056396484,40.632816314697), headingspawn = 82.49}, -- Garage Voiture
+	{buttoname = "Dodge Charger", rightlabel = "→→", spawnname = "emscharger", spawnzone = vector3(325.23040771484,-593.12585449219,43.284049987793), headingspawn = 70.0}, -- Garage Voiture
+	{buttoname = "Ford Explorer", rightlabel = "→→", spawnname = "emsfpiu", spawnzone = vector3(325.23040771484,-593.12585449219,43.284049987793), headingspawn = 70.0}, -- Garage Voiture
+    {buttoname = "Chevrolet Tahoe", rightlabel = "→→", spawnname = "emstahoe", spawnzone = vector3(325.23040771484,-593.12585449219,43.284049987793), headingspawn = 70.0}, -- Garage Voiture
 },
 
 AmbuHelicoAmbulance = { 
-	{buttonameheli = "Hélicoptère", rightlabel = "→→", polmav= "helico ems", spawnzoneheli = vector3(-644.81, 315.07, 140.15), headingspawnheli = 176.13}, -- Garage Hélico
+	{buttonameheli = "Hélicoptère", rightlabel = "→→", polmav= "helico ems", spawnzoneheli = vector3(351.82925415039,-587.82843017578,74.16178894043), headingspawnheli = 250.0}, -- Garage Hélico
 },
 
 
@@ -65,13 +65,13 @@ Ascenseur = {
 },
 
 Position = {
-	    Boss = {vector3(-1850.0052490234,-336.68579101563,49.449882507324)}, -- Menu boss 
-	    Coffre = {vector3(-1828.7845458984,-342.65518188477,58.13883972168)}, -- Menu coffre 
-        Pharmacie = {vector3(-1825.3361816406,-382.23837280273,49.403591156006)}, -- Menu Pharmacie 
+	    Boss = {vector3(334.69259643555,-593.75463867188,43.284103393555)}, -- Menu boss 
+	    Coffre = {vector3(339.01281738281,-595.123046875,43.284103393555)}, -- Menu coffre 
+        Pharmacie = {vector3(306.57214355469,-601.67651367188,43.284049987793)}, -- Menu Pharmacie 
         Vestaire = {vector3(-665.78, 323.63, 0.0)}, -- Menu Vestaire 
-        Accueil = {vector3(-1852.9371337891,-338.31713867188,49.444271087646)}, -- Menu Pour Accueil 
-        GarageVehicule = {vector3(-1827.56640625,-386.30676269531,40.658157348633)}, -- Menu Garage Vehicule
-	    GarageHeli = {vector3(-1867.1859130859,-352.47027587891,58.034194946289)}, -- Menu Garage Helico
+        Accueil = {vector3(308.57217407227,-592.62811279297,43.284042358398)}, -- Menu Pour Accueil 
+        GarageVehicule = {vector3(325.23040771484,-593.12585449219,43.284049987793)}, -- Menu Garage Vehicule
+	    GarageHeli = {vector3(351.82925415039,-587.82843017578,74.16178894043)}, -- Menu Garage Helico
     }
 }
 

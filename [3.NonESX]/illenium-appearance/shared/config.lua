@@ -26,6 +26,7 @@ Config.NotifyOptions = {
 Config.OutfitCodeLength = 10
 
 Config.UseRadialMenu = false
+Config.UseOxRadial = false -- Set to true to use ox_lib radial menu, both this and UseRadialMenu must be true 
 
 Config.EnablePedsForShops = false
 Config.EnablePedsForClothingRooms = false
@@ -94,24 +95,24 @@ Config.DisableProps = {
 Config.Blips = {
     ["clothing"] = {
         Show = true,
-        Sprite = 73,
-        Color = 1,
-        Scale = 0.7,
-        Name = "Magasin de vêtements",
+        Sprite = 366,
+        Color = 47,
+        Scale = 0.6,
+        Name = "Magasin de vêtement",
     },
     ["barber"] = {
         Show = true,
         Sprite = 71,
-        Color = 0,
-        Scale = 0.7,
+        Color = 9,
+        Scale = 0.6,
         Name = "Coiffeur",
     },
     ["tattoo"] = {
         Show = true,
         Sprite = 75,
-        Color = 4,
-        Scale = 0.7,
-        Name = "Boutique de tatouage",
+        Color = 1,
+        Scale = 0.6,
+        Name = "Tatoueur",
     }
 }
 
@@ -341,25 +342,25 @@ Config.Stores = {
     },
     {
         type = "clothing",
-        coords = vector4(-1119.24, -1440.6, 5.23, 300.5),
-        size = vector3(4, 4, 4),
-        rotation = 45,
-        usePoly = false,
-        points = {
-            vector3(-1124.5535888672, -1444.5367431641, 5.23),
-            vector3(-1118.7023925781, -1441.0450439453, 5.23),
-            vector3(-1121.2891845703, -1434.8474121094, 5.23),
-            vector3(-1128.4727783203, -1439.8254394531, 5.23)
-        }
-    },
-    {
-        type = "clothing",
         coords = vector4(124.82, -224.36, 54.56, 335.41),
         size = vector3(4, 4, 4),
         rotation = 45,
         usePoly = false,
         points = {
             vector3(133.60948181152, -210.31390380859, 54.56),
+            vector3(125.8349609375, -228.48097229004, 54.56),
+            vector3(116.3140335083, -225.02020263672, 54.56),
+            vector3(122.56930541992, -207.83396911621, 54.56)
+        }
+    },
+    {
+        type = "clothing",
+        coords = vector4(4491.0502929688,-4455.6293945313,4.3668375015259, 335.41),
+        size = vector3(4, 4, 4),
+        rotation = 45,
+        usePoly = false,
+        points = {
+            vector3(4491.0502929688,-4455.6293945313,4.3668375015259),
             vector3(125.8349609375, -228.48097229004, 54.56),
             vector3(116.3140335083, -225.02020263672, 54.56),
             vector3(122.56930541992, -207.83396911621, 54.56)
@@ -543,12 +544,12 @@ Config.ClothingRooms = {
 
     {
         job = "police",
-        coords = vector4(461.62274169922,-996.01263427734,30.689517974854, 181.2),
+        coords = vector4(-1084.9141845703,-828.06842041016,15.645830154419, 181.2),
         size = vector3(4, 4, 4),
         rotation = 45,
         usePoly = false,
         points = {
-            vector3(461.36700439453,-996.58819580078,30.689517974854),
+            vector3(-1084.9141845703,-828.06842041016,15.645830154419),
             vector3(449.39508056641, -993.60614013672, 30.69),
             vector3(449.88696289062, -990.23779296875, 30.69),
             vector3(450.97882080078, -989.71411132812, 30.69),
@@ -633,12 +634,12 @@ Config.ClothingRooms = {
     
     {
         job = "unicorn",
-        coords = vector4(105.1, -1303.3, 28.7, 121.2),
+        coords = vector4(106.57295227051,-1305.3776855469,29.255493164063, 121.2),
         size = vector3(4, 4, 4),
         rotation = 45,
         usePoly = false,
         points = {
-            vector3(460.41918945312, -993.11444091797, 30.69),
+            vector3(106.57295227051,-1305.3776855469,29.255493164063),
             vector3(449.39508056641, -993.60614013672, 30.69),
             vector3(449.88696289062, -990.23779296875, 30.69),
             vector3(450.97882080078, -989.71411132812, 30.69),
@@ -821,7 +822,7 @@ Config.Outfits = {
                 name = "SWAT",
                 outfitData = {
                     ["pants"] = {item = 46, texture = 0}, -- Pants
-                    ["arms"] = {item = 19, texture = 0}, -- Arms
+                    ["arms"] = {item = 20, texture = 0}, -- Arms
                     ["t-shirt"] = {item = 105, texture = 0}, -- T Shirt
                     ["vest"] = {item = 27, texture = 0}, -- Body Vest
                     ["torso2"] = {item = 110, texture = 0}, -- Jacket
