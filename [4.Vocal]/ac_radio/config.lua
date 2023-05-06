@@ -4,7 +4,7 @@
 
 ac = {
 	-- Language for notifications and UI
-	locale = 'en',
+	locale = 'fr',
 
 	-- Whether to check for newer resource version and notify in server console.
 	versionCheck = true,

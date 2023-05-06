@@ -1,0 +1,156 @@
+@font-face {
+    font-family: 'SegoeUI';
+    src: url('/fonts/SegoeUI.ttf');
+  }
+
+* {
+    color: white;
+    font-family: "Segoe UI", "Segoe UI Symbol", "Segoe UI Emoji",  Arial, sans-serif;
+}
+.alerts-wrapper {
+    display: none;
+    float: right;
+}
+
+.content {
+    padding: 3% 2% 0% 3%;
+}
+
+.fas {
+    padding-right:8px;
+}
+#code {
+    letter-spacing: 0.5px;
+    font-size: 0.9rem;
+    font-weight: 700;
+    padding:2px;
+    background: rgba(209, 21, 99, 1.0);
+    float: left;
+    border-radius: 5px;
+}
+
+#marker {
+    float: right;
+    padding-right: 5%;
+    padding-top: 3%;
+    font-size: xx-large;
+}
+
+#alert-name {
+    letter-spacing: 0.2px;
+    font-size: 0.9rem;
+    font-weight: 700;
+    margin-left:1%;
+    float: left;
+}
+
+#alert-info {
+    font-size: 0.8rem;
+    font-weight: 700;
+    margin-top: 28px;
+}
+
+.alerts {
+    width: 375px;
+    height: 75px;
+    color: white;
+}
+
+.alerts.ems {
+    box-shadow: -5px 0px 0px 0px red inset;
+    background: rgba(160, 17, 48, 0.75);
+}
+
+.alerts.police {
+    box-shadow: -5px 0px 0px 0px rgb(0, 183, 255) inset;
+    background: rgba(17, 84, 160, 0.75);
+}
+
+.alerts.admin {
+    box-shadow: -3px 0px 0px 0px red inset;
+}
+
+.alerts.warning {
+    box-shadow: -3px 0px 0px 0px red inset;
+}
+
+.alerts.info {
+    box-shadow: -3px 0px 0px 0px red inset;
+}
+
+.alerts.error {
+    box-shadow: -3px 0px 0px 0px red inset;
+}
+
+.alerts.thefuckisthiscalledfor {
+    box-shadow: -3px 0px 0px 0px red inset;
+}
+
+
+
+
+
+.template, .notification {
+    display: none;
+}
+
+.notif-container {
+    width: 20%; /* was 15% */
+    position: absolute;
+    right: 1%; /* was 15% */
+    display: flex;
+    flex-flow: row;
+    flex-wrap: wrap;
+}
+
+.notification {
+    width: 375px;
+    height: 75px;
+    padding: 10px;
+    border-radius: 5px;
+    margin: 5px;
+    font: caption;
+    font-size: 12px;
+    font-weight: bold;
+    
+}
+
+.move {
+    -webkit-transition: all .2s ease-in-out;
+    -moz-transition: all .2s ease-in-out;
+    -ms-transition: all .2s ease-in-out;
+    -o-transition: all .2s ease-in-out;
+    transition: all .2s ease-in-out;
+}
+
+.error {
+    box-shadow: -5px 0px 0px 0px red inset;
+    background: rgba(160, 17, 48, 0.75);
+    color: #fff;
+}
+
+.ems {
+    box-shadow: -5px 0px 0px 0px red inset;
+    background: rgba(160, 17, 48, 0.75);
+    color: #fff;
+}
+
+.police {
+    box-shadow: -5px 0px 0px 0px rgb(0, 183, 255) inset;
+    background: rgba(17, 84, 160, 0.75);
+}
+
+.officer-down {
+    animation: myfirst 5s linear 0s infinite alternate;
+}
+
+@keyframes myfirst {
+    0%   {background-color:red; left:0px; top:0px;}
+    15%  {background-color:blue; left:200px; top:200px;}
+    30% {background-color:red; left:0px; top:0px;}
+    45%  {background-color:blue; left:200px; top:200px;}
+    60% {background-color:red; left:0px; top:0px;}
+    75%  {background-color:blue; left:200px; top:200px;}
+    90% {background-color:red; left:0px; top:0px;}
+    100%  {background-color:blue; left:200px; top:200px;}
+  }

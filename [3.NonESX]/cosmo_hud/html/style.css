@@ -15,6 +15,15 @@ body {
   left: 0.1vh;
 }
 
+.text h2 {
+
+  position: absolute;
+  bottom: 0.05vw;
+  right: 84.0vw;
+  font-size: .6vw;
+  color: rgb(168, 164, 164);
+}
+
 .BaseCircle {
   position: relative;
   width: 4vh !important;

@@ -1,0 +1,16 @@
+#mcard{
+  display: none;
+}
+#mcard .contenair{
+	position:fixed;
+	z-index: 2;    
+	width: 400px;									
+	height:400px;									
+	left:105%;										
+	top:90%;										
+	margin:-350px 0 0 -500px;    					
+	text-align: center;
+	background: url('img/bg-img.png') no-repeat;				
+	padding: none; 								
+  }
+  

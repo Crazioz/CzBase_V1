@@ -343,7 +343,7 @@ end
 
 --- Blips
 
-local pos = vector3(-1863.4239501953,-351.47808837891,49.222465515137)
+local pos = vector3(307.1845703125,-587.33996582031,43.284103393555)
 Citizen.CreateThread(function()
 	local blip = AddBlipForCoord(pos)
 
