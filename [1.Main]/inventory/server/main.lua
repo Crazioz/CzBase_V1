@@ -86,10 +86,10 @@ RegisterNetEvent('inventory:moveItemToPlayer', function(item, count, otherInv)
             if not xPlayer.hasWeapon(item.name) and xPlayer.getMoney() >= item.count then
                 xPlayer.removeMoney(item.count)
                 xPlayer.addWeapon(item.name, item.count)
-                TriggerClientEvent('inventory:notify', src, 'success', ('%s <b>%s</b> purchased!'):format(count, item.label))
-                DiscordLog(xPlayer.getName() .. " has purchased a " .. item.label)
+                TriggerClientEvent('inventory:notify', src, 'success', ('%s <b>%s</b> acheté !'):format(count, item.label))
+                DiscordLog(xPlayer.getName() .. " a acheté un" .. item.label)
             else 
-                TriggerClientEvent('inventory:notify', src, 'error', 'You already have this weapon!')
+                TriggerClientEvent('inventory:notify', src, 'error', 'Tu as déjà cette arme !')
             end
         elseif item.type == 'item_standard' then
             if Config.PlayerWeight then
@@ -97,13 +97,13 @@ RegisterNetEvent('inventory:moveItemToPlayer', function(item, count, otherInv)
                     if xPlayer.getMoney() >= (count * item.count) then
                         xPlayer.removeMoney(count * item.count)
                         xPlayer.addInventoryItem(item.name, count)
-                        TriggerClientEvent('inventory:notify', src, 'success', ('%s <b>%s</b> purchased!'):format(count, item.label))
-                        DiscordLog(xPlayer.getName() .. " has purchased " .. count .. " " .. item.label) 
+                        TriggerClientEvent('inventory:notify', src, 'success', ('%s <b>%s</b> acheté !'):format(count, item.label))
+                        DiscordLog(xPlayer.getName() .. " a acheté " .. count .. " " .. item.label) 
                     else 
-                        TriggerClientEvent('inventory:notify', src, 'error', 'Cannot afford this item!')
+                        TriggerClientEvent('inventory:notify', src, 'error', 'Ne peut pas se permettre cet article!')
                     end
                 else 
-                    TriggerClientEvent('inventory:notify', src, 'error', 'Inventory Full!')
+                    TriggerClientEvent('inventory:notify', src, 'error', 'Inventaire complet!')
                 end
             else 
                 local newCount = xPlayer.getInventoryItem(item.name).count + count
@@ -111,13 +111,13 @@ RegisterNetEvent('inventory:moveItemToPlayer', function(item, count, otherInv)
                     if xPlayer.getMoney() >= (count * item.count) then
                         xPlayer.removeMoney(count * item.count)
                         xPlayer.addInventoryItem(item.name, count)
-                        TriggerClientEvent('inventory:notify', src, 'success', ('%s <b>%s</b> purchased!'):format(count, item.label))
-                        DiscordLog(xPlayer.getName() .. " has purchased " .. count .. " " .. item.label)
+                        TriggerClientEvent('inventory:notify', src, 'success', ('%s <b>%s</b> acheté !'):format(count, item.label))
+                        DiscordLog(xPlayer.getName() .. " a acheté " .. count .. " " .. item.label)
                     else 
-                        TriggerClientEvent('inventory:notify', src, 'error', 'Cannot afford this item!')
+                        TriggerClientEvent('inventory:notify', src, 'error', 'Ne peut pas se permettre cet article!')
                     end
                 else 
-                    TriggerClientEvent('inventory:notify', src, 'error', 'Limit Reached')
+                    TriggerClientEvent('inventory:notify', src, 'error', 'Limite atteinte')
                 end
             end
         end
@@ -136,15 +136,15 @@ RegisterNetEvent('inventory:moveItemToPlayer', function(item, count, otherInv)
                 if target.getMoney() >= count then
                     target.removeMoney(count)
                     xPlayer.addMoney(count)
-                    TriggerClientEvent('inventory:notify', src, 'success', ('%s <b>%s</b> moved to <b>%s</b>!'):format(count, item.label, 'Your Inventory'))
-                    DiscordLog(target.getName() .. " has transferred " .. count .. " " .. item.label .. " to " .. xPlayer.getName())
+                    TriggerClientEvent('inventory:notify', src, 'success', ('%s <b>%s</b> déménagé à <b>%s</b>!'):format(count, item.label, 'Votre inventaire'))
+                    DiscordLog(target.getName() .. " a transféré " .. count .. " " .. item.label .. " to " .. xPlayer.getName())
                 end
             else 
                 if target.getAccount(item.name).money >= count then
                     target.removeAccountMoney(item.name, count)
                     xPlayer.addAccountMoney(item.name, count)
-                    TriggerClientEvent('inventory:notify', src, 'success', ('%s <b>%s</b> moved to <b>%s</b>!'):format(count, item.label, 'Your Inventory'))
-                    DiscordLog(target.getName() .. " has transferred " .. count .. " " .. item.label .. " to " .. xPlayer.getName())
+                    TriggerClientEvent('inventory:notify', src, 'success', ('%s <b>%s</b> déménagé à <b>%s</b>!'):format(count, item.label, 'Votre inventaire'))
+                    DiscordLog(target.getName() .. " a transféré " .. count .. " " .. item.label .. " to " .. xPlayer.getName())
                 end
             end
         elseif item.type == 'item_weapon' then
@@ -152,10 +152,10 @@ RegisterNetEvent('inventory:moveItemToPlayer', function(item, count, otherInv)
                 if not xPlayer.hasWeapon(item.name) then
                     target.removeWeapon(item.name)
                     xPlayer.addWeapon(item.name, item.count)
-                    TriggerClientEvent('inventory:notify', src, 'success', ('<b>%s</b> moved to <b>%s</b>!'):format(item.label, 'Your Inventory'))
-                    DiscordLog(target.getName() .. " has transferred a " .. item.label .. " to " .. xPlayer.getName())
+                    TriggerClientEvent('inventory:notify', src, 'success', ('<b>%s</b> déménagé à <b>%s</b>!'):format(item.label, 'Votre inventaire'))
+                    DiscordLog(target.getName() .. " a transféré a " .. item.label .. " to " .. xPlayer.getName())
                 else 
-                    TriggerClientEvent('inventory:notify', src, 'error', 'You already have this weapon!')
+                    TriggerClientEvent('inventory:notify', src, 'error', 'Tu as déjà cette arme !')
                 end
             end
         elseif item.type == 'item_standard' then
@@ -164,20 +164,20 @@ RegisterNetEvent('inventory:moveItemToPlayer', function(item, count, otherInv)
                     if xPlayer.canCarryItem(item.name, count) then
                         target.removeInventoryItem(item.name, count)
                         xPlayer.addInventoryItem(item.name, count)
-                        TriggerClientEvent('inventory:notify', src, 'success', ('%s <b>%s</b> moved to <b>%s</b>!'):format(count, item.label, 'Your Inventory'))
-                        DiscordLog(target.getName() .. " has transferred " .. count .. " " .. item.label .. " to " .. xPlayer.getName())
+                        TriggerClientEvent('inventory:notify', src, 'success', ('%s <b>%s</b> déménagé à <b>%s</b>!'):format(count, item.label, 'Votre inventaire'))
+                        DiscordLog(target.getName() .. " a transféré " .. count .. " " .. item.label .. " to " .. xPlayer.getName())
                     else 
-                        TriggerClientEvent('inventory:notify', src, 'error', 'Inventory Full!')
+                        TriggerClientEvent('inventory:notify', src, 'error', 'Inventaire complet!')
                     end
                 else 
                     local newCount = xPlayer.getInventoryItem(item.name).count + count
                     if newCount <= xPlayer.getInventoryItem(item.name).limit then
                         target.removeInventoryItem(item.name, count)
                         xPlayer.addInventoryItem(item.name, count)
-                        TriggerClientEvent('inventory:notify', src, 'success', ('%s <b>%s</b> moved to <b>%s</b>!'):format(count, item.label, 'Your Inventory'))
-                        DiscordLog(target.getName() .. " has transferred " .. count .. " " .. item.label .. " to " .. xPlayer.getName())
+                        TriggerClientEvent('inventory:notify', src, 'success', ('%s <b>%s</b> déménagé à <b>%s</b>!'):format(count, item.label, 'Votre inventaire'))
+                        DiscordLog(target.getName() .. " a transféré " .. count .. " " .. item.label .. " to " .. xPlayer.getName())
                     else 
-                        TriggerClientEvent('inventory:notify', src, 'error', 'Limit Reached')
+                        TriggerClientEvent('inventory:notify', src, 'error', 'Limite atteinte')
                     end
                 end
             end
@@ -187,47 +187,47 @@ RegisterNetEvent('inventory:moveItemToPlayer', function(item, count, otherInv)
             if item.name == 'cash' then
                 RemoveItemFromInventory(xPlayer, item, count, otherInv, function()
                     xPlayer.addMoney(count)
-                    TriggerClientEvent('inventory:notify', src, 'success', ('%s <b>%s</b> moved to <b>%s</b>!'):format(count, item.label, 'Your Inventory'))
-                    DiscordLog(xPlayer.getName() .. " has removed " .. count .. " " .. item.label .. " from " .. otherInv.title)
+                    TriggerClientEvent('inventory:notify', src, 'success', ('%s <b>%s</b> déménagé à <b>%s</b>!'):format(count, item.label, 'Votre inventaire'))
+                    DiscordLog(xPlayer.getName() .. " a supprimé " .. count .. " " .. item.label .. " from " .. otherInv.title)
                 end)
             else 
                 RemoveItemFromInventory(xPlayer, item, count, otherInv, function()
                     xPlayer.addAccountMoney(item.name, count)
-                    TriggerClientEvent('inventory:notify', src, 'success', ('%s <b>%s</b> moved to <b>%s</b>!'):format(count, item.label, 'Your Inventory'))
-                    DiscordLog(xPlayer.getName() .. " has removed " .. count .. " " .. item.label .. " from " .. otherInv.title)
+                    TriggerClientEvent('inventory:notify', src, 'success', ('%s <b>%s</b> déménagé à <b>%s</b>!'):format(count, item.label, 'Votre inventaire'))
+                    DiscordLog(xPlayer.getName() .. " a supprimé " .. count .. " " .. item.label .. " from " .. otherInv.title)
                 end)
             end
         elseif item.type == 'item_weapon' then
             if not xPlayer.hasWeapon(item.name) then
                 RemoveItemFromInventory(xPlayer, item, item.count, otherInv, function()
                     xPlayer.addWeapon(item.name, item.count)
-                    TriggerClientEvent('inventory:notify', src, 'success', ('<b>%s</b> moved to <b>%s</b>!'):format(item.label, 'Your Inventory'))
-                    DiscordLog(xPlayer.getName() .. " has removed a " .. item.label .. " from " .. otherInv.title)
+                    TriggerClientEvent('inventory:notify', src, 'success', ('<b>%s</b> déménagé à <b>%s</b>!'):format(item.label, 'Votre inventaire'))
+                    DiscordLog(xPlayer.getName() .. " a supprimé un " .. item.label .. " depuis " .. otherInv.title)
                 end)
             else 
-                TriggerClientEvent('inventory:notify', src, 'error', 'You already have this weapon!')
+                TriggerClientEvent('inventory:notify', src, 'error', 'Tu as déjà cette arme !')
             end
         elseif item.type == 'item_standard' then
             if Config.PlayerWeight then
                 if xPlayer.canCarryItem(item.name, count) then
                     RemoveItemFromInventory(xPlayer, item, count, otherInv, function()
                         xPlayer.addInventoryItem(item.name, count)
-                        TriggerClientEvent('inventory:notify', src, 'success', ('%s <b>%s</b> moved to <b>%s</b>!'):format(count, item.label, 'Your Inventory'))
-                        DiscordLog(xPlayer.getName() .. " has removed " .. count .. " " .. item.label .. " from " .. otherInv.title)
+                        TriggerClientEvent('inventory:notify', src, 'success', ('%s <b>%s</b> déménagé à <b>%s</b>!'):format(count, item.label, 'Votre inventaire'))
+                        DiscordLog(xPlayer.getName() .. " a supprimé " .. count .. " " .. item.label .. " from " .. otherInv.title)
                     end)
                 else 
-                    TriggerClientEvent('inventory:notify', src, 'error', 'Inventory Full!')
+                    TriggerClientEvent('inventory:notify', src, 'error', 'Inventaire complet !')
                 end
             else 
                 local newCount = xPlayer.getInventoryItem(item.name).count + count
                 if newCount <= xPlayer.getInventoryItem(item.name).limit then
                     RemoveItemFromInventory(xPlayer, item, count, otherInv, function()
                         xPlayer.addInventoryItem(item.name, count)
-                        TriggerClientEvent('inventory:notify', src, 'success', ('%s <b>%s</b> moved to <b>%s</b>!'):format(count, item.label, 'Your Inventory'))
-                        DiscordLog(xPlayer.getName() .. " has removed " .. count .. " " .. item.label .. " from " .. otherInv.title)
+                        TriggerClientEvent('inventory:notify', src, 'success', ('%s <b>%s</b> déménagé à <b>%s</b>!'):format(count, item.label, 'Votre inventaire'))
+                        DiscordLog(xPlayer.getName() .. " a supprimé " .. count .. " " .. item.label .. " from " .. otherInv.title)
                     end)
                 else 
-                    TriggerClientEvent('inventory:notify', src, 'error', 'Limit Reached!')
+                    TriggerClientEvent('inventory:notify', src, 'error', 'Limite atteinte !')
                 end
             end
         end
@@ -252,15 +252,15 @@ RegisterNetEvent('inventory:moveItemToOther', function(item, count, otherInv)
                 if xPlayer.getMoney() >= count then
                     xPlayer.removeMoney(count)
                     target.addMoney(count)
-                    TriggerClientEvent('inventory:notify', src, 'success', ('%s <b>%s</b> moved to <b>%s</b>!'):format(count, item.label, otherInv.title))
-                    DiscordLog(xPlayer.getName() .. " has added " .. count .. " " .. item.label .. " to " .. target.getName())
+                    TriggerClientEvent('inventory:notify', src, 'success', ('%s <b>%s</b> déménagé à <b>%s</b>!'):format(count, item.label, otherInv.title))
+                    DiscordLog(xPlayer.getName() .. " a ajouté " .. count .. " " .. item.label .. " to " .. target.getName())
                 end
             else 
                 if xPlayer.getAccount(item.name).money >= count then
                     xPlayer.removeAccountMoney(item.name, count)
                     target.addAccountMoney(item.name, count)
-                    TriggerClientEvent('inventory:notify', src, 'success', ('%s <b>%s</b> moved to <b>%s</b>!'):format(count, item.label, otherInv.title))
-                    DiscordLog(xPlayer.getName() .. " has added " .. count .. " " .. item.label .. " to " .. target.getName())
+                    TriggerClientEvent('inventory:notify', src, 'success', ('%s <b>%s</b> déménagé à <b>%s</b>!'):format(count, item.label, otherInv.title))
+                    DiscordLog(xPlayer.getName() .. " a ajouté " .. count .. " " .. item.label .. " to " .. target.getName())
                 end
             end
         elseif item.type == 'item_weapon' then
@@ -268,8 +268,8 @@ RegisterNetEvent('inventory:moveItemToOther', function(item, count, otherInv)
                 if not target.hasWeapon(item.name) then
                     xPlayer.removeWeapon(item.name)
                     target.addWeapon(item.name, item.count)
-                    TriggerClientEvent('inventory:notify', src, 'success', ('<b>%s</b> moved to <b>%s</b>!'):format(item.label, otherInv.title)) 
-                    DiscordLog(xPlayer.getName() .. " has added a " .. item.label .. " to " .. target.getName())
+                    TriggerClientEvent('inventory:notify', src, 'success', ('<b>%s</b> déménagé à <b>%s</b>!'):format(item.label, otherInv.title)) 
+                    DiscordLog(xPlayer.getName() .. " a ajouté a " .. item.label .. " to " .. target.getName())
                 else 
                     TriggerClientEvent('inventory:notify', src, 'error', 'The player already has this weapon')
                 end
@@ -280,8 +280,8 @@ RegisterNetEvent('inventory:moveItemToOther', function(item, count, otherInv)
                     if target.canCarryItem(item.name, count) then
                         xPlayer.removeInventoryItem(item.name, count)
                         target.addInventoryItem(item.name, count)
-                        TriggerClientEvent('inventory:notify', src, 'success', ('%s <b>%s</b> moved to <b>%s</b>!'):format(count, item.label, otherInv.title)) 
-                        DiscordLog(xPlayer.getName() .. " has added " .. count .. " " .. item.label .. " to " .. target.getName())
+                        TriggerClientEvent('inventory:notify', src, 'success', ('%s <b>%s</b> déménagé à <b>%s</b>!'):format(count, item.label, otherInv.title)) 
+                        DiscordLog(xPlayer.getName() .. " a ajouté " .. count .. " " .. item.label .. " to " .. target.getName())
                     else 
                         TriggerClientEvent('inventory:notify', src, 'error', 'The players Inventory is Full!')
                     end
@@ -290,8 +290,8 @@ RegisterNetEvent('inventory:moveItemToOther', function(item, count, otherInv)
                     if newCount <= target.getInventoryItem(item.name).limit then
                         xPlayer.removeInventoryItem(item.name, count)
                         target.addInventoryItem(item.name, count)
-                        TriggerClientEvent('inventory:notify', src, 'success', ('%s <b>%s</b> moved to <b>%s</b>!'):format(count, item.label, otherInv.title)) 
-                        DiscordLog(xPlayer.getName() .. " has added " .. count .. " " .. item.label .. " to " .. target.getName())
+                        TriggerClientEvent('inventory:notify', src, 'success', ('%s <b>%s</b> déménagé à <b>%s</b>!'):format(count, item.label, otherInv.title)) 
+                        DiscordLog(xPlayer.getName() .. " a ajouté " .. count .. " " .. item.label .. " to " .. target.getName())
                     else 
                         TriggerClientEvent('inventory:notify', src, 'error', 'The players limit is reached!')
                     end
@@ -304,16 +304,16 @@ RegisterNetEvent('inventory:moveItemToOther', function(item, count, otherInv)
                 if xPlayer.getMoney() >= count then
                     AddItemToInventory(xPlayer, item, count, otherInv, function()
                         xPlayer.removeMoney(count)
-                        TriggerClientEvent('inventory:notify', src, 'success', ('%s <b>%s</b> moved to <b>%s</b>!'):format(count, item.label, otherInv.title))
-                        DiscordLog(xPlayer.getName() .. " has added " .. count .. " " .. item.label .. " to " .. otherInv.title)
+                        TriggerClientEvent('inventory:notify', src, 'success', ('%s <b>%s</b> déménagé à <b>%s</b>!'):format(count, item.label, otherInv.title))
+                        DiscordLog(xPlayer.getName() .. " a ajouté " .. count .. " " .. item.label .. " to " .. otherInv.title)
                     end)
                 end
             else 
                 if xPlayer.getAccount(item.name).money >= count then
                     AddItemToInventory(xPlayer, item, count, otherInv, function()
                         xPlayer.removeAccountMoney(item.name, count)
-                        TriggerClientEvent('inventory:notify', src, 'success', ('%s <b>%s</b> moved to <b>%s</b>!'):format(count, item.label, otherInv.title))
-                        DiscordLog(xPlayer.getName() .. " has added " .. count .. " " .. item.label .. " to " .. otherInv.title)
+                        TriggerClientEvent('inventory:notify', src, 'success', ('%s <b>%s</b> déménagé à <b>%s</b>!'):format(count, item.label, otherInv.title))
+                        DiscordLog(xPlayer.getName() .. " a ajouté " .. count .. " " .. item.label .. " to " .. otherInv.title)
                     end)
                 end
             end
@@ -321,16 +321,16 @@ RegisterNetEvent('inventory:moveItemToOther', function(item, count, otherInv)
             if xPlayer.hasWeapon(item.name) then
                 AddItemToInventory(xPlayer, item, item.count, otherInv, function()
                     xPlayer.removeWeapon(item.name)
-                    TriggerClientEvent('inventory:notify', src, 'success', ('<b>%s</b> moved to <b>%s</b>!'):format(item.label, otherInv.title))
-                    DiscordLog(xPlayer.getName() .. " has added a " .. item.label .. " to " .. otherInv.title)
+                    TriggerClientEvent('inventory:notify', src, 'success', ('<b>%s</b> déménagé à <b>%s</b>!'):format(item.label, otherInv.title))
+                    DiscordLog(xPlayer.getName() .. " a ajouté a " .. item.label .. " to " .. otherInv.title)
                 end)
             end
         elseif item.type == 'item_standard' then
             if xPlayer.getInventoryItem(item.name).count >= count then
                 AddItemToInventory(xPlayer, item, count, otherInv, function()
                     xPlayer.removeInventoryItem(item.name, count)
-                    TriggerClientEvent('inventory:notify', src, 'success', ('%s <b>%s</b> moved to <b>%s</b>!'):format(count, item.label, otherInv.title))
-                    DiscordLog(xPlayer.getName() .. " has added " .. count .. " " .. item.label .. " to " .. otherInv.title)
+                    TriggerClientEvent('inventory:notify', src, 'success', ('%s <b>%s</b> déménagé à <b>%s</b>!'):format(count, item.label, otherInv.title))
+                    DiscordLog(xPlayer.getName() .. " a ajouté " .. count .. " " .. item.label .. " to " .. otherInv.title)
                 end)
             end
         end
@@ -399,30 +399,30 @@ RegisterNetEvent('inventory:removeItem', function(item, count, coords)
             if xPlayer.getMoney() >= count then
                 xPlayer.removeMoney(count)
                 CreateDrop(item, count, coords)
-                TriggerClientEvent('inventory:notify', src, 'success', ('%s <b>%s</b> <b>%s</b>!'):format(count, item.label, 'Dropped'))
-                DiscordLog(xPlayer.getName() .. " has dropped " .. count .. " " .. item.label)
+                TriggerClientEvent('inventory:notify', src, 'success', ('%s <b>%s</b> <b>%s</b>!'):format(count, item.label, 'Jeter'))
+                DiscordLog(xPlayer.getName() .. " a tombé " .. count .. " " .. item.label)
             end
         else 
             if xPlayer.getAccount(item.name).money >= count then
                 xPlayer.removeAccountMoney(item.name, count)
                 CreateDrop(item, count, coords)
-                TriggerClientEvent('inventory:notify', src, 'success', ('%s <b>%s</b> <b>%s</b>!'):format(count, item.label, 'Dropped'))
-                DiscordLog(xPlayer.getName() .. " has dropped " .. count .. " " .. item.label)
+                TriggerClientEvent('inventory:notify', src, 'success', ('%s <b>%s</b> <b>%s</b>!'):format(count, item.label, 'Jeter'))
+                DiscordLog(xPlayer.getName() .. " a tombé " .. count .. " " .. item.label)
             end
         end
     elseif item.type == 'item_weapon' then
         if xPlayer.hasWeapon(item.name) then
             xPlayer.removeWeapon(item.name)
             CreateDrop(item, item.count, coords)
-            TriggerClientEvent('inventory:notify', src, 'success', ('<b>%s</b> <b>%s</b>!'):format(item.label, 'Dropped'))
-            DiscordLog(xPlayer.getName() .. " has dropped a " .. item.label)
+            TriggerClientEvent('inventory:notify', src, 'success', ('<b>%s</b> <b>%s</b>!'):format(item.label, 'Jeter'))
+            DiscordLog(xPlayer.getName() .. " a tombé a " .. item.label)
         end
     elseif item.type == 'item_standard' then
         if xPlayer.getInventoryItem(item.name).count >= count then
             xPlayer.removeInventoryItem(item.name, count)
             CreateDrop(item, count, coords)
-            TriggerClientEvent('inventory:notify', src, 'success', ('%s <b>%s</b> <b>%s</b>!'):format(count, item.label, 'Dropped'))
-            DiscordLog(xPlayer.getName() .. " has dropped " .. count .. " " .. item.label)
+            TriggerClientEvent('inventory:notify', src, 'success', ('%s <b>%s</b> <b>%s</b>!'):format(count, item.label, 'Jeter'))
+            DiscordLog(xPlayer.getName() .. " a tombé " .. count .. " " .. item.label)
         end
     end
 

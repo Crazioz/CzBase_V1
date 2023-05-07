@@ -47,7 +47,6 @@ files {
 	'html/static/img/twitter/default_profile.png',
 	'html/static/sound/Twitter_Sound_Effect.ogg',
 
-	'html/static/img/courbure.png',
 	'html/static/fonts/fontawesome-webfont.ttf',
 
 	'html/static/sound/ring.ogg',

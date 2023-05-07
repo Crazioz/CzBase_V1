@@ -124,7 +124,7 @@ Citizen.CreateThread(function()
 		local wait = 750
 			if ESX.PlayerData.job and ESX.PlayerData.job.name == 'police' then
 				for k in pairs(Config.Position.Coffre) do
-				local plyCoords = GetEntityCoords(GetPlayerPed(-1), false)
+				local plyCoords = GetEntityCoords(PlayerPedId(), false)
 				local pos = Config.Position.Coffre
 				local dist = Vdist(plyCoords.x, plyCoords.y, plyCoords.z, pos[k].x, pos[k].y, pos[k].z)
 

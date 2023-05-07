@@ -509,7 +509,7 @@ RageUI.IsVisible(subMenu11,function()
 						if amount == nil then
 							ESX.ShowNotification("~r~Problèmes~s~: Montant invalide")
 						else
-							local playerPed        = GetPlayerPed(-1)
+							local playerPed        = PlayerPedId()
 							Citizen.Wait(5000)
 							TriggerServerEvent('esx_billing:sendBill', GetPlayerServerId(player), 'society_mcdo', ('Mcdo'), amount)
 							Citizen.Wait(100)
@@ -892,7 +892,7 @@ RegisterNetEvent('police:handcuff')
 AddEventHandler('police:handcuff', function()
 
   IsHandcuffed    = not IsHandcuffed;
-  local playerPed = GetPlayerPed(-1)
+  local playerPed = PlayerPedId()
 
   Citizen.CreateThread(function()
 
@@ -932,7 +932,7 @@ end)
 RegisterNetEvent('police:putInVehicle')
 AddEventHandler('police:putInVehicle', function()
 
-  local playerPed = GetPlayerPed(-1)
+  local playerPed = PlayerPedId()
   local coords    = GetEntityCoords(playerPed)
 
   if IsAnyVehicleNearPoint(coords.x, coords.y, coords.z, 5.0) then
@@ -964,7 +964,7 @@ end)
 
 RegisterNetEvent("police:OutVehicle")
 AddEventHandler("police:OutVehicle", function()
-    TaskLeaveAnyVehicle(GetPlayerPed(-1), 0, 0)
+    TaskLeaveAnyVehicle(PlayerPedId(), 0, 0)
 end)
 
 
@@ -982,10 +982,10 @@ end)
 
 function escort()
     Citizen.CreateThread(function()
-        local pPed = GetPlayerPed(-1)
+        local pPed = PlayerPedId()
 	    while EnTrainEscorter do
             Wait(1)
-            pPed = GetPlayerPed(-1)
+            pPed = PlayerPedId()
 	    	local targetPed = GetPlayerPed(GetPlayerFromServerId(PolicierEscorte))
 
 	    	if not IsPedSittingInAnyVehicle(targetPed) then
@@ -1005,7 +1005,7 @@ function escort()
 end
 
 function GetClosestPlayer()
-	local pPed = GetPlayerPed(-1)
+	local pPed = PlayerPedId()
 	local players = GetActivePlayers()
 	local coords = GetEntityCoords(pPed)
 	local pCloset = nil
@@ -1087,7 +1087,7 @@ local prop = "prop_ballistic_shield"
 
 function EnableShield()
     shieldActive = true
-    local ped = GetPlayerPed(-1)
+    local ped = PlayerPedId()
     local pedPos = GetEntityCoords(ped, false)
     
     RequestAnimDict(animDict)
@@ -1110,7 +1110,7 @@ function EnableShield()
 end
 
 function DisableShield()
-    local ped = GetPlayerPed(-1)
+    local ped = PlayerPedId()
     DeleteEntity(shieldEntity)
     ClearPedTasksImmediately(ped)
     SetWeaponAnimationOverride(ped, GetHashKey("Default"))
@@ -1121,7 +1121,7 @@ end
 Citizen.CreateThread(function()
     while true do
         if shieldActive then
-            local ped = GetPlayerPed(-1)
+            local ped = PlayerPedId()
             if not IsEntityPlayingAnim(ped, animDict, animName, 1) then
                 RequestAnimDict(animDict)
                 while not HasAnimDictLoaded(animDict) do

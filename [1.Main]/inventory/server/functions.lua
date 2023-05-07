@@ -226,7 +226,7 @@ function AddItemToInventory(xPlayer, item, count, inv, cb)
         end
 
         if newWeight > inv.weight then 
-            xPlayer.triggerEvent('inventory:notify', 'error', 'Inventory would be overweight!')
+            xPlayer.triggerEvent('inventory:notify', 'error', 'Vous serait en surpoids!')
             return
         end 
     end
@@ -399,7 +399,7 @@ function DiscordLog(desc)
     local content = {
         {
         	["color"] = '5015295',
-            ["title"] = "Inventory Log",
+            ["title"] = "Log Inventaire ",
             ["description"] = desc,
             ["footer"] = {
                 ["text"] = GetCurrentResourceName()

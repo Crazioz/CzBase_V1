@@ -33,8 +33,8 @@ Config.HotbarSlots = 4 -- hotbar slots (4 recommended)
 -- Only applies for Weapons and Cash if Config.PlayerWeight is enabled.
 Config.Weights = {
     ["cash"] = 0,
-    ["black_money"] = 0,
-    ["WEAPON_PISTOL"] = 8
+    ["black_money"] = 0, 
+    ["WEAPON_PISTOL"] = 1
 }
 
 -- Plugins

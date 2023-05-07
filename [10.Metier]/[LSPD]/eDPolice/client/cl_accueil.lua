@@ -169,7 +169,7 @@ Citizen.CreateThread(function()
         local wait = 750
         
             for k in pairs(Config.Position.Accueil) do 
-                local plyCoords = GetEntityCoords(GetPlayerPed(-1), false)
+                local plyCoords = GetEntityCoords(PlayerPedId(), false)
                 local pos = Config.Position.Accueil
                 local dist = Vdist(plyCoords.x, plyCoords.y, plyCoords.z, pos[k].x, pos[k].y, pos[k].z)
   

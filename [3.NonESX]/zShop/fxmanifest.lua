@@ -20,7 +20,6 @@ client_scripts {
 
 client_scripts {
     '@es_extended/locale.lua',
-    'dpemotes/cl_anim.lua',
     'client/**.lua',
     'Config.lua',
 }

@@ -51,7 +51,7 @@ if Config.Rob then
                 end
             end
         else 
-           TriggerEvent('inventory:notify', 'error', 'No Player Nearby') 
+           TriggerEvent('inventory:notify', 'error', 'Aucun joueur à proximité') 
         end
     end, false)
 
@@ -67,5 +67,5 @@ if Config.Rob then
             handsup = false
         end
     end, true)
-    RegisterKeyMapping('handsup', 'Hands Up/Down', 'keyboard', Config.HandsupKey)
+    RegisterKeyMapping('handsup', 'Mains vers le haut/vers le bas', 'keyboard', Config.HandsupKey)
 end

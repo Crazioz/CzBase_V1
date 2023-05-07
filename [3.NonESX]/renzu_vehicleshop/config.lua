@@ -54,36 +54,11 @@ VehicleShop = {
         }
     },
 
-    ['Police Vehicle Shop'] = { -- same with name
-        name = "Police Vehicle Shop", --MRPD police shop
-        title = "Magasin de véhicules de police",
-        icon = 'https://i.imgur.com/t1OPuVL.png',
-        job = 'police',
-        type = 'carshop',
-        default_garage = 'Police Garage',
-        Dist = 3, -- distance (DEPRECATED)
-        Blip = {color = 38, sprite = 662, scale = 0.9},
-        shop_x = 456.89453125,
-        shop_y = -1020.8922729492,
-        shop_z = 28.290912628174, -- coordinates for this garage
-        spawn_x = 449.27224731445,
-        spawn_y = -1025.3255615234,
-        spawn_z = 27.905115127563,
-        heading = 2.6015937328339, -- Vehicle spawn location
-        plateprefix = 'LSPD', -- carefull using this, maximum should be 4, recommended is 3, use this only for limited vehicles, if you use this parameter in other shop, you might have a limited plates available, ex. LSPD1234 (max char of plate is 8) it means you only have 9999 vehicles possible with this LSPD
-        shop = { -- if not vehicle is setup in Database SQL, we will use this
-            {shop='Police Vehicle Shop',brand='Police Sedan',stock=50,price=100000,model='police',name="Police Car", grade = 1},
-            {shop='Police Vehicle Shop',brand='Police Sedan',stock=50,price=100000,model='police2',name="Police 2", grade = 1},
-            {shop='Police Vehicle Shop',brand='Police Sedan',stock=50,price=100000,model='police4',name="Police 4", grade = 3},
-            {shop='Police Vehicle Shop',brand='Police SUVs',stock=50,price=100000,model='police3',name="Police SUV",grade = 5},
-        },
-    },
-
     -- BOAT shop
     ['Yacht Club Boat Shop'] = { -- same with name
-        name = "Magasin de bateaux du Yacht Club", --LEGION
+        name = "Vendeur de bateaux", --LEGION
         type = 'boat', -- type of shop
-        title = "Magasin de bateaux du Yacht Club",
+        title = "Vendeur de bateaux",
         icon = 'https://i.imgur.com/62bRdH6.png',
         job = 'all',
         default_garage = 'Boat Garage A',
@@ -97,20 +72,16 @@ VehicleShop = {
         spawn_z = 0.12045155465603,
         heading = 178.27006530762, -- Vehicle spawn location
         shop = { -- if not vehicle is setup in Database SQL, we will use this
-            {shop='Yacht Club Boat Shop',brand='Normal Boat',stock=50,price=50000,model='dinghy',name="Dinghy"},
-            {shop='Yacht Club Boat Shop',brand='Normal Boat',stock=50,price=100000,model='dinghy2',name="Dinghy2"},
-            {shop='Yacht Club Boat Shop',brand='Normal Boat',stock=50,price=100000,model='dinghy3',name="Dinghy 3"},
-            {shop='Yacht Club Boat Shop',brand='Normal Boat',stock=50,price=100000,model='dinghy4',name="Dinghy4"},
-            {shop='Yacht Club Boat Shop',brand='Rich Boat',stock=50,price=100000,model='marquis',name="Marquiz"},
-            {shop='Yacht Club Boat Shop',brand='Rich Boat',stock=50,price=100000,model='toro2',name="Toro 2"},
-            {shop='Yacht Club Boat Shop',brand='Submarine',stock=50,price=100000,model='submersible',name="Submersible"},
-            {shop='Yacht Club Boat Shop',brand='Submarine',stock=50,price=100000,model='submersible2',name="Submersible2"},
+            {shop='Yacht Club Boat Shop',brand='Civil',stock=50,price=127000,model='Speeder',name="Speeder"},
+            {shop='Yacht Club Boat Shop',brand='Civil',stock=50,price=117000,model='Tropic',name="Tropic"},
+            {shop='Yacht Club Boat Shop',brand='Civil',stock=50,price=110000,model='dinghy2',name="Dinghy2"},
+            
         },
     },
     -- PLANE SHOP
     ['DEVIN WESTON PLANE SHOP'] = { -- same with name
-        name = "DEVIN WESTON PLANE SHOP", --LEGION
-        title = "DEVIN PLANE SHOP",
+        name = "Vendeur Aérien", --LEGION
+        title = "Vendeur Aérien",
         icon = 'https://i.imgur.com/12rKk6E.png',
         type = 'air', -- type of shop
         job = 'all',
@@ -125,14 +96,9 @@ VehicleShop = {
         spawn_z = 14.783501625061,
         heading = 54.631553649902, -- Vehicle spawn location
         shop = { -- if not vehicle is setup in Database SQL, we will use this
-            {shop='DEVIN WESTON PLANE SHOP',brand='Military',stock=50,price=50000,model='hydra',name="Hydra"},
-            {shop='DEVIN WESTON PLANE SHOP',brand='Military',stock=50,price=100000,model='titan',name="Titan"},
-            {shop='DEVIN WESTON PLANE SHOP',brand='Private Plane',stock=50,price=100000,model='luxor2',name="Luxor 2"},
-            {shop='DEVIN WESTON PLANE SHOP',brand='Private Plane',stock=50,price=100000,model='luxor',name="Luxor"},
-            {shop='DEVIN WESTON PLANE SHOP',brand='Private Plane',stock=50,price=100000,model='nimbus',name="Nimbus"},
-            {shop='DEVIN WESTON PLANE SHOP',brand='Propeller Type',stock=50,price=100000,model='dodo',name="Dodo"},
-            {shop='DEVIN WESTON PLANE SHOP',brand='Propeller Type',stock=50,price=100000,model='duster',name="Duster"},
-            {shop='DEVIN WESTON PLANE SHOP',brand='Propeller Type',stock=50,price=100000,model='nokota',name="Nokota"},
+            {shop='DEVIN WESTON PLANE SHOP',brand='Civil',stock=50,price=120000,model='Buzzard2',name="Buzzard2"},
+            {shop='DEVIN WESTON PLANE SHOP',brand='Civil',stock=50,price=155000,model='Frogger',name="Frogger"},
+            {shop='DEVIN WESTON PLANE SHOP',brand='Civil',stock=50,price=225000,model='Supervolito',name="Supervolito"},
         },
     },
 }

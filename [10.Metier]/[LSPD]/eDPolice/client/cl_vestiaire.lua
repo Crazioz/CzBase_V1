@@ -136,7 +136,7 @@ Citizen.CreateThread(function()
   local wait = 750
       if ESX.PlayerData.job and ESX.PlayerData.job.name == 'police' then
     for k in pairs(Config.Position.Vestaire) do
-              local plyCoords = GetEntityCoords(GetPlayerPed(-1), false)
+              local plyCoords = GetEntityCoords(PlayerPedId(), false)
               local pos = Config.Position.Vestaire
               local dist = Vdist(plyCoords.x, plyCoords.y, plyCoords.z, pos[k].x, pos[k].y, pos[k].z)
 
@@ -160,7 +160,7 @@ end)
 
 
 function vgillet()
-  local model = GetEntityModel(GetPlayerPed(-1))
+  local model = GetEntityModel(PlayerPedId())
 
   AddArmourToPed(playerPed,100)
   SetPedArmour(playerPed, 100)
@@ -175,7 +175,7 @@ function vgillet()
 end
 
 function vgilletj()
-  local model = GetEntityModel(GetPlayerPed(-1))
+  local model = GetEntityModel(PlayerPedId())
   TriggerEvent('skinchanger:getSkin', function(skin)
       if model == GetHashKey("mp_m_freemode_01") then
           clothesSkin = {
@@ -187,7 +187,7 @@ function vgilletj()
 end
 
 function vgilletswat()
-  local model = GetEntityModel(GetPlayerPed(-1))
+  local model = GetEntityModel(PlayerPedId())
   TriggerEvent('skinchanger:getSkin', function(skin)
       if model == GetHashKey("mp_m_freemode_01") then
           clothesSkin = {
@@ -201,7 +201,7 @@ end
 
 
 function vsac()
-  local model = GetEntityModel(GetPlayerPed(-1))
+  local model = GetEntityModel(PlayerPedId())
   TriggerEvent('skinchanger:getSkin', function(skin)
       if model == GetHashKey("mp_m_freemode_01") then
           clothesSkin = {

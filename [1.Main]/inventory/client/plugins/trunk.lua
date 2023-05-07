@@ -30,7 +30,7 @@ if Config.Trunk then
                 if locked == 1 then
                     for k,v in pairs(Config.BlacklistedVehicleTypes) do
                         if type == v then
-                            TriggerEvent('inventory:notify', 'error', 'Vehicle does not have a trunk')
+                            TriggerEvent('inventory:notify', 'error', 'Le véhicule n\'a pas de coffre')
                             return
                         end
                     end
@@ -42,7 +42,7 @@ if Config.Trunk then
                             OpenInventory({
                                 id = plate, 
                                 type = 'trunk', 
-                                title = 'Trunk - <b>' .. plate .. '</b>',
+                                title = 'Coffre - <b>' .. plate .. '</b>',
                                 weight = Config.TrunkWeights[type], 
                                 save = owned,
                                 timeout = Config.TrunkTimeout
@@ -52,7 +52,7 @@ if Config.Trunk then
                         OpenInventory({
                             id = plate, 
                             type = 'trunk', 
-                            title = 'Trunk - <b>' .. plate .. '</b>',
+                            title = 'Coffre - <b>' .. plate .. '</b>',
                             weight = Config.TrunkWeights[type], 
                             save = false,
                             timeout = Config.TrunkTimeout
@@ -64,5 +64,5 @@ if Config.Trunk then
             end
         end
     end, true)
-    RegisterKeyMapping('openTrunk', 'Open Trunk', 'keyboard', Config.TrunkKey)
+    RegisterKeyMapping('openTrunk', 'Ouvrir coffre', 'keyboard', Config.TrunkKey)
 end

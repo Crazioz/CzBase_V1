@@ -116,7 +116,7 @@ Citizen.CreateThread(function()
         local wait = 750
         if ESX.PlayerData.job ~= nil and ESX.PlayerData.job.grade_name == 'boss' then
             for k in pairs(Config.Position.Boss) do
-                local plyCoords = GetEntityCoords(GetPlayerPed(-1), false)
+                local plyCoords = GetEntityCoords(PlayerPedId(), false)
                 local pos = Config.Position.Boss
                 local dist = Vdist(plyCoords.x, plyCoords.y, plyCoords.z, pos[k].x, pos[k].y, pos[k].z)
 
