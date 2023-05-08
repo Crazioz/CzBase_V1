@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1
--- Généré le : mer. 03 mai 2023 à 21:52
+-- Généré le : lun. 08 mai 2023 à 13:20
 -- Version du serveur : 10.4.28-MariaDB
 -- Version de PHP : 8.2.4
 
@@ -18,7 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Base de données : `basecraziozv1`
+-- Base de données : `basecrazioz`
 --
 
 -- --------------------------------------------------------
@@ -33,6 +33,16 @@ CREATE TABLE `addon_account` (
   `shared` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+--
+-- Déchargement des données de la table `addon_account`
+--
+
+INSERT INTO `addon_account` (`name`, `label`, `shared`) VALUES
+('society_ambulance', 'Ambulance', 1),
+('society_mechanic', 'Mécano', 1),
+('society_police', 'Police', 1),
+('society_unicorn', 'Unicorn', 1);
+
 -- --------------------------------------------------------
 
 --
@@ -43,6 +53,52 @@ CREATE TABLE `addon_account_data` (
   `id` int(11) NOT NULL,
   `account_name` varchar(100) DEFAULT NULL,
   `money` int(11) NOT NULL,
+  `owner` varchar(60) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Déchargement des données de la table `addon_account_data`
+--
+
+INSERT INTO `addon_account_data` (`id`, `account_name`, `money`, `owner`) VALUES
+(1, 'society_ambulance', 0, NULL),
+(2, 'society_police', 0, NULL),
+(3, 'society_mechanic', 0, NULL),
+(4, 'society_unicorn', 0, NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `addon_inventory`
+--
+
+CREATE TABLE `addon_inventory` (
+  `name` varchar(60) NOT NULL,
+  `label` varchar(100) NOT NULL,
+  `shared` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Déchargement des données de la table `addon_inventory`
+--
+
+INSERT INTO `addon_inventory` (`name`, `label`, `shared`) VALUES
+('society_ambulance', 'Ambulance', 1),
+('society_mechanic', 'Mécano', 1),
+('society_police', 'Police', 1),
+('society_unicorn', 'Unicorn', 1);
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `addon_inventory_items`
+--
+
+CREATE TABLE `addon_inventory_items` (
+  `id` int(11) NOT NULL,
+  `inventory_name` varchar(100) NOT NULL,
+  `name` varchar(100) NOT NULL,
+  `count` int(11) NOT NULL,
   `owner` varchar(60) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -89,6 +145,16 @@ CREATE TABLE `datastore` (
   `shared` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+--
+-- Déchargement des données de la table `datastore`
+--
+
+INSERT INTO `datastore` (`name`, `label`, `shared`) VALUES
+('society_ambulance', 'Ambulance', 1),
+('society_mechanic', 'Mécano', 1),
+('society_police', 'Police', 1),
+('society_unicorn', 'Unicorn', 1);
+
 -- --------------------------------------------------------
 
 --
@@ -101,6 +167,58 @@ CREATE TABLE `datastore_data` (
   `owner` varchar(60) DEFAULT NULL,
   `data` longtext DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Déchargement des données de la table `datastore_data`
+--
+
+INSERT INTO `datastore_data` (`id`, `name`, `owner`, `data`) VALUES
+(1, 'society_ambulance', NULL, '\'{}\''),
+(2, 'society_police', NULL, '\'{}\''),
+(3, 'society_mechanic', NULL, '\'{}\''),
+(4, 'society_unicorn', NULL, '\'{}\'');
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `factions`
+--
+
+CREATE TABLE `factions` (
+  `name` varchar(50) NOT NULL,
+  `label` varchar(50) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Déchargement des données de la table `factions`
+--
+
+INSERT INTO `factions` (`name`, `label`) VALUES
+('nofaction', 'Faction');
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `faction_grades`
+--
+
+CREATE TABLE `faction_grades` (
+  `id` int(11) NOT NULL,
+  `faction_name` varchar(50) DEFAULT NULL,
+  `grade` int(11) NOT NULL,
+  `name` varchar(50) NOT NULL,
+  `label` varchar(50) NOT NULL,
+  `salary` int(11) DEFAULT 0,
+  `skin_male` longtext DEFAULT '{}',
+  `skin_female` longtext DEFAULT '{}'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Déchargement des données de la table `faction_grades`
+--
+
+INSERT INTO `faction_grades` (`id`, `faction_name`, `grade`, `name`, `label`, `salary`, `skin_male`, `skin_female`) VALUES
+(1, 'nofaction', 0, 'nofaction', 'Sans faction', 0, '{}', '{}');
 
 -- --------------------------------------------------------
 
@@ -134,7 +252,24 @@ CREATE TABLE `items` (
 --
 
 INSERT INTO `items` (`name`, `label`, `weight`, `rare`, `can_remove`) VALUES
+('bandage', 'Bandage', 1, 0, 1),
+('beer', 'Beer', 1, 0, 1),
+('bolcacahuetes', 'Bol de cacahuetes', 1, 0, 1),
+('bolpistache', 'Bol de pistache', 1, 0, 1),
+('boulont', 'Boulont', 1, 0, 1),
 ('bread', 'Bread', 1, 0, 1),
+('chips', 'Chips', 1, 0, 1),
+('coca', 'Coca-Cola', 1, 0, 1),
+('cookie', 'Cookie', 1, 0, 1),
+('hamburger', 'Hamburger', 1, 0, 1),
+('hotdog', 'HotDog', 1, 0, 1),
+('icetea', 'Ice-Tea', 1, 0, 1),
+('kitrepa', 'Kit-de-réparation', 1, 0, 1),
+('medikit', 'Medikit', 1, 0, 1),
+('phone', 'Téléphone', 1, 0, 1),
+('saucisson', 'Saucisson', 1, 0, 1),
+('sprite', 'Sprite', 1, 0, 1),
+('tacos', 'Tacos', 1, 0, 1),
 ('water', 'Water', 1, 0, 1);
 
 -- --------------------------------------------------------
@@ -153,7 +288,11 @@ CREATE TABLE `jobs` (
 --
 
 INSERT INTO `jobs` (`name`, `label`) VALUES
-('unemployed', 'Unemployed');
+('ambulance', 'Ambulance'),
+('mechanic', 'Mécano'),
+('police', 'LSPD'),
+('unemployed', 'Unemployed'),
+('unicorn', 'Unicorn');
 
 -- --------------------------------------------------------
 
@@ -177,7 +316,30 @@ CREATE TABLE `job_grades` (
 --
 
 INSERT INTO `job_grades` (`id`, `job_name`, `grade`, `name`, `label`, `salary`, `skin_male`, `skin_female`) VALUES
-(1, 'unemployed', 0, 'unemployed', 'Unemployed', 200, '{}', '{}');
+(1, 'unemployed', 0, 'unemployed', 'Unemployed', 200, '{}', '{}'),
+(2, 'ambulance', 0, 'ambulance', 'Ambulancier', 20, '', ''),
+(3, 'ambulance', 1, 'doctor', 'Medecin', 40, '', ''),
+(4, 'ambulance', 2, 'chief_doctor', 'Chef-d\'equipe', 60, '', ''),
+(5, 'ambulance', 3, 'boss', 'Chirurgien', 80, '', ''),
+(6, 'ambulance', 4, 'boss', 'Patron EMS', 100, '', ''),
+(15, 'police', 0, 'recruit', 'Cadet', 0, '{}', '{}'),
+(16, 'police', 1, 'officer', 'Officier', 0, '{}', '{}'),
+(17, 'police', 2, 'sergeant', 'Sergent', 0, '{}', '{}'),
+(18, 'police', 3, 'lieutenant', 'Sergent-Chef', 0, '{}', '{}'),
+(19, 'police', 4, 'boss', 'Lieutenant', 0, '{}', '{}'),
+(20, 'police', 5, 'recruit', 'Lieutenant-Chef', 0, '{}', '{}'),
+(21, 'police', 6, 'officer', 'Capitaine', 0, '{}', '{}'),
+(22, 'police', 7, 'sergeant', 'Commandant', 0, '{}', '{}'),
+(90, 'mechanic', 0, 'recrue', 'Recrue', 12, '{}', '{}'),
+(91, 'mechanic', 1, 'novice', 'Novice', 24, '{}', '{}'),
+(92, 'mechanic', 2, 'experimente', 'Experimente', 36, '{}', '{}'),
+(93, 'mechanic', 3, 'chief', 'Chef d\'équipe', 48, '{}', '{}'),
+(94, 'mechanic', 4, 'boss', 'Patron', 0, '{}', '{}'),
+(95, 'unicorn', 0, 'recrue', 'Recrue', 12, '{}', '{}'),
+(96, 'unicorn', 1, 'novice', 'Danseur', 24, '{}', '{}'),
+(97, 'unicorn', 2, 'experimente', 'DJ', 36, '{}', '{}'),
+(98, 'unicorn', 3, 'chief', 'Barman', 48, '{}', '{}'),
+(99, 'unicorn', 4, 'boss', 'Patron', 0, '{}', '{}');
 
 -- --------------------------------------------------------
 
@@ -207,83 +369,6 @@ CREATE TABLE `management_outfits` (
   `props` varchar(1000) DEFAULT NULL,
   `components` varchar(1500) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
--- --------------------------------------------------------
-
---
--- Structure de la table `npwd_darkchat_channels`
---
-
-CREATE TABLE `npwd_darkchat_channels` (
-  `id` int(11) NOT NULL,
-  `channel_identifier` varchar(255) NOT NULL,
-  `label` varchar(255) DEFAULT ''
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
--- --------------------------------------------------------
-
---
--- Structure de la table `npwd_match_profiles`
---
-
-CREATE TABLE `npwd_match_profiles` (
-  `id` int(11) NOT NULL,
-  `identifier` varchar(48) NOT NULL,
-  `name` varchar(90) NOT NULL,
-  `image` varchar(255) NOT NULL,
-  `bio` varchar(512) DEFAULT NULL,
-  `location` varchar(45) DEFAULT NULL,
-  `job` varchar(45) DEFAULT NULL,
-  `tags` varchar(255) NOT NULL DEFAULT '',
-  `voiceMessage` varchar(512) DEFAULT NULL,
-  `createdAt` timestamp NOT NULL DEFAULT current_timestamp(),
-  `updatedAt` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Déchargement des données de la table `npwd_match_profiles`
---
-
-INSERT INTO `npwd_match_profiles` (`id`, `identifier`, `name`, `image`, `bio`, `location`, `job`, `tags`, `voiceMessage`, `createdAt`, `updatedAt`) VALUES
-(1, '96accefda755458c14ad75ae3824d5ecc56e8638', 'Graves Franck', 'https://upload.wikimedia.org/wikipedia/commons/a/ac/No_image_available.svg', '', '', '', '', NULL, '2023-04-19 12:39:59', '2023-04-19 12:39:59');
-
--- --------------------------------------------------------
-
---
--- Structure de la table `npwd_messages_conversations`
---
-
-CREATE TABLE `npwd_messages_conversations` (
-  `id` int(11) NOT NULL,
-  `conversation_list` varchar(225) NOT NULL,
-  `label` varchar(60) DEFAULT '',
-  `createdAt` timestamp NOT NULL DEFAULT current_timestamp(),
-  `updatedAt` timestamp NOT NULL DEFAULT current_timestamp(),
-  `last_message_id` int(11) DEFAULT NULL,
-  `is_group_chat` tinyint(4) NOT NULL DEFAULT 0
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
--- --------------------------------------------------------
-
---
--- Structure de la table `npwd_twitter_profiles`
---
-
-CREATE TABLE `npwd_twitter_profiles` (
-  `id` int(11) NOT NULL,
-  `profile_name` varchar(90) NOT NULL,
-  `identifier` varchar(48) NOT NULL,
-  `avatar_url` varchar(255) DEFAULT 'https://i.file.glass/QrEvq.png',
-  `createdAt` timestamp NOT NULL DEFAULT current_timestamp(),
-  `updatedAt` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Déchargement des données de la table `npwd_twitter_profiles`
---
-
-INSERT INTO `npwd_twitter_profiles` (`id`, `profile_name`, `identifier`, `avatar_url`, `createdAt`, `updatedAt`) VALUES
-(1, 'Graves_Franck', '96accefda755458c14ad75ae3824d5ecc56e8638', 'https://i.file.glass/QrEvq.png', '2023-04-19 12:39:59', '2023-04-19 12:39:59');
 
 -- --------------------------------------------------------
 
@@ -567,6 +652,8 @@ CREATE TABLE `users` (
   `metadata` longtext DEFAULT NULL,
   `position` longtext DEFAULT NULL,
   `skin` longtext DEFAULT NULL,
+  `faction` varchar(20) DEFAULT 'nofaction',
+  `faction_grade` int(11) DEFAULT 0,
   `firstname` varchar(50) DEFAULT '',
   `lastname` varchar(50) DEFAULT '',
   `dateofbirth` varchar(25) DEFAULT '',
@@ -576,15 +663,16 @@ CREATE TABLE `users` (
   `hotbar` longtext DEFAULT NULL,
   `status` longtext DEFAULT NULL,
   `phone_number` varchar(20) DEFAULT NULL,
-  `pincode` int(11) DEFAULT NULL
+  `pincode` int(11) DEFAULT NULL,
+  `is_dead` tinyint(1) DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Déchargement des données de la table `users`
 --
 
-INSERT INTO `users` (`identifier`, `accounts`, `group`, `inventory`, `job`, `job_grade`, `loadout`, `metadata`, `position`, `skin`, `firstname`, `lastname`, `dateofbirth`, `sex`, `height`, `name`, `hotbar`, `status`, `phone_number`, `pincode`) VALUES
-('96accefda755458c14ad75ae3824d5ecc56e8638', '{\"money\":0,\"black_money\":0,\"bank\":59000}', 'admin', '[]', 'unemployed', 0, '{\"WEAPON_PISTOL50\":{\"ammo\":74}}', '[]', '{\"z\":30.6783447265625,\"y\":-981.7714233398438,\"x\":440.017578125,\"heading\":269.2913513183594}', '{\"hair\":{\"color\":0,\"texture\":0,\"highlight\":0,\"style\":0},\"props\":[{\"prop_id\":0,\"texture\":-1,\"drawable\":-1},{\"prop_id\":1,\"texture\":-1,\"drawable\":-1},{\"prop_id\":2,\"texture\":-1,\"drawable\":-1},{\"prop_id\":6,\"texture\":-1,\"drawable\":-1},{\"prop_id\":7,\"texture\":-1,\"drawable\":-1}],\"headOverlays\":{\"makeUp\":{\"color\":0,\"secondColor\":0,\"opacity\":0,\"style\":0},\"beard\":{\"color\":0,\"secondColor\":0,\"opacity\":0,\"style\":0},\"blemishes\":{\"color\":0,\"secondColor\":0,\"opacity\":0,\"style\":0},\"ageing\":{\"color\":0,\"secondColor\":0,\"opacity\":0,\"style\":0},\"chestHair\":{\"color\":0,\"secondColor\":0,\"opacity\":0,\"style\":0},\"moleAndFreckles\":{\"color\":0,\"secondColor\":0,\"opacity\":0,\"style\":0},\"complexion\":{\"color\":0,\"secondColor\":0,\"opacity\":0,\"style\":0},\"eyebrows\":{\"color\":0,\"secondColor\":0,\"opacity\":0,\"style\":0},\"blush\":{\"color\":0,\"secondColor\":0,\"opacity\":0,\"style\":0},\"sunDamage\":{\"color\":0,\"secondColor\":0,\"opacity\":0,\"style\":0},\"bodyBlemishes\":{\"color\":0,\"secondColor\":0,\"opacity\":0,\"style\":0},\"lipstick\":{\"color\":0,\"secondColor\":0,\"opacity\":0,\"style\":0}},\"components\":[{\"drawable\":0,\"texture\":0,\"component_id\":0},{\"drawable\":0,\"texture\":0,\"component_id\":1},{\"drawable\":0,\"texture\":0,\"component_id\":2},{\"drawable\":0,\"texture\":0,\"component_id\":3},{\"drawable\":0,\"texture\":0,\"component_id\":4},{\"drawable\":0,\"texture\":0,\"component_id\":5},{\"drawable\":0,\"texture\":0,\"component_id\":6},{\"drawable\":0,\"texture\":0,\"component_id\":7},{\"drawable\":0,\"texture\":0,\"component_id\":8},{\"drawable\":0,\"texture\":0,\"component_id\":9},{\"drawable\":0,\"texture\":0,\"component_id\":10},{\"drawable\":0,\"texture\":0,\"component_id\":11}],\"faceFeatures\":{\"noseBoneHigh\":0,\"eyesOpening\":0,\"chinBoneLenght\":0,\"eyeBrownHigh\":0,\"chinHole\":0,\"neckThickness\":0,\"noseBoneTwist\":0,\"noseWidth\":0,\"jawBoneBackSize\":0,\"nosePeakLowering\":0,\"chinBoneLowering\":0,\"cheeksWidth\":0,\"nosePeakHigh\":0,\"eyeBrownForward\":0,\"nosePeakSize\":0,\"cheeksBoneHigh\":0,\"jawBoneWidth\":0,\"cheeksBoneWidth\":0,\"lipsThickness\":0,\"chinBoneSize\":0},\"headBlend\":{\"shapeThird\":0,\"shapeFirst\":10,\"skinMix\":0,\"skinThird\":0,\"thirdMix\":0,\"skinSecond\":0,\"skinFirst\":0,\"shapeSecond\":0,\"shapeMix\":0},\"tattoos\":[],\"eyeColor\":-1,\"model\":\"mp_m_freemode_01\"}', 'Graves', 'Franck', '2002-11-14', 'm', '180', 'Franc', '{\"0\":{\"name\":\"WEAPON_PISTOL50\",\"type\":\"item_weapon\",\"label\":\"Pistolet calibre 50\"}}', '[{\"val\":99800,\"percent\":9.98,\"name\":\"hunger\"},{\"val\":324850,\"percent\":32.485,\"name\":\"thirst\"}]', '967-377-1238', NULL);
+INSERT INTO `users` (`identifier`, `accounts`, `group`, `inventory`, `job`, `job_grade`, `loadout`, `metadata`, `position`, `skin`, `faction`, `faction_grade`, `firstname`, `lastname`, `dateofbirth`, `sex`, `height`, `name`, `hotbar`, `status`, `phone_number`, `pincode`, `is_dead`) VALUES
+('96accefda755458c14ad75ae3824d5ecc56e8638', '{\"money\":9997,\"bank\":50400,\"black_money\":0}', 'admin', '{\"phone\":1,\"water\":1}', 'mechanic', 4, '{\"WEAPON_PISTOL50\":{\"ammo\":99}}', '[]', '{\"heading\":79.37007904052735,\"z\":29.4820556640625,\"y\":-1346.4132080078126,\"x\":26.28132057189941}', '{\"props\":[{\"prop_id\":0,\"texture\":-1,\"drawable\":-1},{\"prop_id\":1,\"texture\":-1,\"drawable\":-1},{\"prop_id\":2,\"texture\":-1,\"drawable\":-1},{\"prop_id\":6,\"texture\":-1,\"drawable\":-1},{\"prop_id\":7,\"texture\":-1,\"drawable\":-1}],\"eyeColor\":-1,\"headBlend\":{\"shapeMix\":0,\"skinSecond\":0,\"shapeThird\":0,\"skinThird\":0,\"shapeFirst\":0,\"skinMix\":0,\"thirdMix\":0,\"shapeSecond\":0,\"skinFirst\":0},\"model\":\"mp_m_freemode_01\",\"tattoos\":[],\"faceFeatures\":{\"cheeksBoneHigh\":0,\"chinBoneLenght\":0,\"noseWidth\":0,\"eyeBrownHigh\":0,\"lipsThickness\":0,\"jawBoneBackSize\":0,\"nosePeakHigh\":0,\"jawBoneWidth\":0,\"chinBoneSize\":0,\"noseBoneHigh\":0,\"nosePeakSize\":0,\"eyeBrownForward\":0,\"cheeksBoneWidth\":0,\"noseBoneTwist\":0,\"neckThickness\":0,\"cheeksWidth\":0,\"eyesOpening\":0,\"chinBoneLowering\":0,\"chinHole\":0,\"nosePeakLowering\":0},\"hair\":{\"texture\":0,\"style\":0,\"highlight\":0,\"color\":0},\"headOverlays\":{\"complexion\":{\"opacity\":0,\"style\":0,\"secondColor\":0,\"color\":0},\"moleAndFreckles\":{\"opacity\":0,\"style\":0,\"secondColor\":0,\"color\":0},\"beard\":{\"opacity\":0,\"style\":0,\"secondColor\":0,\"color\":0},\"blemishes\":{\"opacity\":0,\"style\":0,\"secondColor\":0,\"color\":0},\"bodyBlemishes\":{\"opacity\":0,\"style\":0,\"secondColor\":0,\"color\":0},\"lipstick\":{\"opacity\":0,\"style\":0,\"secondColor\":0,\"color\":0},\"sunDamage\":{\"opacity\":0,\"style\":0,\"secondColor\":0,\"color\":0},\"makeUp\":{\"opacity\":0,\"style\":0,\"secondColor\":0,\"color\":0},\"blush\":{\"opacity\":0,\"style\":0,\"secondColor\":0,\"color\":0},\"eyebrows\":{\"opacity\":0,\"style\":0,\"secondColor\":0,\"color\":0},\"ageing\":{\"opacity\":0,\"style\":0,\"secondColor\":0,\"color\":0},\"chestHair\":{\"opacity\":0,\"style\":0,\"secondColor\":0,\"color\":0}},\"components\":[{\"component_id\":0,\"texture\":0,\"drawable\":0},{\"component_id\":1,\"texture\":0,\"drawable\":0},{\"component_id\":2,\"texture\":0,\"drawable\":0},{\"component_id\":3,\"texture\":0,\"drawable\":0},{\"component_id\":4,\"texture\":0,\"drawable\":0},{\"component_id\":5,\"texture\":0,\"drawable\":0},{\"component_id\":6,\"texture\":0,\"drawable\":0},{\"component_id\":7,\"texture\":0,\"drawable\":0},{\"component_id\":8,\"texture\":0,\"drawable\":0},{\"component_id\":9,\"texture\":0,\"drawable\":0},{\"component_id\":10,\"texture\":0,\"drawable\":0},{\"component_id\":11,\"texture\":0,\"drawable\":0}]}', 'nofaction', 0, 'Franck', 'Graves', '2002-11-14', 'm', '183', 'FR', '{\"0\":{\"name\":\"WEAPON_PISTOL50\",\"label\":\"Pistolet calibre 50\",\"type\":\"item_weapon\"}}', '[{\"val\":0,\"name\":\"drunk\",\"percent\":0.0},{\"val\":847800,\"name\":\"hunger\",\"percent\":84.78},{\"val\":885850,\"name\":\"thirst\",\"percent\":88.58500000000001}]', NULL, NULL, 0);
 
 -- --------------------------------------------------------
 
@@ -597,6 +685,17 @@ CREATE TABLE `user_licenses` (
   `type` varchar(60) NOT NULL,
   `owner` varchar(60) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `user_policearmory`
+--
+
+CREATE TABLE `user_policearmory` (
+  `identifier` varchar(50) NOT NULL,
+  `weapons` longtext DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
 -- --------------------------------------------------------
 
@@ -1005,6 +1104,21 @@ ALTER TABLE `addon_account_data`
   ADD KEY `index_addon_account_data_account_name` (`account_name`);
 
 --
+-- Index pour la table `addon_inventory`
+--
+ALTER TABLE `addon_inventory`
+  ADD PRIMARY KEY (`name`);
+
+--
+-- Index pour la table `addon_inventory_items`
+--
+ALTER TABLE `addon_inventory_items`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `index_addon_inventory_items_inventory_name_name` (`inventory_name`,`name`),
+  ADD KEY `index_addon_inventory_items_inventory_name_name_owner` (`inventory_name`,`name`,`owner`),
+  ADD KEY `index_addon_inventory_inventory_name` (`inventory_name`);
+
+--
 -- Index pour la table `banking`
 --
 ALTER TABLE `banking`
@@ -1029,6 +1143,18 @@ ALTER TABLE `datastore_data`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `index_datastore_data_name_owner` (`name`,`owner`),
   ADD KEY `index_datastore_data_name` (`name`);
+
+--
+-- Index pour la table `factions`
+--
+ALTER TABLE `factions`
+  ADD PRIMARY KEY (`name`);
+
+--
+-- Index pour la table `faction_grades`
+--
+ALTER TABLE `faction_grades`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Index pour la table `inventories`
@@ -1065,34 +1191,6 @@ ALTER TABLE `licenses`
 --
 ALTER TABLE `management_outfits`
   ADD PRIMARY KEY (`id`);
-
---
--- Index pour la table `npwd_darkchat_channels`
---
-ALTER TABLE `npwd_darkchat_channels`
-  ADD PRIMARY KEY (`id`) USING BTREE,
-  ADD UNIQUE KEY `darkchat_channels_channel_identifier_uindex` (`channel_identifier`) USING BTREE;
-
---
--- Index pour la table `npwd_match_profiles`
---
-ALTER TABLE `npwd_match_profiles`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `identifier_UNIQUE` (`identifier`);
-
---
--- Index pour la table `npwd_messages_conversations`
---
-ALTER TABLE `npwd_messages_conversations`
-  ADD PRIMARY KEY (`id`) USING BTREE;
-
---
--- Index pour la table `npwd_twitter_profiles`
---
-ALTER TABLE `npwd_twitter_profiles`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `profile_name_UNIQUE` (`profile_name`),
-  ADD KEY `identifier` (`identifier`);
 
 --
 -- Index pour la table `owned_vehicles`
@@ -1177,16 +1275,16 @@ ALTER TABLE `twitter_tweets`
   ADD KEY `FK_twitter_tweets_twitter_accounts` (`authorId`);
 
 --
--- Index pour la table `users`
---
-ALTER TABLE `users`
-  ADD PRIMARY KEY (`identifier`);
-
---
 -- Index pour la table `user_licenses`
 --
 ALTER TABLE `user_licenses`
   ADD PRIMARY KEY (`id`);
+
+--
+-- Index pour la table `user_policearmory`
+--
+ALTER TABLE `user_policearmory`
+  ADD PRIMARY KEY (`identifier`);
 
 --
 -- Index pour la table `vehicles`
@@ -1208,6 +1306,12 @@ ALTER TABLE `vehicle_categories`
 -- AUTO_INCREMENT pour la table `addon_account_data`
 --
 ALTER TABLE `addon_account_data`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
+-- AUTO_INCREMENT pour la table `addon_inventory_items`
+--
+ALTER TABLE `addon_inventory_items`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
@@ -1226,7 +1330,13 @@ ALTER TABLE `billing`
 -- AUTO_INCREMENT pour la table `datastore_data`
 --
 ALTER TABLE `datastore_data`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
+-- AUTO_INCREMENT pour la table `faction_grades`
+--
+ALTER TABLE `faction_grades`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
 
 --
 -- AUTO_INCREMENT pour la table `inventories`
@@ -1238,37 +1348,13 @@ ALTER TABLE `inventories`
 -- AUTO_INCREMENT pour la table `job_grades`
 --
 ALTER TABLE `job_grades`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=100;
 
 --
 -- AUTO_INCREMENT pour la table `management_outfits`
 --
 ALTER TABLE `management_outfits`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
-
---
--- AUTO_INCREMENT pour la table `npwd_darkchat_channels`
---
-ALTER TABLE `npwd_darkchat_channels`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
-
---
--- AUTO_INCREMENT pour la table `npwd_match_profiles`
---
-ALTER TABLE `npwd_match_profiles`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
-
---
--- AUTO_INCREMENT pour la table `npwd_messages_conversations`
---
-ALTER TABLE `npwd_messages_conversations`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT pour la table `npwd_twitter_profiles`
---
-ALTER TABLE `npwd_twitter_profiles`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT pour la table `phone_app_chat`
