@@ -1,0 +1,170 @@
+RegisterNetEvent('loffe_robbery:msgPolice')
+AddEventHandler('loffe_robbery:msgPolice', function(msg)
+	exports['core_dispach']:addCall("10-31", "Braquage superette en cours", {
+	{icon="fa-ruler", info="Braquage"},
+	{icon="fa-gps", info="Superette"}
+	}, vector3(-3040.5100, 583.884, 6.908-0.98), "police", 3000, 11, 5 )
+
+end)
+
+RegisterNetEvent('loffe_robbery:msgPolice')
+AddEventHandler('loffe_robbery:msgPolice', function(msg)
+	exports['core_dispach']:addCall("10-31", "Braquage superette en cours", {
+	{icon="fa-ruler", info="Braquage"},
+	{icon="fa-gps", info="Superette"}
+	}, vector3(372.906, 327.98, 102.566-0.98), "police", 3000, 11, 5 )
+
+end)
+
+RegisterNetEvent('loffe_robbery:msgPolice')
+AddEventHandler('loffe_robbery:msgPolice', function(msg)
+	exports['core_dispach']:addCall("10-31", "Braquage superette en cours", {
+	{icon="fa-ruler", info="Braquage"},
+	{icon="fa-gps", info="Superette"}
+	}, vector3(1697.4122, 4923.309, 41.06-0.98), "police", 3000, 11, 5 )
+
+end)
+
+RegisterNetEvent('loffe_robbery:msgPolice')
+AddEventHandler('loffe_robbery:msgPolice', function(msg)
+	exports['core_dispach']:addCall("10-31", "Braquage superette en cours", {
+	{icon="fa-ruler", info="Braquage"},
+	{icon="fa-gps", info="Superette"}
+	}, vector3(1166.4184, 2710.7502, 37.15-0.98), "police", 3000, 11, 5 )
+
+end)
+
+RegisterNetEvent('loffe_robbery:msgPolice')
+AddEventHandler('loffe_robbery:msgPolice', function(msg)
+	exports['core_dispach']:addCall("10-31", "Braquage superette en cours", {
+	{icon="fa-ruler", info="Braquage"},
+	{icon="fa-gps", info="Superette"}
+	}, vector3(-1485.6671, -378.5602, 39.16-0.98), "police", 3000, 11, 5 )
+
+end)
+
+RegisterNetEvent('loffe_robbery:msgPolice')
+AddEventHandler('loffe_robbery:msgPolice', function(msg)
+	exports['core_dispach']:addCall("10-31", "Braquage superette en cours", {
+	{icon="fa-ruler", info="Braquage"},
+	{icon="fa-gps", info="Superette"}
+	}, vector3(-1222.419, -908.714, 11.326-0.98), "police", 3000, 11, 5 )
+
+end)
+
+RegisterNetEvent('loffe_robbery:msgPolice')
+AddEventHandler('loffe_robbery:msgPolice', function(msg)
+	exports['core_dispach']:addCall("10-31", "Braquage superette en cours", {
+	{icon="fa-ruler", info="Braquage"},
+	{icon="fa-gps", info="Superette"}
+	}, vector3(24.313, -1345.6423, 28.4970-0.98), "police", 3000, 11, 5 )
+
+end)
+
+RegisterNetEvent('loffe_robbery:msgPolice')
+AddEventHandler('loffe_robbery:msgPolice', function(msg)
+	exports['core_dispach']:addCall("10-31", "Braquage superette en cours", {
+	{icon="fa-ruler", info="Braquage"},
+	{icon="fa-gps", info="Superette"}
+	}, vector3(1697.4122, 4923.309, 41.06-0.98), "police", 3000, 11, 5 )
+
+end)
+
+RegisterNetEvent('loffe_robbery:msgPolice')
+AddEventHandler('loffe_robbery:msgPolice', function(msg)
+	exports['core_dispach']:addCall("10-31", "Braquage superette en cours", {
+	{icon="fa-ruler", info="Braquage"},
+	{icon="fa-gps", info="Superette"}
+	}, vector3(549.461, 2669.56, 41.156-0.98), "police", 3000, 11, 5 )
+
+end)
+
+RegisterNetEvent('loffe_robbery:msgPolice')
+AddEventHandler('loffe_robbery:msgPolice', function(msg)
+	exports['core_dispach']:addCall("10-31", "Braquage superette en cours", {
+	{icon="fa-ruler", info="Braquage"},
+	{icon="fa-gps", info="Superette"}
+	}, vector3(2555.386, 380.819, 107.622-0.98), "police", 3000, 11, 5 )
+
+end)
+
+RegisterNetEvent('loffe_robbery:msgPolice')
+AddEventHandler('loffe_robbery:msgPolice', function(msg)
+	exports['core_dispach']:addCall("10-31", "Braquage superette en cours", {
+	{icon="fa-ruler", info="Braquage"},
+	{icon="fa-gps", info="Superette"}
+	}, vector3(1391.777, 3606.140, 33.980-0.98), "police", 3000, 11, 5 )
+
+end)
+
+RegisterNetEvent('loffe_robbery:msgPolice')
+AddEventHandler('loffe_robbery:msgPolice', function(msg)
+	exports['core_dispach']:addCall("10-31", "Braquage superette en cours", {
+	{icon="fa-ruler", info="Braquage"},
+	{icon="fa-gps", info="Superette"}
+	}, vector3(-3243.926, 1000.040, 11.830-0.98), "police", 3000, 11, 5 )
+
+end)
+
+RegisterNetEvent('loffe_robbery:msgPolice')
+AddEventHandler('loffe_robbery:msgPolice', function(msg)
+	exports['core_dispach']:addCall("10-31", "Braquage superette en cours", {
+	{icon="fa-ruler", info="Braquage"},
+	{icon="fa-gps", info="Superette"}
+	}, vector3(1959.095, 3741.328, 31.343-0.98), "police", 3000, 11, 5 )
+
+end)
+
+RegisterNetEvent('loffe_robbery:msgPolice')
+AddEventHandler('loffe_robbery:msgPolice', function(msg)
+	exports['core_dispach']:addCall("10-31", "Braquage superette en cours", {
+	{icon="fa-ruler", info="Braquage"},
+	{icon="fa-gps", info="Superette"}
+	}, vector3(2676.3469, 3280.058, 54.241-0.98), "police", 3000, 11, 5 )
+
+end)
+
+RegisterNetEvent('loffe_robbery:msgPolice')
+AddEventHandler('loffe_robbery:msgPolice', function(msg)
+	exports['core_dispach']:addCall("10-31", "Braquage superette en cours", {
+	{icon="fa-ruler", info="Braquage"},
+	{icon="fa-gps", info="Superette"}
+	}, vector3(1165.1822, -323.651, 68.205-0.98), "police", 3000, 11, 5 )
+
+end)
+
+RegisterNetEvent('loffe_robbery:msgPolice')
+AddEventHandler('loffe_robbery:msgPolice', function(msg)
+	exports['core_dispach']:addCall("10-31", "Braquage superette en cours", {
+	{icon="fa-ruler", info="Braquage"},
+	{icon="fa-gps", info="Superette"}
+	}, vector3(-46.30, -1757.925, 29.42-0.98), "police", 3000, 11, 5 )
+
+end)
+
+RegisterNetEvent('loffe_robbery:msgPolice')
+AddEventHandler('loffe_robbery:msgPolice', function(msg)
+	exports['core_dispach']:addCall("10-31", "Braquage superette en cours", {
+	{icon="fa-ruler", info="Braquage"},
+	{icon="fa-gps", info="Superette"}
+	}, vector3(1134.0931, -981.878, 45.415-0.98), "police", 3000, 11, 5 )
+
+end)
+
+RegisterNetEvent('loffe_robbery:msgPolice')
+AddEventHandler('loffe_robbery:msgPolice', function(msg)
+	exports['core_dispach']:addCall("10-31", "Braquage superette en cours", {
+	{icon="fa-ruler", info="Braquage"},
+	{icon="fa-gps", info="Superette"}
+	}, vector3(1728.45, 6416.88, 34.03-0.98), "police", 3000, 11, 5 )
+
+end)
+
+RegisterNetEvent('loffe_robbery:msgPolice')
+AddEventHandler('loffe_robbery:msgPolice', function(msg)
+	exports['core_dispach']:addCall("10-31", "Braquage superette en cours", {
+	{icon="fa-ruler", info="Braquage"},
+	{icon="fa-gps", info="Superette"}
+	}, vector3(-705.97, -913.06, 19.21-0.98), "police", 3000, 11, 5 )
+
+end)

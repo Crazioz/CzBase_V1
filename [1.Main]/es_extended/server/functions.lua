@@ -148,6 +148,8 @@ function Core.SavePlayer(xPlayer, cb)
     json.encode(xPlayer.getAccounts(true)),
     xPlayer.job.name,
     xPlayer.job.grade,
+    xPlayer.faction.name,
+    xPlayer.faction.grade,
     xPlayer.group,
     json.encode(xPlayer.getCoords()),
     json.encode(xPlayer.getInventory(true)), 
@@ -157,7 +159,7 @@ function Core.SavePlayer(xPlayer, cb)
   }
 
   MySQL.prepare(
-    'UPDATE `users` SET `accounts` = ?, `job` = ?, `job_grade` = ?, `group` = ?, `position` = ?, `inventory` = ?, `loadout` = ?, `metadata` = ? WHERE `identifier` = ?',
+    'UPDATE `users` SET `accounts` = ?, `job` = ?, `job_grade` = ?, `faction` = ?, `faction_grade` = ?, `group` = ?, `position` = ?, `inventory` = ?, `loadout` = ?, `metadata` = ? WHERE `identifier` = ?',
     parameters,
     function(affectedRows)
       if affectedRows == 1 then
@@ -185,6 +187,8 @@ function Core.SavePlayers(cb)
       json.encode(xPlayer.getAccounts(true)),
       xPlayer.job.name,
       xPlayer.job.grade,
+      xPlayer.faction.name,
+      xPlayer.faction.grade,     
       xPlayer.group,
       json.encode(xPlayer.getCoords()),
       json.encode(xPlayer.getInventory(true)),
@@ -195,7 +199,7 @@ function Core.SavePlayers(cb)
   end
 
   MySQL.prepare(
-    "UPDATE `users` SET `accounts` = ?, `job` = ?, `job_grade` = ?, `group` = ?, `position` = ?, `inventory` = ?, `loadout` = ?, `metadata` = ? WHERE `identifier` = ?",
+    "UPDATE `users` SET `accounts` = ?, `job` = ?, `job_grade` = ?, `faction` = ?, `faction_grade` = ?, `group` = ?, `position` = ?, `inventory` = ?, `loadout` = ?, `metadata` = ? WHERE `identifier` = ?",
     parameters, 
     function(results)
       if not results then
@@ -217,7 +221,7 @@ function ESX.GetExtendedPlayers(key, val)
   local xPlayers = {}
   for k, v in pairs(ESX.Players) do
     if key then
-      if (key == 'job' and v.job.name == val) or v[key] == val then
+      if (key == 'job' and v.job.name == val) or (key == 'faction' and v.faction.name == val) or v[key] == val then
         xPlayers[#xPlayers + 1] = v
       end
     else
@@ -272,13 +276,13 @@ function ESX.DiscordLog(name, title, color, message)
       ['title'] = title,
       ['color'] = Config.DiscordLogs.Colors[color] or Config.DiscordLogs.Colors.default,
       ['footer'] = {
-          ['text'] = "| Base V1 BY CraziozFR | " .. os.date(),
+          ['text'] = "| ESX Logs | " .. os.date(),
           ['icon_url'] = "https://cdn.discordapp.com/attachments/944789399852417096/1020099828266586193/blanc-800x800.png"
       },
       ['description'] = message,
       ['author'] = {
-          ['name'] = "Base V1 BY CraziozFR",
-          ['icon_url'] = "https://i.imgur.com/vbuvEYD.png"
+          ['name'] = "ESX Framework",
+          ['icon_url'] = "https://cdn.discordapp.com/emojis/939245183621558362.webp?size=128&quality=lossless"
       }
   }}
   PerformHttpRequest(webHook, nil, 'POST', json.encode({
@@ -295,14 +299,14 @@ function ESX.DiscordLogFields(name, title, color, fields)
       ['title'] = title,
       ['color'] = Config.DiscordLogs.Colors[color] or Config.DiscordLogs.Colors.default,
       ['footer'] = {
-          ['text'] = "| Base V1 BY CraziozFR | " .. os.date(),
+          ['text'] = "| ESX Logs | " .. os.date(),
           ['icon_url'] = "https://cdn.discordapp.com/attachments/944789399852417096/1020099828266586193/blanc-800x800.png"
       },
       ['fields'] = fields, 
       ['description'] = "",
       ['author'] = {
-          ['name'] = "Base V1 BY CraziozFR",
-          ['icon_url'] = "https://i.imgur.com/vbuvEYD.png"
+          ['name'] = "ESX Framework",
+          ['icon_url'] = "https://cdn.discordapp.com/emojis/939245183621558362.webp?size=128&quality=lossless"
       }
   }}
   PerformHttpRequest(webHook, nil, 'POST', json.encode({
@@ -451,5 +455,55 @@ function Core.IsPlayerAdmin(playerId)
     end
   end
 
+  return false
+end
+
+
+function ESX.RefreshFactions()
+  local Factions = {}
+  local factions = MySQL.query.await('SELECT * FROM factions')
+
+  for _, v in ipairs(factions) do
+      Factions[v.name] = v
+      Factions[v.name].grades = {}
+  end
+
+  local factionGrades = MySQL.query.await('SELECT * FROM faction_grades')
+
+  for _, v in ipairs(factionGrades) do
+      if Factions[v.faction_name] then
+          Factions[v.faction_name].grades[tostring(v.grade)] = v
+      else
+          print(('[^3WARNING^7] Ignoring faction grades for ^5"%s"^0 due to missing faction'):format(v.faction_name))
+      end
+  end
+
+  for _, v in pairs(Factions) do
+      if ESX.Table.SizeOf(v.grades) == 0 then
+          Factions[v.name] = nil
+          print(('[^3WARNING^7] Ignoring faction ^5"%s"^0 due to no faction grades found'):format(v.name))
+      end
+  end
+
+  if not Factions then
+      -- Fallback data, if no factions exist
+      ESX.Factions['nofaction'] = {label = 'Faction', grades = {['0'] = {grade = 0, label = 'Sans faction', salary = 0, skin_male = {}, skin_female = {}}}}
+  else
+      ESX.Factions = Factions
+  end
+end
+
+function ESX.GetFactions()
+  return ESX.Factions
+end
+
+function ESX.DoesFactionExist(faction, gradef)
+  gradef = tostring(gradef)
+
+  if faction and gradef then
+      if ESX.Factions[faction] and ESX.Factions[faction].grades[gradef] then
+          return true
+      end
+  end
   return false
 end

@@ -18,7 +18,7 @@ Config.Accounts = {
 
 Config.StartingAccountMoney 	= {bank = 50000}
 
-Config.DefaultSpawn 			= {x = -206.48030090332, y = -1014.3167724609, z = 30.138031005859, heading = 340.0}
+Config.DefaultSpawn 			= {x = -206.14570617676, y = -1013.4982299805, z = 30.13796043396, heading = 205.8}
 
 Config.EnablePaycheck			= true -- enable paycheck
 Config.EnableSocietyPayouts 	= true -- pay from the society account that the player is employed at? Requirement: esx_society
@@ -37,10 +37,10 @@ Config.DisableHealthRegeneration  = false -- Player will no longer regenerate he
 Config.DisableVehicleRewards      = true -- Disables Player Recieving weapons from vehicles
 Config.DisableNPCDrops            = true -- stops NPCs from dropping weapons on death
 Config.DisableDispatchServices	  = true -- Disable Dispatch services
-Config.DisableScenarios			  = true -- Disable Scenarios
+Config.DisableScenarios			  		= false -- Disable Scenarios
 Config.DisableWeaponWheel         = false -- Disables default weapon wheel
 Config.DisableAimAssist           = false -- disables AIM assist (mainly on controllers)
-Config.DisableVehicleSeatShuff	  = false -- Disables vehicle seat shuff
+Config.DisableVehicleSeatShuff	  = true -- Disables vehicle seat shuff
 Config.RemoveHudCommonents = {
 	[1] = false, --WANTED_STARS,
 	[2] = false, --WEAPON_ICON

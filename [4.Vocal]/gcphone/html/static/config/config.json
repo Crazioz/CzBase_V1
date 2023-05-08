@@ -24,7 +24,7 @@
 
   "useFormatNumberFrance": true,
 
-  "useWebRTCVocal": false,
+  "useWebRTCVocal": true,
   "RTCConfig": {
     "iceServers": [{
       "urls": ["turn:gannon.ovh"],

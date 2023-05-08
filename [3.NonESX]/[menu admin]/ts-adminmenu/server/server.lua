@@ -152,8 +152,7 @@ RegisterNetEvent('ts-adminmenu:server:ShowInventory', function(ply)
     local Ply = ply
     local allowed = CheckAllowed(src, 'TSAdmin.OnlinePlyOptions.OpenInventory')
     if allowed then
-        local inv = exports.ox_inventory:Inventory(tonumber(Ply))
-        TriggerClientEvent('ox_inventory:viewInventory', src, inv)
+        TriggerClientEvent('inventory:openPlayerInventory', src, inv)
     end
 
 end)

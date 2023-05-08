@@ -30,6 +30,10 @@ ZikkarShop.Shop = {
 
 		Manger = {
 			{Label = 'Pain', Value = 'bread', Price = 10},
+			{Label = 'Cookie', Value = 'cookie', Price = 10},
+			{Label = 'Chips', Value = 'chips', Price = 10},
+			{Label = 'Tacos', Value = 'tacos', Price = 10},
+			{Label = 'HotDog', Value = 'hotdog', Price = 10},
 			{Label = 'Hamburger', Value = 'hamburger', Price = 45},
 			{Label = 'Saucisson', Value = 'saucisson', Price = 20},
 
@@ -37,16 +41,15 @@ ZikkarShop.Shop = {
 
 		Boire = {
 			{Label = 'Eau', Value = 'water', Price = 10},
-			{Label = 'Coca-Cola', Value = 'cocacola', Price = 35},
+			{Label = 'Coca-Cola', Value = 'coca', Price = 35},
 			{Label = 'Ice-Tea', Value = 'icetea', Price = 45},
-			{Label = 'Bière', Value = 'beer', Price = 65},
+			{Label = 'Sprite', Value = 'sprite', Price = 65},
 		},
 
         mobile = {
-			{Label = 'Téléphone', Value = 'tel', Price = 500},
-			{Label = 'Carte-Sim', Value = 'sim', Price = 300},
-			{Label = 'Spray', Value = 'spray', Price = 5000},
-			{Label = 'Eponge', Value = 'spray_remover', Price = 750},
+			{Label = 'Téléphone', Value = 'phone', Price = 500},
+			--{Label = 'Spray', Value = 'spray', Price = 5000},
+			--{Label = 'Eponge', Value = 'spray_remover', Price = 750},
 		}
     }
 }
