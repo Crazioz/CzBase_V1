@@ -15,3 +15,6 @@ F11 = Menu admin
 G = Menu Vêtement
 L = Modifier mode Tchat
 ALT = Menu Target
+
+Preview de l'inventaire et de l'hud
+![invhud](https://github.com/Crazioz/BaseCraziozV1/assets/68520748/b541b96a-ae4d-4115-9e3c-0e7ba2d7ccbd)
