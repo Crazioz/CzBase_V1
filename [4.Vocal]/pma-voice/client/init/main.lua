@@ -260,6 +260,7 @@ function setVoiceProperty(type, value)
 end
 exports('setVoiceProperty', setVoiceProperty)
 -- compatibility
+
 exports('SetMumbleProperty', setVoiceProperty)
 exports('SetTokoProperty', setVoiceProperty)
 

@@ -1,0 +1,18 @@
+<CodeWalkerProject>
+  <Name>New CodeWalker Project</Name>
+  <Version value="1" />
+  <YmapFilenames>
+    <Item>molo_tabac_milo_.ymap</Item>
+    <Item>hei_dt1_rd1_strm_1.ymap</Item>
+    <Item>hei_dt1_occl_04.ymap</Item>
+  </YmapFilenames>
+  <YtypFilenames>
+    <Item>molo_tabac.ytyp</Item>
+  </YtypFilenames>
+  <YbnFilenames />
+  <YndFilenames />
+  <YnvFilenames />
+  <TrainsFilenames />
+  <ScenarioFilenames />
+  <AudioRelFilenames />
+</CodeWalkerProject>

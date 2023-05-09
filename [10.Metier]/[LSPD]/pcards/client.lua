@@ -17,7 +17,7 @@ RegisterCommand('mcard', function()
       if (IsControlJustPressed(1, 51)) then
         display = false
         TriggerEvent('mcard:display', false)
-        StopAnimTask(GetPlayerPed(-1), 'amb@code_human_wander_clipboard@male@base', 'static', 1.0)
+        StopAnimTask(PlayerPedId(), 'amb@code_human_wander_clipboard@male@base', 'static', 1.0)
       end
     end
   end)
@@ -34,7 +34,7 @@ end)
 RegisterNetEvent("anima")
 AddEventHandler("anima", function(inputText) 
 RequestAnimDict("amb@code_human_wander_clipboard@male@base")
-TaskPlayAnim(GetPlayerPed(-1),"amb@code_human_wander_clipboard@male@base", "static", 1.0,-1.0, 120000, 1, 1, true, true, true)
+TaskPlayAnim(PlayerPedId(),"amb@code_human_wander_clipboard@male@base", "static", 1.0,-1.0, 120000, 1, 1, true, true, true)
 end)
 
 

@@ -68,6 +68,7 @@ RegisterCommand('cycleproximity', function()
 
 	setProximityState(Cfg.voiceModes[mode][1], false)
 	TriggerEvent('pma-voice:setTalkingMode', mode)
+	exports['joehud']:Voicelevel(voiceMode)
 end, false)
 if gameVersion == 'fivem' then
 	RegisterKeyMapping('cycleproximity', 'Cycle Proximity', 'keyboard', GetConvar('voice_defaultCycle', 'F11'))

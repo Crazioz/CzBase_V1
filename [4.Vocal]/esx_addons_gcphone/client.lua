@@ -2,7 +2,7 @@ ESX = exports["es_extended"]:getSharedObject()
 
 RegisterNetEvent('esx_addons_gcphone:call')
 AddEventHandler('esx_addons_gcphone:call', function(data)
-  local playerPed   = GetPlayerPed(-1)
+  local playerPed   = PlayerPedId()
   local coords      = GetEntityCoords(playerPed)
   local message     = data.message
   local number      = data.number

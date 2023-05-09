@@ -115,7 +115,7 @@ Citizen.CreateThread(function()
     while true do
         local nearShop = false
         for k, v in pairs(ZikkarShop.Shop.zPos) do
-			local distance = GetDistanceBetweenCoords(GetEntityCoords(GetPlayerPed(-1)), v.x, v.y, v.z, true)
+			local distance = GetDistanceBetweenCoords(GetEntityCoords(PlayerPedId()), v.x, v.y, v.z, true)
             if distance <= 5 then
                 nearShop = true
                 DrawMarker(25, v.x, v.y, v.z, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 1.0, 1.0, 16, 192, 37, 100, false, true, 2, false, nil, nil, false)

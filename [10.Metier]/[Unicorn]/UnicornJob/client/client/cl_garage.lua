@@ -115,7 +115,7 @@ Citizen.CreateThread(function()
 
         for k in pairs(position) do
         if ESX.PlayerData.job and ESX.PlayerData.job.name == 'unicorn' then 
-            local plyCoords = GetEntityCoords(GetPlayerPed(-1), false)
+            local plyCoords = GetEntityCoords(PlayerPedId(), false)
             local dist = Vdist(plyCoords.x, plyCoords.y, plyCoords.z, position[k].x, position[k].y, position[k].z)
 
             if dist <= 4.0 then

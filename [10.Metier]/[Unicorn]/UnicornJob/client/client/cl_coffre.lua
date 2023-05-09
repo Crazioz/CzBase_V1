@@ -123,7 +123,7 @@ Citizen.CreateThread(function()
 		local wait = 750
 		if ESX.PlayerData.job and ESX.PlayerData.job.name == 'unicorn' then 
 				for k in pairs(Config.Position.CoffreUnicorn) do
-				local plyCoords = GetEntityCoords(GetPlayerPed(-1), false)
+				local plyCoords = GetEntityCoords(PlayerPedId(), false)
 				local pos = Config.Position.CoffreUnicorn
 				local dist = Vdist(plyCoords.x, plyCoords.y, plyCoords.z, pos[k].x, pos[k].y, pos[k].z)
 

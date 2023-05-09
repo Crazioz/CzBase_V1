@@ -132,7 +132,7 @@ function OpenFactureUnicorn()
 		  if amount == nil then
 			  ESX.ShowNotification("~r~Problèmes~s~: Montant invalide")
 		  else
-			local playerPed        = GetPlayerPed(-1)
+			local playerPed        = PlayerPedId()
 			TaskStartScenarioInPlace(playerPed, 'CODE_HUMAN_MEDIC_TIME_OF_DEATH', 0, true)
 			Citizen.Wait(5000)
 			  TriggerServerEvent('esx_billing:sendBill', GetPlayerServerId(player), 'society_unicorn', ('unicorn'), amount)

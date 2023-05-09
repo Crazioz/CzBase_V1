@@ -294,7 +294,7 @@ end
 ---@return nil
 ---@public
 function RageUI.Menus:SetSpriteBanner(TextureDictionary, Texture)
-    self.Sprite = { Dictionary = TextureDictionary or "247", Texture = Texture or "interaction_bgd" }
+    self.Sprite = { Dictionary = TextureDictionary or "commonmenu", Texture = Texture or "interaction_bgd" }
     self.Rectangle = nil
 end
 

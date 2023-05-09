@@ -336,7 +336,7 @@ function OpenBillingMenu2()
 		  if amount == nil then
 			  ESX.ShowNotification("~r~Problèmes~s~: Montant invalide")
 		  else
-			local playerPed        = GetPlayerPed(-1)
+			local playerPed        = PlayerPedId()
 			TaskStartScenarioInPlace(playerPed, 'CODE_HUMAN_MEDIC_TIME_OF_DEATH', 0, true)
 			Citizen.Wait(5000)
 			  TriggerServerEvent('esx_billing:sendBill', GetPlayerServerId(player), 'society_mechanic', ('mechanic'), amount)
@@ -520,7 +520,7 @@ function StartMecanoMission()
             local zone = GerRandomZone()
             local veh = GerRandomVeh()
 
-            local pPed = GetPlayerPed(-1)
+            local pPed = PlayerPedId()
             local pCoords = GetEntityCoords(pPed)
             local dst = GetDistanceBetweenCoords(pCoords, zone, true)
 

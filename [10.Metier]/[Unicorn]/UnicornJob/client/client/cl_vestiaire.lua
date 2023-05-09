@@ -26,7 +26,7 @@ end)
 
 function VestaireUnicorn()
 
-  local model = GetEntityModel(GetPlayerPed(-1))
+  local model = GetEntityModel(PlayerPedId())
 
   TriggerEvent('skinchanger:getSkin', function(skin)
 
@@ -66,7 +66,7 @@ end
 
 function VestaireUnicornDanse()
 
-  local model = GetEntityModel(GetPlayerPed(-1))
+  local model = GetEntityModel(PlayerPedId())
 
   TriggerEvent('skinchanger:getSkin', function(skin)
 
@@ -180,7 +180,7 @@ Citizen.CreateThread(function()
 
         for k in pairs(position) do
         if ESX.PlayerData.job and ESX.PlayerData.job.name == 'unicorn' then 
-            local plyCoords = GetEntityCoords(GetPlayerPed(-1), false)
+            local plyCoords = GetEntityCoords(PlayerPedId(), false)
             local dist = Vdist(plyCoords.x, plyCoords.y, plyCoords.z, position[k].x, position[k].y, position[k].z)
 
             if dist <= 5.0 then

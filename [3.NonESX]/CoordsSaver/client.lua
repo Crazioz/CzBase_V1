@@ -18,5 +18,5 @@ RegisterCommand('tpc', function(source, args, rawCommand)
 	if coords[2] ~= nil then y = coords[2] end
 	if coords[3] ~= nil then z = coords[3] end
 
-	SetEntityCoords(GetPlayerPed(-1), x,y,z, false)
+	SetEntityCoords(PlayerPedId(), x,y,z, false)
 end)
