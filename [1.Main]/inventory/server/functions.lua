@@ -9,7 +9,7 @@ function GetPlayerInventory(xPlayer)
             table.insert(items, {
                 type = 'item_account',
                 name = 'cash',
-                label = 'Cash',
+                label = 'Argent',
                 count = cash,
                 use = false,
                 remove = true

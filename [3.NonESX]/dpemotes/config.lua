@@ -54,9 +54,7 @@ Config = {
     -- You can disable the Animal Emotes here.
     AnimalEmotesEnabled = true,
     -- You can disable the Tactique Emotes here.
-    TactiqueEmotesEnabled = true,
-
-    
+    TactiqueEmotesEnabled = true,   
 }
 
 Config.KeybindKeys = {

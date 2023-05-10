@@ -49,7 +49,7 @@ Citizen.CreateThread(function()
 
     SetBlipSprite(tabacmap, 140)
     SetBlipColour(tabacmap, 52)
-    SetBlipScale(tabacmap, 0.65)
+    SetBlipScale(tabacmap, 0.6)
     SetBlipAsShortRange(tabacmap, true)
     BeginTextCommandSetBlipName('STRING')
     AddTextComponentString("Tabac")

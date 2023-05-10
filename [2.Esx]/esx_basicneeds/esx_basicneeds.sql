@@ -1,18 +1,9 @@
-
-
-INSERT INTO `items` (`name`, `label`, `weight`) VALUES
-	('phone', 'Téléphone', 1),
-	('bread', 'Bread', 1),
-	('icetea', 'Ice-Tea', 1),
-	('coca', 'Coca-Cola', 1),
-	('hotdog', 'HotDog', 1),
-	('hamburger', 'Hamburger', 1),
-	('chips', 'Chips', 1),
-	('saucisson', 'Saucisson', 1),
-	('tacos', 'Tacos', 1),
-	('sprite', 'Sprite', 1),
-	('cookie', 'Cookie', 1),
-	('bolpistache', 'Bol de pistache', 1),
-	('bolcacahuetes', 'Bol de cacahuetes', 1),
-	('water', 'Water', 1)
+INSERT INTO `items` (`name`, `label`, `weight`, `rare`, `can_remove`) VALUES
+	('bread', 'Bread', 1, 0, 1),
+	('water', 'Water', 1, 0, 1),
+	('wine', 'Wine', 1, 0, 1),
+	('beer', 'Beer', 1, 0, 1),
+	('vodka', 'Vodka', 1, 0, 1),
+	('tequila', 'Tequila', 1, 0, 1),
+	('whisky', 'Whisky', 1, 0, 1)
 ;
