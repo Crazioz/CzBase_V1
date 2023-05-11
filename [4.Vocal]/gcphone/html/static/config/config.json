@@ -64,7 +64,7 @@
 
 
   "serviceCall": [{
-      "display": "Police",
+      "display": "LSPD",
       "icon": "/html/static/img/icons_app/police.png",
       "subMenu": [{
           "title": "Envoyer un message",
@@ -84,6 +84,7 @@
     },
     {
       "display": "Ambulance",
+      "icon": "/html/static/img/icons_app/ems.png",
       "backgroundColor": "red",
       "subMenu": [{
         "title": "Envoyer un message",
@@ -92,19 +93,52 @@
           "number": "ambulance"
         }
       }]
+    },
+    {
+      "display": "Mécanicien",
+      "icon": "/html/static/img/icons_app/mechanic.png",
+      "backgroundColor": "red",
+      "subMenu": [{
+        "title": "Envoyer un message",
+        "eventName": "esx_addons_gcphone:call",
+        "type": {
+          "number": "mechanic"
+        }
+      }]
+    },
+    {
+      "display": "Taxi",
+      "icon": "/html/static/img/icons_app/taxi.png",
+      "backgroundColor": "red",
+      "subMenu": [{
+        "title": "Envoyer un message",
+        "eventName": "esx_addons_gcphone:call",
+        "type": {
+          "number": "taxi"
+        }
+      }]
     }
   ],
 
   "defaultContacts": [{
       "number": "ambulance",
-      "display": "Ambulance",
-      "icon": "/html/static/img/icons_app/bank.png"
+      "display": "EMS",
+      "icon": "/html/static/img/icons_app/ems.png"
     },
     {
       "number": "police",
-      "display": "Police",
-      "backgroundColor": "blue",
-      "letter": "P"
+      "display": "LSPD",
+      "icon": "/html/static/img/icons_app/police.png"
+    },
+    {
+      "number": "mechanic",
+      "display": "Mécanicien",
+      "icon": "/html/static/img/icons_app/mechanic.png"
+    },
+    {
+      "number": "taxi",
+      "display": "Taxi",
+      "icon": "/html/static/img/icons_app/taxi.png"
     }
   ],
 

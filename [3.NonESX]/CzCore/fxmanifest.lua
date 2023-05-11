@@ -5,7 +5,7 @@ lua54 'yes'
 files({
 	'data/**/carcols.meta',
 	'data/**/carvariations.meta',
-	'data/**/contentunlocks.meta',
+	--'data/**/contentunlocks.meta',
 	'data/**/handling.meta',
 	'data/**/vehiclelayouts.meta',
 	'data/**/vehicles.meta'
@@ -28,7 +28,7 @@ client_scripts {
 
 server_scripts {
 	'@mysql-async/lib/MySQL.lua',
-	'scripts/**/server.lua',
+	--'scripts/**/server.lua'
 }
 
 files {

@@ -22,22 +22,11 @@ files {
 	'html/static/img/coque/transparent.png',
 	
 	-- Background
-	'html/static/img/background/back001.jpg',
-	'html/static/img/background/back002.jpg',
-	'html/static/img/background/back003.jpg',
-	'html/static/img/background/back004.jpg',
+	'html/static/img/background/**.jpg',
 	
-	'html/static/img/icons_app/call.png',
-	'html/static/img/icons_app/contacts.png',
-	'html/static/img/icons_app/sms.png',
-	'html/static/img/icons_app/settings.png',
-	'html/static/img/icons_app/menu.png',
-	'html/static/img/icons_app/bourse.png',
-	'html/static/img/icons_app/tchat.png',
-	'html/static/img/icons_app/photo.png',
-	'html/static/img/icons_app/bank.png',
-	'html/static/img/icons_app/9gag.png',
-	'html/static/img/icons_app/twitter.png',
+	
+	'html/static/img/icons_app/**.png',
+
 	
 	'html/static/img/app_bank/logo_mazebank.jpg',
 
