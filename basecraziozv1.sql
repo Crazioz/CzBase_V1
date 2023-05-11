@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1
--- Généré le : mar. 09 mai 2023 à 11:39
+-- Généré le : mer. 10 mai 2023 à 14:02
 -- Version du serveur : 10.4.28-MariaDB
 -- Version de PHP : 8.2.4
 
@@ -41,11 +41,16 @@ INSERT INTO `addon_account` (`name`, `label`, `shared`) VALUES
 ('society_ambulance', 'Ambulance', 1),
 ('society_bahamas', 'Bahamas', 1),
 ('society_bahamas_black', 'Bahamas black', 1),
+('society_ballas', 'Ballas', 1),
+('society_bloods', 'Bloods', 1),
+('society_families', 'Families', 1),
+('society_marabunta', 'Marabunta', 1),
 ('society_mechanic', 'Mécano', 1),
 ('society_police', 'Police', 1),
 ('society_tabac', 'Tabac', 1),
 ('society_taxi', 'Taxi', 1),
-('society_unicorn', 'Unicorn', 1);
+('society_unicorn', 'Unicorn', 1),
+('society_vagos', 'Vagos', 1);
 
 -- --------------------------------------------------------
 
@@ -72,7 +77,12 @@ INSERT INTO `addon_account_data` (`id`, `account_name`, `money`, `owner`) VALUES
 (5, 'society_tabac', 0, NULL),
 (6, 'society_taxi', 0, NULL),
 (7, 'society_bahamas', 0, NULL),
-(8, 'society_bahamas_black', 0, NULL);
+(8, 'society_bahamas_black', 0, NULL),
+(9, 'society_ballas', 0, NULL),
+(10, 'society_families', 0, NULL),
+(11, 'society_vagos', 0, NULL),
+(12, 'society_bloods', 0, NULL),
+(13, 'society_marabunta', 0, NULL);
 
 -- --------------------------------------------------------
 
@@ -93,11 +103,16 @@ CREATE TABLE `addon_inventory` (
 INSERT INTO `addon_inventory` (`name`, `label`, `shared`) VALUES
 ('society_ambulance', 'Ambulance', 1),
 ('society_bahamas', 'Bahamas', 1),
+('society_ballas', 'Ballas', 1),
+('society_bloods', 'Bloods', 1),
+('society_families', 'Families', 1),
+('society_marabunta', 'Marabunta', 1),
 ('society_mechanic', 'Mécano', 1),
 ('society_police', 'Police', 1),
 ('society_tabac', 'Tabac', 1),
 ('society_taxi', 'Taxi', 1),
-('society_unicorn', 'Unicorn', 1);
+('society_unicorn', 'Unicorn', 1),
+('society_vagos', 'Vagos', 1);
 
 -- --------------------------------------------------------
 
@@ -163,11 +178,16 @@ CREATE TABLE `datastore` (
 INSERT INTO `datastore` (`name`, `label`, `shared`) VALUES
 ('society_ambulance', 'Ambulance', 1),
 ('society_bahamas', 'Bahamas', 1),
+('society_ballas', 'Ballas', 1),
+('society_bloods', 'Bloods', 1),
+('society_families', 'Families', 1),
+('society_marabunta', 'Marabunta', 1),
 ('society_mechanic', 'Mécano', 1),
 ('society_police', 'Police', 1),
 ('society_tabac', 'Tabac', 1),
 ('society_taxi', 'Taxi', 1),
-('society_unicorn', 'Unicorn', 1);
+('society_unicorn', 'Unicorn', 1),
+('society_vagos', 'Vagos', 1);
 
 -- --------------------------------------------------------
 
@@ -193,7 +213,12 @@ INSERT INTO `datastore_data` (`id`, `name`, `owner`, `data`) VALUES
 (4, 'society_unicorn', NULL, '\'{}\''),
 (5, 'society_tabac', NULL, '\'{}\''),
 (6, 'society_taxi', NULL, '\'{}\''),
-(7, 'society_bahamas', NULL, '\'{}\'');
+(7, 'society_bahamas', NULL, '\'{}\''),
+(8, 'society_ballas', NULL, '\'{}\''),
+(9, 'society_families', NULL, '\'{}\''),
+(10, 'society_vagos', NULL, '\'{}\''),
+(11, 'society_bloods', NULL, '\'{}\''),
+(12, 'society_marabunta', NULL, '\'{}\'');
 
 -- --------------------------------------------------------
 
@@ -211,7 +236,12 @@ CREATE TABLE `factions` (
 --
 
 INSERT INTO `factions` (`name`, `label`) VALUES
-('nofaction', 'Faction');
+('ballas', 'Ballas'),
+('bloods', 'Bloods'),
+('families', 'Families'),
+('marabunta', 'Marabunta'),
+('nofaction', 'Faction'),
+('vagos', 'Vagos');
 
 -- --------------------------------------------------------
 
@@ -235,7 +265,27 @@ CREATE TABLE `faction_grades` (
 --
 
 INSERT INTO `faction_grades` (`id`, `faction_name`, `grade`, `name`, `label`, `salary`, `skin_male`, `skin_female`) VALUES
-(1, 'nofaction', 0, 'nofaction', 'Sans faction', 0, '{}', '{}');
+(1, 'nofaction', 0, 'nofaction', 'Sans faction', 0, '{}', '{}'),
+(36, 'ballas', 0, 'recruit', 'Recrue', 0, '{}', '{}'),
+(37, 'ballas', 1, 'gangster', 'Gangster', 0, '{}', '{}'),
+(38, 'ballas', 2, 'bandit', 'Bandit', 0, '{}', '{}'),
+(39, 'ballas', 3, 'boss', 'Chef du Gang', 0, '{}', '{}'),
+(40, 'vagos', 0, 'recruit', 'Recrue', 0, '{}', '{}'),
+(41, 'vagos', 1, 'gangster', 'Gangster', 0, '{}', '{}'),
+(42, 'vagos', 2, 'bandit', 'Bandit', 0, '{}', '{}'),
+(43, 'vagos', 3, 'boss', 'Chef du Gang', 0, '{}', '{}'),
+(44, 'families', 0, 'recruit', 'Recrue', 0, '{}', '{}'),
+(45, 'families', 1, 'gangster', 'Gangster', 0, '{}', '{}'),
+(46, 'families', 2, 'bandit', 'Bandit', 0, '{}', '{}'),
+(47, 'families', 3, 'boss', 'Chef du Gang', 0, '{}', '{}'),
+(48, 'bloods', 0, 'recruit', 'Recrue', 0, '{}', '{}'),
+(49, 'bloods', 1, 'gangster', 'Gangster', 0, '{}', '{}'),
+(50, 'bloods', 2, 'bandit', 'Bandit', 0, '{}', '{}'),
+(51, 'bloods', 3, 'boss', 'Chef du Gang', 0, '{}', '{}'),
+(52, 'marabunta', 0, 'recruit', 'Recrue', 0, '{}', '{}'),
+(53, 'marabunta', 1, 'gangster', 'Gangster', 0, '{}', '{}'),
+(54, 'marabunta', 2, 'bandit', 'Bandit', 0, '{}', '{}'),
+(55, 'marabunta', 3, 'boss', 'Chef du Gang', 0, '{}', '{}');
 
 -- --------------------------------------------------------
 
@@ -274,7 +324,7 @@ INSERT INTO `items` (`name`, `label`, `weight`, `rare`, `can_remove`) VALUES
 ('bolcacahuetes', 'Bol de cacahuetes', 1, 0, 1),
 ('bolpistache', 'Bol de pistache', 1, 0, 1),
 ('boulont', 'Boulont', 1, 0, 1),
-('bread', 'Bread', 1, 0, 1),
+('bread', 'Pain', 1, 0, 1),
 ('chips', 'Chips', 1, 0, 1),
 ('coca', 'Coca-Cola', 1, 0, 1),
 ('cookie', 'Cookie', 1, 0, 1),
@@ -291,6 +341,7 @@ INSERT INTO `items` (`name`, `label`, `weight`, `rare`, `can_remove`) VALUES
 ('tabac', 'Tabac', 1, 0, 1),
 ('tabacsec', 'Tabac Sec', 1, 0, 1),
 ('tacos', 'Tacos', 1, 0, 1),
+('tequila', 'Tequila', 1, 0, 1),
 ('vodka', 'Vodka', 1, 0, 1),
 ('water', 'Water', 1, 0, 1),
 ('whisky', 'Wisky', 1, 0, 1);
@@ -710,7 +761,7 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`identifier`, `accounts`, `group`, `inventory`, `job`, `job_grade`, `loadout`, `metadata`, `position`, `skin`, `faction`, `faction_grade`, `firstname`, `lastname`, `dateofbirth`, `sex`, `height`, `name`, `hotbar`, `status`, `phone_number`, `pincode`, `is_dead`) VALUES
-('96accefda755458c14ad75ae3824d5ecc56e8638', '{\"bank\":50000,\"black_money\":0,\"money\":0}', 'admin', '{\"tabac\":50}', 'tabac', 2, '[]', '[]', '{\"x\":478.8659362792969,\"heading\":238.1102294921875,\"z\":30.00439453125,\"y\":6476.39990234375}', '{\"faceFeatures\":{\"noseWidth\":0,\"chinBoneLowering\":0,\"jawBoneWidth\":0,\"cheeksBoneHigh\":0,\"jawBoneBackSize\":0,\"noseBoneTwist\":0,\"chinBoneLenght\":0,\"nosePeakLowering\":0,\"eyeBrownForward\":0,\"cheeksBoneWidth\":0,\"neckThickness\":0,\"chinHole\":0,\"nosePeakSize\":0,\"lipsThickness\":0,\"eyesOpening\":0,\"noseBoneHigh\":0,\"eyeBrownHigh\":0,\"cheeksWidth\":0,\"nosePeakHigh\":0,\"chinBoneSize\":0},\"eyeColor\":-1,\"tattoos\":[],\"props\":[{\"texture\":-1,\"drawable\":-1,\"prop_id\":0},{\"texture\":-1,\"drawable\":-1,\"prop_id\":1},{\"texture\":-1,\"drawable\":-1,\"prop_id\":2},{\"texture\":-1,\"drawable\":-1,\"prop_id\":6},{\"texture\":-1,\"drawable\":-1,\"prop_id\":7}],\"model\":\"mp_m_freemode_01\",\"components\":[{\"texture\":0,\"drawable\":0,\"component_id\":0},{\"texture\":0,\"drawable\":0,\"component_id\":1},{\"texture\":0,\"drawable\":0,\"component_id\":2},{\"texture\":0,\"drawable\":0,\"component_id\":3},{\"texture\":0,\"drawable\":0,\"component_id\":4},{\"texture\":0,\"drawable\":0,\"component_id\":5},{\"texture\":0,\"drawable\":0,\"component_id\":6},{\"texture\":0,\"drawable\":0,\"component_id\":7},{\"texture\":0,\"drawable\":0,\"component_id\":8},{\"texture\":0,\"drawable\":0,\"component_id\":9},{\"texture\":0,\"drawable\":0,\"component_id\":10},{\"texture\":0,\"drawable\":0,\"component_id\":11}],\"headOverlays\":{\"lipstick\":{\"secondColor\":0,\"opacity\":0,\"color\":0,\"style\":0},\"blemishes\":{\"secondColor\":0,\"opacity\":0,\"color\":0,\"style\":0},\"makeUp\":{\"secondColor\":0,\"opacity\":0,\"color\":0,\"style\":0},\"bodyBlemishes\":{\"secondColor\":0,\"opacity\":0,\"color\":0,\"style\":0},\"moleAndFreckles\":{\"secondColor\":0,\"opacity\":0,\"color\":0,\"style\":0},\"chestHair\":{\"secondColor\":0,\"opacity\":0,\"color\":0,\"style\":0},\"ageing\":{\"secondColor\":0,\"opacity\":0,\"color\":0,\"style\":0},\"sunDamage\":{\"secondColor\":0,\"opacity\":0,\"color\":0,\"style\":0},\"complexion\":{\"secondColor\":0,\"opacity\":0,\"color\":0,\"style\":0},\"eyebrows\":{\"secondColor\":0,\"opacity\":0,\"color\":0,\"style\":0},\"blush\":{\"secondColor\":0,\"opacity\":0,\"color\":0,\"style\":0},\"beard\":{\"secondColor\":0,\"opacity\":0,\"color\":0,\"style\":0}},\"headBlend\":{\"shapeSecond\":0,\"shapeMix\":0,\"skinMix\":0,\"thirdMix\":0,\"skinThird\":0,\"skinSecond\":0,\"shapeThird\":0,\"skinFirst\":0,\"shapeFirst\":0},\"hair\":{\"highlight\":0,\"texture\":0,\"color\":0,\"style\":0}}', 'nofaction', 0, 'Franck', 'Graves', '2002-11-14', 'm', '183', 'fr', NULL, '[{\"name\":\"drunk\",\"percent\":0.0,\"val\":0},{\"name\":\"hunger\",\"percent\":79.72,\"val\":797200},{\"name\":\"thirst\",\"percent\":84.78999999999999,\"val\":847900}]', '956-7012', NULL, 0);
+('96accefda755458c14ad75ae3824d5ecc56e8638', '{\"bank\":50000,\"money\":9885,\"black_money\":0}', 'admin', '{\"hotdog\":1,\"tabac\":29}', 'police', 4, '{\"WEAPON_COMBATPISTOL\":{\"ammo\":100}}', '[]', '{\"z\":29.128173828125,\"heading\":206.92913818359376,\"x\":419.3406677246094,\"y\":-1014.3428344726563}', '{\"headBlend\":{\"skinThird\":0,\"skinSecond\":0,\"skinMix\":0,\"shapeSecond\":0,\"thirdMix\":0,\"shapeFirst\":10,\"skinFirst\":5,\"shapeThird\":0,\"shapeMix\":0},\"hair\":{\"color\":0,\"texture\":0,\"style\":0,\"highlight\":0},\"eyeColor\":-1,\"headOverlays\":{\"blush\":{\"color\":0,\"opacity\":0,\"style\":0,\"secondColor\":0},\"lipstick\":{\"color\":0,\"opacity\":0,\"style\":0,\"secondColor\":0},\"ageing\":{\"color\":0,\"opacity\":0,\"style\":0,\"secondColor\":0},\"beard\":{\"color\":0,\"opacity\":1,\"style\":10,\"secondColor\":0},\"eyebrows\":{\"color\":0,\"opacity\":1,\"style\":10,\"secondColor\":0},\"sunDamage\":{\"color\":0,\"opacity\":0,\"style\":0,\"secondColor\":0},\"complexion\":{\"color\":0,\"opacity\":0,\"style\":0,\"secondColor\":0},\"blemishes\":{\"color\":0,\"opacity\":0,\"style\":0,\"secondColor\":0},\"moleAndFreckles\":{\"color\":0,\"opacity\":0,\"style\":0,\"secondColor\":0},\"bodyBlemishes\":{\"color\":0,\"opacity\":0,\"style\":0,\"secondColor\":0},\"makeUp\":{\"color\":0,\"opacity\":0,\"style\":0,\"secondColor\":0},\"chestHair\":{\"color\":0,\"opacity\":0,\"style\":0,\"secondColor\":0}},\"tattoos\":[],\"model\":\"mp_m_freemode_01\",\"components\":[{\"texture\":0,\"drawable\":0,\"component_id\":0},{\"texture\":0,\"drawable\":0,\"component_id\":1},{\"texture\":0,\"drawable\":0,\"component_id\":2},{\"texture\":0,\"drawable\":0,\"component_id\":3},{\"texture\":0,\"drawable\":0,\"component_id\":4},{\"texture\":0,\"drawable\":0,\"component_id\":5},{\"texture\":0,\"drawable\":0,\"component_id\":6},{\"texture\":0,\"drawable\":0,\"component_id\":7},{\"texture\":0,\"drawable\":0,\"component_id\":8},{\"texture\":0,\"drawable\":0,\"component_id\":9},{\"texture\":0,\"drawable\":0,\"component_id\":10},{\"texture\":0,\"drawable\":0,\"component_id\":11}],\"faceFeatures\":{\"noseBoneTwist\":0,\"eyeBrownForward\":0,\"nosePeakLowering\":0,\"jawBoneBackSize\":0,\"chinBoneLowering\":0,\"eyesOpening\":0,\"neckThickness\":0,\"nosePeakHigh\":0,\"cheeksWidth\":0,\"noseBoneHigh\":0,\"cheeksBoneHigh\":0,\"chinHole\":0,\"lipsThickness\":0,\"chinBoneSize\":0,\"noseWidth\":0,\"chinBoneLenght\":0,\"nosePeakSize\":0,\"cheeksBoneWidth\":0,\"eyeBrownHigh\":0,\"jawBoneWidth\":0},\"props\":[{\"prop_id\":0,\"texture\":-1,\"drawable\":-1},{\"prop_id\":1,\"texture\":-1,\"drawable\":-1},{\"prop_id\":2,\"texture\":-1,\"drawable\":-1},{\"prop_id\":6,\"texture\":-1,\"drawable\":-1},{\"prop_id\":7,\"texture\":-1,\"drawable\":-1}]}', 'marabunta', 3, 'Franck', 'Graves', '2002-11-14', 'm', '183', 'fr', '{\"1\":{\"name\":\"chips\",\"label\":\"Chips\",\"type\":\"item_standard\"},\"0\":{\"name\":\"WEAPON_COMBATPISTOL\",\"label\":\"Pistolet de combat\",\"type\":\"item_weapon\"}}', '[{\"percent\":0.0,\"name\":\"drunk\",\"val\":0},{\"percent\":15.2,\"name\":\"hunger\",\"val\":152000},{\"percent\":6.5,\"name\":\"thirst\",\"val\":65000},{\"percent\":0.0,\"name\":\"drunk\",\"val\":0}]', '956-7012', NULL, 0);
 
 -- --------------------------------------------------------
 
@@ -1350,7 +1401,7 @@ ALTER TABLE `vehicle_categories`
 -- AUTO_INCREMENT pour la table `addon_account_data`
 --
 ALTER TABLE `addon_account_data`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT pour la table `addon_inventory_items`
@@ -1374,13 +1425,13 @@ ALTER TABLE `billing`
 -- AUTO_INCREMENT pour la table `datastore_data`
 --
 ALTER TABLE `datastore_data`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT pour la table `faction_grades`
 --
 ALTER TABLE `faction_grades`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=56;
 
 --
 -- AUTO_INCREMENT pour la table `inventories`
