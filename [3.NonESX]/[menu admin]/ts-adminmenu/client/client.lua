@@ -4453,9 +4453,8 @@ local LoadOnlinePlayersEach = function()
             end
         })
     end
-
     ----------------------------------------------------------------------------
-    ----------------------------------------------------------------------------
+    
 end
 local LoadVehicleOptions = function()
     vehicleoptions:ClearItems()

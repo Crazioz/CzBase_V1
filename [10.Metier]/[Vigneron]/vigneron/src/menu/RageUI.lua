@@ -4,8 +4,6 @@
 --- DateTime: 21/04/2019 21:20
 ---
 
-print("[^1Auteur^0] : ^4Fellow#3858 & Rayan Waize#7272^0")
-
 ---round
 ---@param num number
 ---@param numDecimalPlaces number

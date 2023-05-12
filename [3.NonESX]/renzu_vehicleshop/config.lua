@@ -18,12 +18,12 @@ Config.CustomImgColumn = 'imglink' -- db column name
 -- this is standalone
 -- Config.use_renzu_vehthumb -- Config.CustomImg must be false
 Config.use_renzu_vehthumb = false -- use vehicle thumb generation script
-Config.RgbColor = true -- your framework or garage must support custom colors ex. https://github.com/renzuzu/renzu_garage
+Config.RgbColor = false -- your framework or garage must support custom colors ex. https://github.com/renzuzu/renzu_garage
 
 -- CARKEYS -- -- you need to replace the event
 Config.Carkeys = function(plate,source)
     print("Sending Keys")
-    TriggerClientEvent('vehiclekeys:client:SetOwner',source,plate) -- THIS EVENT IS QBCORE CAR KEYS!, replace the event name to your carkeys event
+    TriggerClientEvent("night_vehicle_locks:registerVehicle_client", -1, vehNetId) -- THIS EVENT IS QBCORE CAR KEYS!, replace the event name to your carkeys event
 end
 -- CARKEYS --
 --EXTRA

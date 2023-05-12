@@ -238,7 +238,7 @@ const handlers = {
     }
 };
 
-setInterval(function(){document.querySelector('#log').innerHTML = gstate.log.slice(-10).map(function(e){return String.format("[{0}] {1}", e.type, e.str)}).join('<br />');}, 100);
+// setInterval(function(){document.querySelector('#log').innerHTML = gstate.log.slice(-10).map(function(e){return String.format("[{0}] {1}", e.type, e.str)}).join('<br />');}, 100);
 
 window.addEventListener('message', function(e)
 {

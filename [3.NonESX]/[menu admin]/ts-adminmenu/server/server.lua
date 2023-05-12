@@ -619,6 +619,7 @@ RegisterNetEvent('ts-adminmenu:server:KickPlayer', function(pid)
     end
 end)
 
+
 RegisterNetEvent('ts-adminmenu:server:DeleteVehicle', function(radi)
     local xPlayer = ESX.GetPlayerFromId(source)
     local allowed = CheckAllowed(xPlayer.source, 'TSAdmin.VehicleRelatedOptions.DeleteVehicle')
