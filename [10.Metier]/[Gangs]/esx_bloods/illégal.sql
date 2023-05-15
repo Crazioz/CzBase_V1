@@ -1,6 +1,6 @@
-SET @faction_name = 'marabunta'; -- Remplacer par le gang ou la faction que vous voulez
-SET @society_name = 'society_marabunta'; -- Idem avec society_
-SET @faction_Name_Caps = 'Marabunta'; -- Idem avec une majuscule
+SET @faction_name = 'ballas'; -- Remplacer par le gang ou la faction que vous voulez
+SET @society_name = 'society_ballas'; -- Idem avec society_
+SET @faction_Name_Caps = 'Ballas'; -- Idem avec une majuscule
 
 
 
