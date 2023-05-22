@@ -17,8 +17,8 @@ Config.DisableKeys = {0, 22, 23, 24, 29, 30, 31, 37, 44, 56, 82, 140, 166, 167, 
 Config.EnableHUD = false
 
 -- Configure blips here. Turn both to false to disable blips all together.
-Config.ShowNearestGasStationOnly = true
-Config.ShowAllGasStations = false
+Config.ShowNearestGasStationOnly = false
+Config.ShowAllGasStations = true
 
 -- Modify the fuel-cost here, using a multiplier value. Setting the value to 2.0 would cause a doubled increase.
 Config.CostMultiplier = 1.0
@@ -132,5 +132,6 @@ Config.GasStations = {
 	vector3(176.631, -1562.025, 29.263),
 	vector3(176.631, -1562.025, 29.263),
 	vector3(-319.292, -1471.715, 30.549),
+	vector3(4515.1059570313,-4506.6196289063,4.1399579048157),
 	vector3(1784.324, 3330.55, 41.253)
 }

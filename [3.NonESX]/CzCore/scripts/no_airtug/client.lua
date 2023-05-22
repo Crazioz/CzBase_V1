@@ -151,7 +151,7 @@ PL.BlipsSingle = {
 }
 --Radius---------------------------------------------------------------------------------------------------------------------------------------
 
---PL.BlipsRadius = {
+PL.BlipsRadius = {
    -- [1] = {
    --     sprite = 9,                                    --https://docs.fivem.net/docs/game-references/blips/
    --     color = 1,                                     --https://docs.fivem.net/docs/game-references/blips/
@@ -167,4 +167,4 @@ PL.BlipsSingle = {
    --     radius = 100.0,                                --radius. float value
    --     transparency = 90,                             --transparency. 0-255
    -- },
---}
+}

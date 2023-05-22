@@ -26,6 +26,16 @@ Config = {
 			}
 		},
 		{
+			Position = vector4(4476.7705078125,-4464.3447265625,4.2448077201843, 210),
+			Blip = {
+				Enabled = true,
+				Color = 69,
+				Label = 'Banque',
+				Sprite = 108,
+				Scale = 0.7
+			}
+		},	
+		{
 			Position = vector4(-2962.47, 482.93, 15.5, 270),
 			Blip = {
 				Enabled = true,

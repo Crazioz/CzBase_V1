@@ -16,8 +16,8 @@ return {
 	['channel_unavailable'] = "Cette fréquence n'est pas disponible",
 	['channel_disconnect'] = "Vous vous êtes déconnecté de la radio",
 
-	['volume_mute'] = "Radio muet",
-	['volume_unmute'] = "Radio unmuted",
+	['volume_mute'] = "Sons mute",
+	['volume_unmute'] = "Sons demute",
 	['volume_up'] = "Volume augmenté à	%s%%",
 	['volume_down'] = "Volume réduit à	%s%%",
 	['volume_max'] = "Volume maximal atteint",

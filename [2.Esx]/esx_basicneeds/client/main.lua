@@ -2,15 +2,28 @@ ESX = exports["es_extended"]:getSharedObject()
 local IsDead = false
 local IsAnimated = false
 
-
 AddEventHandler('esx_basicneeds:resetStatus', function()
 	TriggerEvent('esx_status:set', 'hunger', 500000)
 	TriggerEvent('esx_status:set', 'thirst', 500000)
 
 end)
 
-AddEventHandler('playerSpawned', function()
+RegisterNetEvent('esx_basicneeds:healPlayer')
+AddEventHandler('esx_basicneeds:healPlayer', function()
+	-- restore hunger & thirst
+	TriggerEvent('esx_status:set', 'hunger', 1000000)
+	TriggerEvent('esx_status:set', 'thirst', 1000000)
 
+	-- restore hp
+	local playerPed = PlayerPedId()
+	SetEntityHealth(playerPed, GetEntityMaxHealth(playerPed))
+end)
+
+AddEventHandler('esx:onPlayerDeath', function()
+	IsDead = true
+end)
+
+AddEventHandler('playerSpawned', function()
 	if IsDead then
 		TriggerEvent('esx_basicneeds:resetStatus')
 	end
