@@ -20,6 +20,7 @@ G = Menu Vêtement
 L = Modifier mode Tchat 
 B = Mettre la ceinture de sécurité
 ALT = Menu Target
+Shift = Mode drift
 VerrouMaj = Limiteur de vitesse
 Insert = Noclip (admin uniquement)
 
@@ -29,6 +30,7 @@ Insert = Noclip (admin uniquement)
 /giveitem = donner un item à quelqu'un vià l'ID
 /giveweapon = donner une arme à quelqu'un vià l'ID
 /openinv = permet de voir l'inventaire d'un joueur sur le serveur via son IG
+/me 
 Preview de l'inventaire et de l'hud
 
 L'inventaire & l'hud :
