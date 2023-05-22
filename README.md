@@ -20,6 +20,7 @@ G = Menu Vêtement
 L = Modifier mode Tchat 
 B = Mettre la ceinture de sécurité
 ALT = Menu Target
+Shift = Mode drift
 VerrouMaj = Limiteur de vitesse
 Insert = Noclip (admin uniquement)
 
