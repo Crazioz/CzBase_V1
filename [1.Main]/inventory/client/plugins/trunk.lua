@@ -2,9 +2,9 @@ if Config.Trunk then
     local vehicle = nil
 
     local function VehicleInFront()
-        local pos = GetEntityCoords(GetPlayerPed(-1))
-        local entityWorld = GetOffsetFromEntityInWorldCoords(GetPlayerPed(-1), 0.0, 4.0, 0.0)
-        local rayHandle = CastRayPointToPoint(pos.x, pos.y, pos.z, entityWorld.x, entityWorld.y, entityWorld.z, 10, GetPlayerPed(-1), 0)
+        local pos = GetEntityCoords(PlayerPedId())
+        local entityWorld = GetOffsetFromEntityInWorldCoords(PlayerPedId(), 0.0, 4.0, 0.0)
+        local rayHandle = CastRayPointToPoint(pos.x, pos.y, pos.z, entityWorld.x, entityWorld.y, entityWorld.z, 10, PlayerPedId(), 0)
         local a, b, c, d, result = GetRaycastResult(rayHandle)
         return result
     end

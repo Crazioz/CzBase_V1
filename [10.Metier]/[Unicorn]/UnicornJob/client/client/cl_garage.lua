@@ -75,7 +75,7 @@ function OpenGarageUnicorn()
                       RequestModel(model)
                       while not HasModelLoaded(model) do Citizen.Wait(10) end
                       local pos = GetEntityCoords(PlayerPedId())
-                      local vehicle = CreateVehicle(model, 87.28, -1281.11, 29.13, 126.16, true, true)
+                      local vehicle = CreateVehicle(model, 163.15112304688,-1304.966796875,29.354690551758, 67.0, true, true)
                       SetVehicleCustomPrimaryColour(vehicle, 13, 17, 22)
                       SetVehicleCustomSecondaryColour(vehicle, 13, 17, 22)
                       RageUI.CloseAll()
@@ -88,7 +88,7 @@ function OpenGarageUnicorn()
                       RequestModel(model)
                       while not HasModelLoaded(model) do Citizen.Wait(10) end
                       local pos = GetEntityCoords(PlayerPedId())
-                      local vehicle = CreateVehicle(model, 87.28, -1281.11, 29.13, 126.16, true, true)
+                      local vehicle = CreateVehicle(model, 163.15112304688,-1304.966796875,29.354690551758, 67.0, true, true)
                       SetVehicleCustomPrimaryColour(vehicle, 13, 17, 22)
                       SetVehicleCustomSecondaryColour(vehicle, 13, 17, 22)
                       RageUI.CloseAll()
@@ -103,9 +103,8 @@ function OpenGarageUnicorn()
 end
 
 ----OUVRIR LE MENU------------
-
 local position = {
-	{x = 87.28, y = -1281.11, z = 29.13}  
+	{x = 163.15112304688, y = -1304.966796875, z = 29.354690551758}  
 }
 
 Citizen.CreateThread(function()
@@ -118,7 +117,7 @@ Citizen.CreateThread(function()
             local plyCoords = GetEntityCoords(PlayerPedId(), false)
             local dist = Vdist(plyCoords.x, plyCoords.y, plyCoords.z, position[k].x, position[k].y, position[k].z)
 
-            if dist <= 4.0 then
+            if dist <= 6.0 then
             wait = 0
             DrawMarker(22, 87.28, -1281.11, 29.13, 0.0, 0.0, 0.0, 0.0,0.0,0.0, 0.3, 0.3, 0.3, 136, 14, 79, 255, true, true, p19, true)  
 

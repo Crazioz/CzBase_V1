@@ -1,7 +1,5 @@
 tabac             = {}
 
-
-
 tabac.jeveuxmarker = true --- true = Oui | false = Non
 
 tabac.jeveuxblips = true --- true = Oui | false = Non
@@ -13,31 +11,31 @@ tabac.ventemax = 200 --- vente maximale
 
 tabac.pos = {
 	coffre = {
-		position = {x = -36.44, y = -1060.58, z = 27.60}
+		position = {x = 2900.1979980469, y = 4411.55078125, z = 50.285617828369}
 	},
 		garage = {
-		position = {x = -40.99, y = -1067.29, z = 27.60}
+		position = {x = 2906.9682617188, y = 4397.8315429688, z = 50.253471374512}
 	},
 		spawnvoiture = {
-		position = {x = -40.96, y = -1067.66, z = 26.60, h = 66.43}
+		position = {x = 2896.4792480469, y = 4392.25390625, z = 50.311515808105, h = 206.0}
 	},
-		boss = {
+	boss = {
 		position = {x = -33.32, y = -1070.78, z = 27.60}
 	},
 	blips = {
-		position = {x = -50.17, y = -1056.88, z = 27.86}
+		position = {x = 2907.0446777344, y = 4406.9091796875, z = 50.217945098877}
 	},
 	recolte = {
-		position = {x = 482.62, y = 6487.40, z = 30.09}
+		position = {x = 2855.2568359375, y = 4597.2333984375, z = 47.942863464355}
 	},
 	traitement = {
-		position = {x = 2343.54, y = 3142.21, z = 48.20}
+		position = {x = 2886.4592285156, y = 4505.2895507813, z = 48.152717590332}
 	},
 	transformation = {
-		position = {x = 2340.65, y = 3126.47, z = 48.20}
+		position = {x = 2902.4523925781, y = 4489.017578125, z = 48.094261169434}
 	},
 	vente = {
-		position = {x = -1173.56, y = -1573.27, z = 4.37}
+		position = {x = -1459.2877197266, y = -414.0280456543, z = 35.728992462158}
 	},
     }
 

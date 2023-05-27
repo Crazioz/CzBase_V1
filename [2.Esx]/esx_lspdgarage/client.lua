@@ -491,7 +491,7 @@ VehicleMenu = function(type)
 
 		insideMarker = false
 
-		local plate = exports['rxeCarDealer']:GeneratePlate()
+		local plate = exports['renzu_vehicleshop:GenPlate']
 
 		VehicleLoadTimer(data.current.model)
 

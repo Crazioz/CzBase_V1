@@ -46,9 +46,9 @@ Config = {
 	
 
 AmbuVehiculesAmbulance = { 
-	{buttoname = "Dodge Charger", rightlabel = "→→", spawnname = "emscharger", spawnzone = vector3(325.23040771484,-593.12585449219,43.284049987793), headingspawn = 70.0}, -- Garage Voiture
-	{buttoname = "Ford Explorer", rightlabel = "→→", spawnname = "emsfpiu", spawnzone = vector3(325.23040771484,-593.12585449219,43.284049987793), headingspawn = 70.0}, -- Garage Voiture
-    {buttoname = "Chevrolet Tahoe", rightlabel = "→→", spawnname = "emstahoe", spawnzone = vector3(325.23040771484,-593.12585449219,43.284049987793), headingspawn = 70.0}, -- Garage Voiture
+	{buttoname = "Dodge Charger", rightlabel = "→→", spawnname = "emscharger", spawnzone = vector3(326.68426513672,-587.77160644531,28.796842575073), headingspawn = 339.0}, -- Garage Voiture
+	{buttoname = "Ford Explorer", rightlabel = "→→", spawnname = "emsfpiu", spawnzone = vector3(323.35559082031,-587.30706787109,28.796842575073), headingspawn = 339.0}, -- Garage Voiture
+    {buttoname = "Chevrolet Tahoe", rightlabel = "→→", spawnname = "emstahoe", spawnzone = vector3(319.81811523438,-586.37072753906,28.796842575073), headingspawn = 339.0}, -- Garage Voiture
 },
 
 AmbuHelicoAmbulance = { 
@@ -70,7 +70,7 @@ Position = {
         Pharmacie = {vector3(306.57214355469,-601.67651367188,43.284049987793)}, -- Menu Pharmacie 
         Vestaire = {vector3(-665.78, 323.63, 0.0)}, -- Menu Vestaire 
         Accueil = {vector3(308.57217407227,-592.62811279297,43.284042358398)}, -- Menu Pour Accueil 
-        GarageVehicule = {vector3(325.23040771484,-593.12585449219,43.284049987793)}, -- Menu Garage Vehicule
+        GarageVehicule = {vector3(336.75228881836,-581.93365478516,28.796869277954)}, -- Menu Garage Vehicule
 	    GarageHeli = {vector3(351.82925415039,-587.82843017578,74.16178894043)}, -- Menu Garage Helico
     }
 }

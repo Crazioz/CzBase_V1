@@ -19,6 +19,3 @@ Position = {
      CoffreUnicorn = {vector3(100.98, -1315.08, 29.27)}, 
     }
 }
-
-
--- By Dobraziil

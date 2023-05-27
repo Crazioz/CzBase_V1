@@ -124,15 +124,7 @@ PL.BlipsSingle = {
         coords = vector3(-254.26171875,-2027.1669921875,29.940134048462),
     },
 
-    [2] = {
-        name = "Poste de police",
-        sprite = 60,
-        color = 29,
-        scale = 1.0,
-        coords = vector3(425.35772705078,-977.53735351563,30.710916519165),
-    },
-
-    --[3] = {
+    --[2] = {
     --    name = "Frontière Los santos",                                 --display name
     --    sprite = 461,                                   --https://docs.fivem.net/docs/game-references/blips/
     --    color = 44,                                      --https://docs.fivem.net/docs/game-references/blips/
@@ -140,7 +132,7 @@ PL.BlipsSingle = {
     --    coords = vector3(1446.7485351563,-2621.4538574219,48.442108154297)       --coordinates
     --},
 --
-    --[4] = {
+    --[3] = {
     --    name = "Frontière Cayo Perico",
     --    sprite = 461,
     --    color = 44,

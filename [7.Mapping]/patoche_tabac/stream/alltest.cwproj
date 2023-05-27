@@ -1,0 +1,29 @@
+<CodeWalkerProject>
+  <Name>New CodeWalker Project</Name>
+  <Version value="1" />
+  <YmapFilenames>
+    <Item>tabac5\patoche_tabac5_milo_.ymap</Item>
+    <Item>tabac4\patoche_tabac4_milo_.ymap</Item>
+    <Item>tabac3\patoche_tabac3_milo_.ymap</Item>
+    <Item>tabac2\patoche_tabac2_milo_.ymap</Item>
+    <Item>tabac1\patoche_tabac1_milo_.ymap</Item>
+    <Item>hei_cs2_05_critical_0.ymap</Item>
+    <Item>tabac6\patoche_tabac6_milo_.ymap</Item>
+    <Item>obj\tabac_pose.ymap</Item>
+  </YmapFilenames>
+  <YtypFilenames>
+    <Item>tabac1\patoche_tabac1.ytyp</Item>
+    <Item>obj\patoche_tabac_props.ytyp</Item>
+    <Item>tabac2\patoche_tabac2.ytyp</Item>
+    <Item>tabac3\patoche_tabac3.ytyp</Item>
+    <Item>tabac4\patoche_tabac4.ytyp</Item>
+    <Item>tabac5\patoche_tabac5.ytyp</Item>
+    <Item>tabac6\patoche_tabac6.ytyp</Item>
+  </YtypFilenames>
+  <YbnFilenames />
+  <YndFilenames />
+  <YnvFilenames />
+  <TrainsFilenames />
+  <ScenarioFilenames />
+  <AudioRelFilenames />
+</CodeWalkerProject>

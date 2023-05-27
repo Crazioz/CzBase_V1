@@ -11,13 +11,13 @@ Bahamas.pos = {
 		position = {x = -1396.68, y = -627.67, z = 30.32}
 	},
 	garage = {
-		position = {x = -1422.4, y = -597.29, z = 30.36}
+		position = {x = -1380.62890625, y = -578.82739257813, z = 30.112218856812}
 	},
 	spawnvoiture = {
-		position = {x = -1422.4, y = -597.29, z = 30.36, h = 299.63}
+		position = {x = -1373.7583007813, y = -579.89117431641, z = 30.012153625488, h = 33.0}
 	},
 	boss = {
-		position = {x = -1364.81, y = -623.25, z = 30.33}
+		position = {x = -1385.5600585938, y = -633.69891357422, z = 30.824474334717}
 	},
 	blips = {
 		position = {x = -1391.3, y = -583.31, z = 30.23}
@@ -29,11 +29,16 @@ Bahamas.pos = {
 
 Bar = {
     item = {
-    {Label = "Pain", Name = "pain", Price = 1},
-    {Label = "Eau", Name = "eau", Price = 1},
+    {Label = "Wisky", Name = "whisky", Price = 150},
+		{Label = "Vodka", Name = "vodka", Price = 150},
+		{Label = "Tequila", Name = "tequila", Price = 150},
+		{Label = "Rhum", Name = "Rhum", Price = 150},
+		{Label = "Bol de cacahuetes", Name = "bolcacahuetes", Price = 25},
+    {Label = "Bol de pistache", Name = "bolpistache", Price = 25},
     },
 }
 
 GBahamasvoiture = {
-    {nom = "Blista", modele = "blista"},
+    {nom = "cavalcade2", modele = "Cavalcade 2"},
+		{nom = "patriot2", modele = "Patriot 2"},
 }
