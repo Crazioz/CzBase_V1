@@ -102,28 +102,26 @@ function utils.hasExport(export)
     end)
 end
 
-local playerItems
+local playerItems = {}
 
 function utils.getItems()
-    if not playerItems then
-        playerItems = {}
-    end
-
     return playerItems
 end
 
-if utils.hasExport('ox_inventory.Items') then
-    playerItems = setmetatable({}, {
-        __index = function(self, index)
-            self[index] = exports.ox_inventory:Search('count', index) or 0
-            return self[index]
-        end
-    })
+SetTimeout(0, function()
+    if utils.hasExport('ox_inventory.Items') then
+        setmetatable(playerItems, {
+            __index = function(self, index)
+                self[index] = exports.ox_inventory:Search('count', index) or 0
+                return self[index]
+            end
+        })
 
-    AddEventHandler('ox_inventory:itemCount', function(name, count)
-        playerItems[name] = count
-    end)
-end
+        AddEventHandler('ox_inventory:itemCount', function(name, count)
+            playerItems[name] = count
+        end)
+    end
+end)
 
 ---@param filter string | string[] | table<string, number>
 ---@param hasAny boolean?

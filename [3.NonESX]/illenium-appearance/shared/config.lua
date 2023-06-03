@@ -43,6 +43,11 @@ Config.InvincibleDuringCustomization = true
 
 Config.PreventTrackerRemoval = true -- Disables "Scarf and Chains" section if the player has tracker
 
+Config.TrackerClothingOptions = {
+    drawable = 13,
+    texture = 0
+}
+
 Config.NewCharacterSections = {
     Ped = false,
     HeadBlend = true,
@@ -633,6 +638,28 @@ Config.ClothingRooms = {
     },
 
     {
+        job = "unicorn",
+        coords = vector4(109.72463226318,-1305.5177001953,29.255485534668, 61.8),
+        size = vector3(4, 4, 4),
+        rotation = 45,
+        usePoly = false,
+        points = {
+            vector3(109.72463226318,-1305.5177001953,29.255485534668)
+        }
+    },
+
+    {
+        job = "bahamas",
+        coords = vector4(-1371.2330322266,-626.01647949219,30.819562911987, 61.8),
+        size = vector3(4, 4, 4),
+        rotation = 45,
+        usePoly = false,
+        points = {
+            vector3(-1371.2330322266,-626.01647949219,30.819562911987)
+        }
+    },
+    
+    {
         job = "tabac",
         coords = vector4(2899.3034667969,4413.1103515625,50.285549163818,200.0),
         size = vector3(4, 4, 4),
@@ -641,23 +668,6 @@ Config.ClothingRooms = {
         points = {
             vector3(2899.3034667969,4413.1103515625,50.285549163818),
             vector3(2895.4816894531,4421.1982421875,50.285148620605)
-        }
-    },
-    {
-        job = "unicorn",
-        coords = vector4(106.57295227051,-1305.3776855469,29.255493164063, 121.2),
-        size = vector3(4, 4, 4),
-        rotation = 45,
-        usePoly = false,
-        points = {
-            vector3(106.57295227051,-1305.3776855469,29.255493164063),
-            vector3(449.39508056641, -993.60614013672, 30.69),
-            vector3(449.88696289062, -990.23779296875, 30.69),
-            vector3(450.97882080078, -989.71411132812, 30.69),
-            vector3(451.0325012207, -987.89904785156, 30.69),
-            vector3(453.47863769531, -987.76928710938, 30.69),
-            vector3(454.35513305664, -988.46459960938, 30.69),
-            vector3(460.4231262207, -987.94573974609, 30.69)
         }
     },
 
@@ -678,7 +688,6 @@ Config.ClothingRooms = {
             vector3(460.4231262207, -987.94573974609, 30.69)
         }
     },
-
 
     -- Factions
     
@@ -1093,7 +1102,7 @@ Config.Outfits = {
         },
         ["Female"] = {
             {
-                name = "Worker",
+                name = "Tenue de travail",
                 outfitData = {
                     ["pants"]       = { item = 57, texture = 2},  -- Pants
                     ["arms"]        = { item = 0, texture = 0},  -- Arms
@@ -1115,7 +1124,7 @@ Config.Outfits = {
         ["Male"] = {
             {
                 -- Outfits
-                name = "Worker",
+                name = "Tenue de travail",
                 outfitData = {
                     ["pants"]       = { item = 28, texture = 0},  -- Pants
                     ["arms"]        = { item = 1, texture = 0},  -- Arms
@@ -1134,7 +1143,7 @@ Config.Outfits = {
         },
         ["Female"] = {
             {
-                name = "Worker",
+                name = "Tenue de travail",
                 outfitData = {
                     ["pants"]       = { item = 57, texture = 2},  -- Pants
                     ["arms"]        = { item = 0, texture = 0},  -- Arms
@@ -1156,7 +1165,7 @@ Config.Outfits = {
         ["Male"] = {
             {
                 -- Outfits
-                name = "Worker",
+                name = "Tenue de travail",
                 outfitData = {
                     ["pants"]       = { item = 4, texture = 0},  -- Pants
                     ["arms"]        = { item = 11, texture = 0},  -- Arms
@@ -1175,7 +1184,7 @@ Config.Outfits = {
         },
         ["Female"] = {
             {
-                name = "Worker",
+                name = "Tenue de travail",
                 outfitData = {
                     ["pants"]       = { item = 57, texture = 2},  -- Pants
                     ["arms"]        = { item = 0, texture = 0},  -- Arms
@@ -1372,7 +1381,7 @@ Config.Outfits = {
         ["Male"] = {
             {
                 -- Outfits
-                name = "Worker",
+                name = "Tenue de travail",
                 outfitData = {
                     ["pants"]       = { item = 28, texture = 0},  -- Pants
                     ["arms"]        = { item = 1, texture = 0},  -- Arms
@@ -1391,7 +1400,48 @@ Config.Outfits = {
         },
         ["Female"] = {
             {
-                name = "Worker",
+                name = "Tenue de travail",
+                outfitData = {
+                    ["pants"]       = { item = 57, texture = 2},  -- Pants
+                    ["arms"]        = { item = 0, texture = 0},  -- Arms
+                    ["t-shirt"]     = { item = 34, texture = 0},  -- T Shirt
+                    ["vest"]        = { item = 0, texture = 0},  -- Body Vest
+                    ["torso2"]      = { item = 105, texture = 7},  -- Jacket
+                    ["shoes"]       = { item = 8, texture = 5},  -- Shoes
+                    ["accessory"]   = { item = 11, texture = 3},  -- Neck Accessory
+                    ["bag"]         = { item = 0, texture = 0},  -- Bag
+                    ["hat"]         = { item = -1, texture = -1},  -- Hat
+                    ["glass"]       = { item = 0, texture = 0},  -- Glasses
+                    ["mask"]        = { item = 0, texture = 0},  -- Mask
+                },
+                grades = {0, 1, 2, 3, 4},
+            }
+        }
+    },
+    ["bahamas"] = {
+        ["Male"] = {
+            {
+                -- Outfits
+                name = "Tenue de travail",
+                outfitData = {
+                    ["pants"]       = { item = 28, texture = 0},  -- Pants
+                    ["arms"]        = { item = 1, texture = 0},  -- Arms
+                    ["t-shirt"]     = { item = 31, texture = 0},  -- T Shirt
+                    ["vest"]        = { item = 0, texture = 0},  -- Body Vest
+                    ["torso2"]      = { item = 294, texture = 0},  -- Jacket
+                    ["shoes"]       = { item = 10, texture = 0},  -- Shoes
+                    ["accessory"]   = { item = 0, texture = 0},  -- Neck Accessory
+                    ["bag"]         = { item = 0, texture = 0},  -- Bag
+                    ["hat"]         = { item = 12, texture = -1},  -- Hat
+                    ["glass"]       = { item = 0, texture = 0},  -- Glasses
+                    ["mask"]        = { item = 0, texture = 0},  -- Mask
+                },
+                grades = {0, 1, 2, 3, 4},
+            }
+        },
+        ["Female"] = {
+            {
+                name = "Tenue de travail",
                 outfitData = {
                     ["pants"]       = { item = 57, texture = 2},  -- Pants
                     ["arms"]        = { item = 0, texture = 0},  -- Arms
@@ -1413,7 +1463,7 @@ Config.Outfits = {
         ["Male"] = {
             {
                 -- Outfits
-                name = "Worker",
+                name = "Tenue de travail",
                 outfitData = {
                     ["pants"]       = { item = 28, texture = 0},  -- Pants
                     ["arms"]        = { item = 1, texture = 0},  -- Arms
@@ -1432,7 +1482,7 @@ Config.Outfits = {
         },
         ["Female"] = {
             {
-                name = "Worker",
+                name = "Tenue de travail",
                 outfitData = {
                     ["pants"]       = { item = 57, texture = 2},  -- Pants
                     ["arms"]        = { item = 0, texture = 0},  -- Arms
@@ -1457,7 +1507,7 @@ Config.Outfits = {
         ["Male"] = {
             {
                 -- Outfits
-                name = "Worker",
+                name = "Tenue de travail",
                 outfitData = {
                     ["pants"]       = { item = 28, texture = 0},  -- Pants
                     ["arms"]        = { item = 1, texture = 0},  -- Arms
@@ -1476,7 +1526,7 @@ Config.Outfits = {
         },
         ["Female"] = {
             {
-                name = "Worker",
+                name = "Tenue de travail",
                 outfitData = {
                     ["pants"]       = { item = 57, texture = 2},  -- Pants
                     ["arms"]        = { item = 0, texture = 0},  -- Arms
@@ -1499,7 +1549,7 @@ Config.Outfits = {
         ["Male"] = {
             {
                 -- Outfits
-                name = "Worker",
+                name = "Tenue de travail",
                 outfitData = {
                     ["pants"]       = { item = 28, texture = 0},  -- Pants
                     ["arms"]        = { item = 1, texture = 0},  -- Arms
@@ -1518,7 +1568,7 @@ Config.Outfits = {
         },
         ["Female"] = {
             {
-                name = "Worker",
+                name = "Tenue de travail",
                 outfitData = {
                     ["pants"]       = { item = 57, texture = 2},  -- Pants
                     ["arms"]        = { item = 0, texture = 0},  -- Arms
