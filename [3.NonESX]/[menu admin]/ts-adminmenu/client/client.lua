@@ -4453,8 +4453,9 @@ local LoadOnlinePlayersEach = function()
             end
         })
     end
+
     ----------------------------------------------------------------------------
-    
+    ----------------------------------------------------------------------------
 end
 local LoadVehicleOptions = function()
     vehicleoptions:ClearItems()
@@ -6426,7 +6427,7 @@ local LoadMiscSettings = function()
                             break
                         end
 
-                        Wait(5)
+                        Wait(7500)
                     end
                     lib.notify({
                         title = 'TS Admin Menu',
@@ -6925,7 +6926,7 @@ local LoadMiscSettings = function()
 
         local misc_playerblips = miscsettings:AddCheckbox({
             icon = '🔍',
-            label = 'Blips de joueur',
+            label = 'Blips de joueur',  
             value = 'n'
         })
 
@@ -6942,7 +6943,7 @@ local LoadMiscSettings = function()
             for k, v in pairs(plyblips) do
                 while DoesBlipExist(v) == 1 do
                     RemoveBlip(v)
-                    Wait(0)
+                    Wait(150)
                 end
             end
 
@@ -7174,10 +7175,12 @@ end)
 local SetPlayerSkin = function(ped)
     local modelHash = GetHashKey(ped)
     if IsModelInCdimage(modelHash) and IsModelValid(modelHash) then
+        if not HasModelLoaded(modelHash) then
         RequestModel(modelHash)
         while not HasModelLoaded(modelHash) do
             Citizen.Wait(0)
         end
+    end
         if GetEntityModel(PlayerPedId()) ~= modelHash then
             SetPlayerModel(PlayerId(), modelHash)
             SetModelAsNoLongerNeeded(modelHash)
@@ -7299,3 +7302,8 @@ RegisterNetEvent('ts-adminmenu:client:RemoveItem', function(ply, list)
     })
     lib.showContext('remove_item')
 end)
+
+TriggerEvent('chat:addSuggestion', '/kick', "Forcer la déconnection d'une personne", {
+	{name = "id", help = "Id du joueur (ou me)"},
+	{name = "raison", help = "Raison du Kick"},
+})

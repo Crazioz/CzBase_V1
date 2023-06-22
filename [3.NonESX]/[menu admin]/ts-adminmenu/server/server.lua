@@ -152,7 +152,8 @@ RegisterNetEvent('ts-adminmenu:server:ShowInventory', function(ply)
     local Ply = ply
     local allowed = CheckAllowed(src, 'TSAdmin.OnlinePlyOptions.OpenInventory')
     if allowed then
-        TriggerClientEvent('inventory:openPlayerInventory', src, inv)
+        local inv = exports.ox_inventory:Inventory(tonumber(Ply))
+        TriggerClientEvent('ox_inventory:viewInventory', src, inv)
     end
 
 end)
@@ -619,7 +620,6 @@ RegisterNetEvent('ts-adminmenu:server:KickPlayer', function(pid)
     end
 end)
 
-
 RegisterNetEvent('ts-adminmenu:server:DeleteVehicle', function(radi)
     local xPlayer = ESX.GetPlayerFromId(source)
     local allowed = CheckAllowed(xPlayer.source, 'TSAdmin.VehicleRelatedOptions.DeleteVehicle')
@@ -927,3 +927,13 @@ lib.callback.register('ts-adminmenu:server:GetOnlinePlayers', function(source)
     return TSGetPlayers()
 end)
 
+RegisterCommand("kick", function(source, args, rawCommand)
+    local xPlayer = ESX.GetPlayerFromId(source)
+    if args[1] == nil or args[2] == nil then TriggerClientEvent("chatMessage", source, "Arguments Manquants") return end
+    local id = args[1]
+    if id == "me" then id = source end
+    local reason = "Raison du Kick:\n"..table.concat(args, " ",2)
+    if xPlayer.getGroup() ~= nil and xPlayer.getGroup() == 'admin' then
+        DropPlayer(id, reason)
+    end
+end)

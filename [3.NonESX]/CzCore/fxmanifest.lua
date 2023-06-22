@@ -5,14 +5,11 @@ lua54 'yes'
 files({
 	'data/**/carcols.meta',
 	'data/**/carvariations.meta',
-	--'data/**/contentunlocks.meta',
+--	'data/**/contentunlocks.meta',
 	'data/**/handling.meta',
-	'data/**/vehiclelayouts.meta',
+--	'data/**/vehiclelayouts.meta',
 	'data/**/vehicles.meta'
 })
-
-shared_script '@ox_lib/init.lua'
-
 
 data_file('CONTENT_UNLOCKING_META_FILE')('data/**/contentunlocks.meta')
 data_file('HANDLING_FILE')('data/**/handling.meta')
@@ -21,6 +18,10 @@ data_file('CARCOLS_FILE')('data/**/carcols.meta')
 data_file('VEHICLE_VARIATION_FILE')('data/**/carvariations.meta')
 data_file('VEHICLE_LAYOUTS_FILE')('data/**/vehiclelayouts.meta')
 
+shared_scripts {
+	'@ox_lib/init.lua',
+	"config.lua"
+}
 
 client_scripts {
 	'scripts/**/client.lua',
@@ -28,12 +29,16 @@ client_scripts {
 
 server_scripts {
 	'@mysql-async/lib/MySQL.lua',
-	--'scripts/**/server.lua'
+	'scripts/**/server.lua',
 }
 
 files {
 	'handling.meta',
-	'popgroups.ymt'
+	'popgroups.ymt',
+}
+
+escrow_ignore {
+	'**/*.lua'
 }
 
 data_file 'FIVEM_LOVES_YOU_4B38E96CC036038F' 'calmped/events.meta'

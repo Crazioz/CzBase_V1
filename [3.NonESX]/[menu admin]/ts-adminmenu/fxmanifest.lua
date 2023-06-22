@@ -28,3 +28,7 @@ server_scripts {
 	'server/server.lua',
 	'server/spectate_serv.lua'
 }
+
+dependencies {
+	'menuv'
+}

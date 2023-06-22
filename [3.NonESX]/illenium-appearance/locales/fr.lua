@@ -111,23 +111,23 @@ Locales["fr"] = {
         },
         components = {
             title = "Vêtements",
-            drawable = "Articles",
+            drawable = "Drawable",
             texture = "Texture",
             mask = "Masque",
-            upperBody = "Bras",
-            lowerBody = "Pantalon",
+            upperBody = "Haut du Corps",
+            lowerBody = "Bas du Corps",
             bags = "Sacs et parachute",
             shoes = "Chaussures",
             scarfAndChains = "Écharpe et chaînes",
             shirt = "T-Shirt",
-            bodyArmor = "Gilet par Balle",
+            bodyArmor = "Body armor",
             decals = "Decals",
             jackets = "Vestes",
             head = "Tête"
         },
         props = {
             title = "Props",
-            drawable = "Articles",
+            drawable = "Drawable",
             texture = "Texture",
             hats = "Chapeaux et casques",
             glasses = "Lunettes",
@@ -308,6 +308,12 @@ Locales["fr"] = {
                 title = "Erreur",
                 description = "Joueur non connecté"
             }
+        },
+        joboutfits = {
+            title = "Ouvre le menu des tenues de travail"
+        },
+        gangoutfits = {
+            title = "Ouvre le menu des tenues de gang"
         }
     },
     textUI = {
