@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1
--- Généré le : sam. 27 mai 2023 à 22:09
+-- Généré le : jeu. 22 juin 2023 à 11:14
 -- Version du serveur : 10.4.28-MariaDB
 -- Version de PHP : 8.2.4
 
@@ -138,6 +138,23 @@ CREATE TABLE `addon_inventory_items` (
 -- --------------------------------------------------------
 
 --
+-- Structure de la table `baninfo`
+--
+
+CREATE TABLE `baninfo` (
+  `id` int(11) NOT NULL,
+  `license` varchar(50) DEFAULT NULL,
+  `identifier` varchar(25) DEFAULT NULL,
+  `liveid` varchar(21) DEFAULT NULL,
+  `xblid` varchar(21) DEFAULT NULL,
+  `discord` varchar(30) DEFAULT NULL,
+  `playerip` varchar(25) DEFAULT NULL,
+  `playername` varchar(32) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+
+-- --------------------------------------------------------
+
+--
 -- Structure de la table `banking`
 --
 
@@ -149,6 +166,50 @@ CREATE TABLE `banking` (
   `ID` int(11) NOT NULL,
   `balance` int(11) DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `banlist`
+--
+
+CREATE TABLE `banlist` (
+  `license` varchar(50) NOT NULL,
+  `identifier` varchar(25) DEFAULT NULL,
+  `liveid` varchar(21) DEFAULT NULL,
+  `xblid` varchar(21) DEFAULT NULL,
+  `discord` varchar(30) DEFAULT NULL,
+  `playerip` varchar(25) DEFAULT NULL,
+  `targetplayername` varchar(32) DEFAULT NULL,
+  `sourceplayername` varchar(32) DEFAULT NULL,
+  `reason` varchar(255) NOT NULL,
+  `timeat` varchar(50) NOT NULL,
+  `expiration` varchar(50) NOT NULL,
+  `permanent` int(1) NOT NULL DEFAULT 0
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `banlisthistory`
+--
+
+CREATE TABLE `banlisthistory` (
+  `id` int(11) NOT NULL,
+  `license` varchar(50) DEFAULT NULL,
+  `identifier` varchar(25) DEFAULT NULL,
+  `liveid` varchar(21) DEFAULT NULL,
+  `xblid` varchar(21) DEFAULT NULL,
+  `discord` varchar(30) DEFAULT NULL,
+  `playerip` varchar(25) DEFAULT NULL,
+  `targetplayername` varchar(32) DEFAULT NULL,
+  `sourceplayername` varchar(32) DEFAULT NULL,
+  `reason` varchar(255) NOT NULL,
+  `timeat` int(11) NOT NULL,
+  `added` varchar(40) NOT NULL,
+  `expiration` int(11) NOT NULL,
+  `permanent` int(1) NOT NULL DEFAULT 0
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
 -- --------------------------------------------------------
 
@@ -832,7 +893,7 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`identifier`, `accounts`, `group`, `inventory`, `job`, `job_grade`, `loadout`, `metadata`, `position`, `skin`, `faction`, `faction_grade`, `firstname`, `lastname`, `dateofbirth`, `sex`, `height`, `name`, `hotbar`, `status`, `phone_number`, `pincode`, `is_dead`) VALUES
-('96accefda755458c14ad75ae3824d5ecc56e8638', '{\"bank\":50000,\"black_money\":0,\"money\":220485}', 'admin', '{\"hamburger\":1,\"weed_pochon\":8,\"sprite\":13,\"cookie\":1,\"weed\":2,\"phone\":1,\"chips\":1,\"hotdog\":7,\"water\":1,\"tacos\":1,\"saucisson\":2,\"icetea\":1}', 'tabac', 2, '{\"WEAPON_STUNGUN\":{\"ammo\":100},\"WEAPON_PISTOL\":{\"ammo\":84},\"WEAPON_FLASHLIGHT\":{\"ammo\":100}}', '[]', '{\"y\":-595.4373779296875,\"x\":330.5406494140625,\"heading\":266.4566955566406,\"z\":44.2255859375}', '{\"tattoos\":[],\"components\":[{\"drawable\":0,\"texture\":0,\"component_id\":0},{\"drawable\":0,\"texture\":0,\"component_id\":1},{\"drawable\":0,\"texture\":0,\"component_id\":2},{\"drawable\":0,\"texture\":0,\"component_id\":5},{\"drawable\":0,\"texture\":0,\"component_id\":7},{\"drawable\":0,\"texture\":0,\"component_id\":9},{\"drawable\":0,\"texture\":0,\"component_id\":10},{\"drawable\":43,\"texture\":0,\"component_id\":11},{\"drawable\":154,\"texture\":0,\"component_id\":8},{\"drawable\":4,\"texture\":0,\"component_id\":4},{\"drawable\":11,\"texture\":0,\"component_id\":3},{\"drawable\":12,\"texture\":0,\"component_id\":6}],\"props\":[{\"drawable\":-1,\"prop_id\":1,\"texture\":-1},{\"drawable\":-1,\"prop_id\":2,\"texture\":-1},{\"drawable\":-1,\"prop_id\":6,\"texture\":-1},{\"drawable\":-1,\"prop_id\":7,\"texture\":-1},{\"drawable\":12,\"prop_id\":0,\"texture\":0}],\"model\":\"mp_m_freemode_01\",\"hair\":{\"style\":0,\"color\":0,\"texture\":0,\"highlight\":0},\"headBlend\":{\"shapeMix\":0,\"skinThird\":0,\"skinSecond\":0,\"skinFirst\":5,\"shapeFirst\":10,\"shapeSecond\":0,\"thirdMix\":0,\"skinMix\":0,\"shapeThird\":0},\"eyeColor\":-1,\"headOverlays\":{\"moleAndFreckles\":{\"style\":0,\"color\":0,\"secondColor\":0,\"opacity\":0},\"eyebrows\":{\"style\":10,\"color\":0,\"secondColor\":0,\"opacity\":1},\"complexion\":{\"style\":0,\"color\":0,\"secondColor\":0,\"opacity\":0},\"blemishes\":{\"style\":0,\"color\":0,\"secondColor\":0,\"opacity\":0},\"ageing\":{\"style\":0,\"color\":0,\"secondColor\":0,\"opacity\":0},\"blush\":{\"style\":0,\"color\":0,\"secondColor\":0,\"opacity\":0},\"beard\":{\"style\":10,\"color\":0,\"secondColor\":0,\"opacity\":1},\"lipstick\":{\"style\":0,\"color\":0,\"secondColor\":0,\"opacity\":0},\"bodyBlemishes\":{\"style\":0,\"color\":0,\"secondColor\":0,\"opacity\":0},\"sunDamage\":{\"style\":0,\"color\":0,\"secondColor\":0,\"opacity\":0},\"makeUp\":{\"style\":0,\"color\":0,\"secondColor\":0,\"opacity\":0},\"chestHair\":{\"style\":0,\"color\":0,\"secondColor\":0,\"opacity\":0}},\"faceFeatures\":{\"jawBoneBackSize\":0,\"cheeksBoneWidth\":0,\"eyeBrownForward\":0,\"jawBoneWidth\":0,\"chinBoneSize\":0,\"noseBoneTwist\":0,\"chinBoneLenght\":0,\"neckThickness\":0,\"chinBoneLowering\":0,\"nosePeakSize\":0,\"cheeksWidth\":0,\"noseWidth\":0,\"lipsThickness\":0,\"cheeksBoneHigh\":0,\"eyesOpening\":0,\"eyeBrownHigh\":0,\"chinHole\":0,\"noseBoneHigh\":0,\"nosePeakLowering\":0,\"nosePeakHigh\":0}}', 'nofaction', 0, 'Franck', 'Graves', '2002-11-14', 'm', '183', 'fr', '{\"0\":{\"type\":\"item_weapon\",\"label\":\"Pistolet\",\"name\":\"WEAPON_PISTOL\"},\"1\":{\"name\":\"WEAPON_STUNGUN\",\"label\":\"Tazer\",\"type\":\"item_weapon\"},\"2\":{\"name\":\"WEAPON_FLASHLIGHT\",\"label\":\"Lampe torche\",\"type\":\"item_weapon\"}}', '[{\"val\":0,\"percent\":0.0,\"name\":\"drunk\"},{\"val\":545000,\"percent\":54.50000000000001,\"name\":\"hunger\"},{\"val\":431250,\"percent\":43.125,\"name\":\"thirst\"},{\"val\":0,\"percent\":0.0,\"name\":\"drunk\"}]', '956-7012', NULL, 0);
+('96accefda755458c14ad75ae3824d5ecc56e8638', '{\"money\":220485,\"bank\":50000,\"black_money\":0}', 'admin', '{\"water\":1,\"cookie\":1,\"tacos\":1,\"phone\":1,\"chips\":1,\"hotdog\":7,\"weed\":2,\"sprite\":11,\"hamburger\":1,\"weed_pochon\":8}', 'bahamas', 3, '{\"WEAPON_STUNGUN\":{\"ammo\":100},\"WEAPON_FLASHLIGHT\":{\"ammo\":100},\"WEAPON_PISTOL\":{\"ammo\":84}}', '[]', '{\"z\":29.3304443359375,\"y\":-1032.3956298828126,\"x\":153.13845825195313,\"heading\":153.07086181640626}', '{\"tattoos\":[],\"components\":[{\"drawable\":0,\"texture\":0,\"component_id\":0},{\"drawable\":0,\"texture\":0,\"component_id\":1},{\"drawable\":0,\"texture\":0,\"component_id\":2},{\"drawable\":0,\"texture\":0,\"component_id\":5},{\"drawable\":0,\"texture\":0,\"component_id\":7},{\"drawable\":0,\"texture\":0,\"component_id\":9},{\"drawable\":0,\"texture\":0,\"component_id\":10},{\"drawable\":43,\"texture\":0,\"component_id\":11},{\"drawable\":154,\"texture\":0,\"component_id\":8},{\"drawable\":4,\"texture\":0,\"component_id\":4},{\"drawable\":11,\"texture\":0,\"component_id\":3},{\"drawable\":12,\"texture\":0,\"component_id\":6}],\"props\":[{\"drawable\":-1,\"prop_id\":1,\"texture\":-1},{\"drawable\":-1,\"prop_id\":2,\"texture\":-1},{\"drawable\":-1,\"prop_id\":6,\"texture\":-1},{\"drawable\":-1,\"prop_id\":7,\"texture\":-1},{\"drawable\":12,\"prop_id\":0,\"texture\":0}],\"model\":\"mp_m_freemode_01\",\"hair\":{\"style\":0,\"color\":0,\"texture\":0,\"highlight\":0},\"headBlend\":{\"shapeMix\":0,\"skinThird\":0,\"skinSecond\":0,\"skinFirst\":5,\"shapeFirst\":10,\"shapeSecond\":0,\"thirdMix\":0,\"skinMix\":0,\"shapeThird\":0},\"eyeColor\":-1,\"headOverlays\":{\"moleAndFreckles\":{\"style\":0,\"color\":0,\"secondColor\":0,\"opacity\":0},\"eyebrows\":{\"style\":10,\"color\":0,\"secondColor\":0,\"opacity\":1},\"complexion\":{\"style\":0,\"color\":0,\"secondColor\":0,\"opacity\":0},\"blemishes\":{\"style\":0,\"color\":0,\"secondColor\":0,\"opacity\":0},\"ageing\":{\"style\":0,\"color\":0,\"secondColor\":0,\"opacity\":0},\"blush\":{\"style\":0,\"color\":0,\"secondColor\":0,\"opacity\":0},\"beard\":{\"style\":10,\"color\":0,\"secondColor\":0,\"opacity\":1},\"lipstick\":{\"style\":0,\"color\":0,\"secondColor\":0,\"opacity\":0},\"bodyBlemishes\":{\"style\":0,\"color\":0,\"secondColor\":0,\"opacity\":0},\"sunDamage\":{\"style\":0,\"color\":0,\"secondColor\":0,\"opacity\":0},\"makeUp\":{\"style\":0,\"color\":0,\"secondColor\":0,\"opacity\":0},\"chestHair\":{\"style\":0,\"color\":0,\"secondColor\":0,\"opacity\":0}},\"faceFeatures\":{\"jawBoneBackSize\":0,\"cheeksBoneWidth\":0,\"eyeBrownForward\":0,\"jawBoneWidth\":0,\"chinBoneSize\":0,\"noseBoneTwist\":0,\"chinBoneLenght\":0,\"neckThickness\":0,\"chinBoneLowering\":0,\"nosePeakSize\":0,\"cheeksWidth\":0,\"noseWidth\":0,\"lipsThickness\":0,\"cheeksBoneHigh\":0,\"eyesOpening\":0,\"eyeBrownHigh\":0,\"chinHole\":0,\"noseBoneHigh\":0,\"nosePeakLowering\":0,\"nosePeakHigh\":0}}', 'nofaction', 0, 'Franck', 'Graves', '2002-11-14', 'm', '183', 'fr', '{\"0\":{\"type\":\"item_weapon\",\"label\":\"Pistolet\",\"name\":\"WEAPON_PISTOL\"},\"1\":{\"name\":\"WEAPON_STUNGUN\",\"label\":\"Tazer\",\"type\":\"item_weapon\"},\"2\":{\"name\":\"WEAPON_FLASHLIGHT\",\"label\":\"Lampe torche\",\"type\":\"item_weapon\"}}', '[{\"val\":0,\"name\":\"drunk\",\"percent\":0.0},{\"val\":862000,\"name\":\"hunger\",\"percent\":86.2},{\"val\":827500,\"name\":\"thirst\",\"percent\":82.75},{\"val\":0,\"name\":\"drunk\",\"percent\":0.0}]', '956-7012', NULL, 0);
 
 -- --------------------------------------------------------
 
@@ -1279,10 +1340,28 @@ ALTER TABLE `addon_inventory_items`
   ADD KEY `index_addon_inventory_inventory_name` (`inventory_name`);
 
 --
+-- Index pour la table `baninfo`
+--
+ALTER TABLE `baninfo`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Index pour la table `banking`
 --
 ALTER TABLE `banking`
   ADD PRIMARY KEY (`ID`);
+
+--
+-- Index pour la table `banlist`
+--
+ALTER TABLE `banlist`
+  ADD PRIMARY KEY (`license`);
+
+--
+-- Index pour la table `banlisthistory`
+--
+ALTER TABLE `banlisthistory`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Index pour la table `billing`
@@ -1487,10 +1566,22 @@ ALTER TABLE `addon_inventory_items`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
+-- AUTO_INCREMENT pour la table `baninfo`
+--
+ALTER TABLE `baninfo`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT pour la table `banking`
 --
 ALTER TABLE `banking`
   MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT pour la table `banlisthistory`
+--
+ALTER TABLE `banlisthistory`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT pour la table `billing`
