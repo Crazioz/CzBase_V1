@@ -11,15 +11,7 @@ require 'client.defaults'
 require 'client.compat.qtarget'
 require 'client.compat.qb-target'
 
-if utils.hasExport('ox_core.GetPlayerData') then
-    require 'client.framework.ox'
-elseif utils.hasExport('es_extended.getSharedObject') then
-    require 'client.framework.esx'
-elseif utils.hasExport('qb-core.GetCoreObject') then
-    require 'client.framework.qb'
-end
-
-local raycastFromCamera, getNearbyZones, drawZoneSprites, getCurrentZone, hasPlayerGotItems, hasPlayerGotGroup in utils
+local raycastFromCamera, getNearbyZones, drawZoneSprites, getCurrentZone in utils
 local SendNuiMessage = SendNuiMessage
 local GetEntityCoords = GetEntityCoords
 local GetEntityType = GetEntityType
@@ -54,11 +46,11 @@ local function shouldHide(option, distance, entityHit, endCoords)
         return true
     end
 
-    if option.groups and not hasPlayerGotGroup(option.groups) then
+    if option.groups and not utils.hasPlayerGotGroup(option.groups) then
         return true
     end
 
-    if option.items and not hasPlayerGotItems(option.items, option.anyItem) then
+    if option.items and not utils.hasPlayerGotItems(option.items, option.anyItem) then
         return true
     end
 
@@ -114,6 +106,11 @@ local function startTargeting()
     local hit, entityHit, endCoords, distance, currentZone, nearbyZones, lastEntity, entityType, entityModel, hasTick, hasTarget
 
     while state.isActive() do
+        if not state.isNuiFocused() and lib.progressActive() then
+            state.setActive(false)
+            break
+        end
+
         local playerCoords = GetEntityCoords(cache.ped)
         hit, entityHit, endCoords = raycastFromCamera(flag)
         distance = #(playerCoords - endCoords)

@@ -21922,8 +21922,6 @@ ${transactionErrorMessage}^0`
 // src/utils/parseExecute.ts
 var executeType = (query) => {
   switch (query.substring(0, query.indexOf(" "))) {
-    case "SELECT":
-      return null;
     case "INSERT":
       return "insert";
     case "UPDATE":
@@ -21931,7 +21929,7 @@ var executeType = (query) => {
     case "DELETE":
       return "update";
     default:
-      throw new Error(`Prepared statements only accept SELECT, INSERT, UPDATE, and DELETE methods.`);
+      return null;
   }
 };
 var parseExecute = (placeholders, parameters) => {
@@ -21955,7 +21953,7 @@ var parseExecute = (placeholders, parameters) => {
         } else
           arr[index] = parameters[index];
         for (let i2 = 0; i2 < placeholders; i2++) {
-          if (!arr[index][i2])
+          if (arr[index][i2] === void 0)
             arr[index][i2] = null;
         }
       });
