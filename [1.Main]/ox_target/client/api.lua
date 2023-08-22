@@ -1,23 +1,5 @@
----@class TargetOptions
----@field label string
----@field name? string
----@field icon? string
----@field iconColor? string
----@field distance? number
----@field bones? string | string[]
----@field groups? string | string[] | table<string, number>
----@field items? string | string[] | table<string, number>
----@field anyItem? boolean
----@field canInteract fun(entity?: number, distance: number, coords: vector3, name?: string, bone?: number): boolean?
----@field onSelect? fun(data: TargetOptions | number)
----@field export? string
----@field event? string
----@field serverEvent? string
----@field command? string
----@field resource string
----@field openMenu? string
----@field menuName? string
----@field [string] any
+---@class OxTargetOption
+---@field resource? string
 
 local api = setmetatable({}, {
     __newindex = function(self, index, value)
@@ -26,29 +8,43 @@ local api = setmetatable({}, {
     end
 })
 
----@param data table
+local function debugWarning(msg)
+    local trace = Citizen.InvokeNative(`FORMAT_STACK_TRACE` & 0xFFFFFFFF, nil, 0, Citizen.ResultAsString())
+    local _, _, src = string.strsplit('\n', trace, 4)
+
+    warn(('%s ^0%s\n'):format(msg, src:gsub(".-%(", '(')))
+end
+
+---@param data OxTargetPolyZone
 ---@return number
 function api.addPolyZone(data)
+    if data.debug then debugWarning('Creating new PolyZone with debug enabled.') end
+
     data.resource = GetInvokingResource()
     return lib.zones.poly(data).id
 end
 
----@param data table
+---@param data OxTargetBoxZone
 ---@return number
 function api.addBoxZone(data)
+    if data.debug then debugWarning('Creating new BoxZone with debug enabled.') end
+
     data.resource = GetInvokingResource()
     return lib.zones.box(data).id
 end
 
----@param data table
+---@param data OxTargetSphereZone
 ---@return number
 function api.addSphereZone(data)
+    if data.debug then debugWarning('Creating new SphereZone with debug enabled.') end
+
     data.resource = GetInvokingResource()
     return lib.zones.sphere(data).id
 end
 
 ---@param id number | string
-function api.removeZone(id)
+---@param suppressWarning boolean?
+function api.removeZone(id, suppressWarning)
     if Zones then
         if type(id) == 'string' then
             local foundZone
@@ -66,6 +62,8 @@ function api.removeZone(id)
         end
     end
 
+    if suppressWarning then return end
+
     warn(('attempted to remove a zone that does not exist (id: %s)'):format(id))
 end
 
@@ -78,7 +76,7 @@ local function typeError(variable, expected, received)
 end
 
 ---@param target table
----@param options TargetOptions | TargetOptions[]
+---@param options OxTargetOption | OxTargetOption[]
 ---@param resource string
 local function addTarget(target, options, resource)
     local optionsType = type(options)
@@ -90,12 +88,12 @@ local function addTarget(target, options, resource)
     local tableType = table.type(options)
 
     if tableType == 'hash' and options.label then
-        options = { options }
+        options = { options --[[@as OxTargetOption]] }
     elseif tableType ~= 'array' then
         typeError('options', 'array', ('%s table'):format(tableType))
     end
 
-    ---@cast options TargetOptions[]
+    ---@cast options OxTargetOption[]
 
     local num = #target
 
@@ -119,7 +117,7 @@ local function addTarget(target, options, resource)
 end
 
 ---@param target table
----@param remove table
+---@param remove string | string[]
 ---@param resource string
 local function removeTarget(target, remove, resource)
     if type(remove) ~= 'table' then remove = { remove } end
@@ -137,63 +135,63 @@ local function removeTarget(target, remove, resource)
     end
 end
 
----@type table<number, TargetOptions[]>
+---@type table<number, OxTargetOption[]>
 local peds = {}
 
----@param options TargetOptions | TargetOptions[]
+---@param options OxTargetOption | OxTargetOption[]
 function api.addGlobalPed(options)
     addTarget(peds, options, GetInvokingResource())
 end
 
----@param options TargetOptions | TargetOptions[]
+---@param options string | string[]
 function api.removeGlobalPed(options)
     removeTarget(peds, options, GetInvokingResource())
 end
 
----@type table<number, TargetOptions[]>
+---@type table<number, OxTargetOption[]>
 local vehicles = {}
 
----@param options TargetOptions | TargetOptions[]
+---@param options OxTargetOption | OxTargetOption[]
 function api.addGlobalVehicle(options)
     addTarget(vehicles, options, GetInvokingResource())
 end
 
----@param options TargetOptions | TargetOptions[]
+---@param options string | string[]
 function api.removeGlobalVehicle(options)
     removeTarget(vehicles, options, GetInvokingResource())
 end
 
----@type table<number, TargetOptions[]>
+---@type table<number, OxTargetOption[]>
 local objects = {}
 
----@param options TargetOptions | TargetOptions[]
+---@param options OxTargetOption | OxTargetOption[]
 function api.addGlobalObject(options)
     addTarget(objects, options, GetInvokingResource())
 end
 
----@param options TargetOptions | TargetOptions[]
+---@param options string | string[]
 function api.removeGlobalObject(options)
     removeTarget(objects, options, GetInvokingResource())
 end
 
----@type table<number, TargetOptions[]>
+---@type table<number, OxTargetOption[]>
 local players = {}
 
----@param options TargetOptions | TargetOptions[]
+---@param options OxTargetOption | OxTargetOption[]
 function api.addGlobalPlayer(options)
     addTarget(players, options, GetInvokingResource())
 end
 
----@param options TargetOptions | TargetOptions[]
+---@param options string | string[]
 function api.removeGlobalPlayer(options)
     removeTarget(players, options, GetInvokingResource())
 end
 
----@type table<number, TargetOptions[]>
+---@type table<number, OxTargetOption[]>
 local models = {}
 
----@param arr number | number[]
----@param options TargetOptions | TargetOptions[]
+---@param arr (number | string) | (number | string)[]
+---@param options OxTargetOption | OxTargetOption[]
 function api.addModel(arr, options)
     if type(arr) ~= 'table' then arr = { arr } end
     local resource = GetInvokingResource()
@@ -210,8 +208,8 @@ function api.addModel(arr, options)
     end
 end
 
----@param arr number | number[]
----@param options? table
+---@param arr (number | string) | (number | string)[]
+---@param options? string | string[]
 function api.removeModel(arr, options)
     if type(arr) ~= 'table' then arr = { arr } end
     local resource = GetInvokingResource()
@@ -232,11 +230,11 @@ function api.removeModel(arr, options)
     end
 end
 
----@type table<number, TargetOptions[]>
+---@type table<number, OxTargetOption[]>
 local entities = {}
 
 ---@param arr number | number[]
----@param options TargetOptions | TargetOptions[]
+---@param options OxTargetOption | OxTargetOption[]
 function api.addEntity(arr, options)
     if type(arr) ~= 'table' then arr = { arr } end
     local resource = GetInvokingResource()
@@ -259,7 +257,7 @@ function api.addEntity(arr, options)
 end
 
 ---@param arr number | number[]
----@param options? table
+---@param options? string | string[]
 function api.removeEntity(arr, options)
     if type(arr) ~= 'table' then arr = { arr } end
     local resource = GetInvokingResource()
@@ -281,11 +279,11 @@ end
 
 RegisterNetEvent('ox_target:removeEntity', api.removeEntity)
 
----@type table<number, TargetOptions[]>
+---@type table<number, OxTargetOption[]>
 local localEntities = {}
 
 ---@param arr number | number[]
----@param options TargetOptions | TargetOptions[]
+---@param options OxTargetOption | OxTargetOption[]
 function api.addLocalEntity(arr, options)
     if type(arr) ~= 'table' then arr = { arr } end
     local resource = GetInvokingResource()

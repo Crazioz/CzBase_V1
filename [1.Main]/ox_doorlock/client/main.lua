@@ -8,7 +8,6 @@ do
 end
 
 lib.locale()
-TriggerServerEvent('ox_doorlock:getDoors')
 
 local function createDoor(door)
 	local double = door.doors
@@ -38,13 +37,8 @@ end
 local nearbyDoors = {}
 local Entity = Entity
 
-RegisterNetEvent('ox_doorlock:setDoors', function(data, sounds)
+lib.callback('ox_doorlock:getDoors', false, function(data)
 	doors = data
-
-	SendNUIMessage({
-		action = 'setSoundFiles',
-		data = sounds
-	})
 
 	for _, door in pairs(data) do
 		createDoor(door)
@@ -174,17 +168,27 @@ RegisterNetEvent('ox_doorlock:setState', function(id, state, source, data)
 	end
 
 	if door.state == state and door.distance and door.distance < 20 then
-		local volume = (0.01 * GetProfileSetting(300)) / (door.distance / 2)
-		if volume > 1 then volume = 1 end
-		local sound = state == 0 and door.unlockSound or door.lockSound or 'door-bolt-4'
+		if Config.NativeAudio then
+			RequestScriptAudioBank('dlc_oxdoorlock/oxdoorlock', false)
+			local sound = state == 0 and door.unlockSound or door.lockSound or 'door_bolt'
+			local soundId = GetSoundId()
 
-		SendNUIMessage({
-			action = 'playSound',
-			data = {
-				sound = sound,
-				volume = volume
-			}
-		})
+			PlaySoundFromCoord(soundId, sound, door.coords.x, door.coords.y, door.coords.z, 'DLC_OXDOORLOCK_SET', false, 0, false)
+			ReleaseSoundId(soundId)
+			ReleaseNamedScriptAudioBank('dlc_oxdoorlock/oxdoorlock')
+		else
+			local volume = (0.01 * GetProfileSetting(300)) / (door.distance / 2)
+			if volume > 1 then volume = 1 end
+			local sound = state == 0 and door.unlockSound or door.lockSound or 'door-bolt-4'
+
+			SendNUIMessage({
+				action = 'playSound',
+				data = {
+					sound = sound,
+					volume = volume
+				}
+			})
+		end
 	end
 end)
 

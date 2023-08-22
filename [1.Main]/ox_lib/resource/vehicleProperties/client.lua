@@ -1,7 +1,7 @@
 if cache.game == 'redm' then return end
 
 ---@class VehicleProperties
----@field model? string
+---@field model? number
 ---@field plate? string
 ---@field plateIndex? number
 ---@field bodyHealth? number
@@ -10,6 +10,8 @@ if cache.game == 'redm' then return end
 ---@field fuelLevel? number
 ---@field oilLevel? number
 ---@field dirtLevel? number
+---@field paintType1? number
+---@field paintType2? number
 ---@field color1? number | number[]
 ---@field color2? number | number[]
 ---@field pearlescentColor? number
@@ -82,7 +84,10 @@ if cache.game == 'redm' then return end
 ---@field doors? number[]
 ---@field tyres? table<number | string, 1 | 2>
 ---@field bulletProofTyres? boolean
+---@field driftTyres? boolean
 
+---@deprecated
+---Not recommended. Entity owners can change rapidly and sporadically.
 RegisterNetEvent('ox_lib:setVehicleProperties', function(netid, data)
     local timeout = 100
     while not NetworkDoesEntityExistWithNetworkId(netid) and timeout > 0 do
@@ -94,6 +99,21 @@ RegisterNetEvent('ox_lib:setVehicleProperties', function(netid, data)
     end
 end)
 
+--[[ Alternative to NetEvent - disabled (at least for now?)
+AddStateBagChangeHandler('setVehicleProperties', '', function(bagName, _, value)
+    if not value or not GetEntityFromStateBagName then return end
+
+    local entity = GetEntityFromStateBagName(bagName)
+    local networked = not bagName:find('localEntity')
+
+    if networked and NetworkGetEntityOwner(entity) ~= cache.playerId then return end
+
+    if lib.setVehicleProperties(entity, value) then
+        Entity(entity).state:set('setVehicleProperties', nil, true)
+    end
+end)
+]]
+
 ---@param vehicle number
 ---@return VehicleProperties?
 function lib.getVehicleProperties(vehicle)
@@ -101,6 +121,8 @@ function lib.getVehicleProperties(vehicle)
         ---@type number | number[], number | number[]
         local colorPrimary, colorSecondary = GetVehicleColours(vehicle)
         local pearlescentColor, wheelColor = GetVehicleExtraColours(vehicle)
+        local paintType1 = GetVehicleModColor_1(vehicle)
+        local paintType2 = GetVehicleModColor_2(vehicle)
 
         if GetIsVehiclePrimaryColourCustom(vehicle) then
             colorPrimary = { GetVehicleCustomPrimaryColour(vehicle) }
@@ -118,9 +140,10 @@ function lib.getVehicleProperties(vehicle)
             end
         end
 
+        local modLiveryCount = GetVehicleLiveryCount(vehicle)
         local modLivery = GetVehicleLivery(vehicle)
 
-        if modLivery == -1 then
+        if modLiveryCount == -1 or modLivery == -1 then
             modLivery = GetVehicleMod(vehicle, 48)
         end
 
@@ -133,6 +156,8 @@ function lib.getVehicleProperties(vehicle)
         local windows = 0
 
         for i = 0, 7 do
+            RollUpWindow(vehicle, i)
+
             if not IsVehicleWindowIntact(vehicle, i) then
                 windows += 1
                 damage.windows[windows] = i
@@ -170,6 +195,8 @@ function lib.getVehicleProperties(vehicle)
             fuelLevel = math.floor(GetVehicleFuelLevel(vehicle) + 0.5),
             oilLevel = math.floor(GetVehicleOilLevel(vehicle) + 0.5),
             dirtLevel = math.floor(GetVehicleDirtLevel(vehicle) + 0.5),
+            paintType1 = paintType1,
+            paintType2 = paintType2,
             color1 = colorPrimary,
             color2 = colorSecondary,
             pearlescentColor = pearlescentColor,
@@ -242,6 +269,7 @@ function lib.getVehicleProperties(vehicle)
             doors = damage.doors,
             tyres = damage.tyres,
             bulletProofTyres = GetVehicleTyresCanBurst(vehicle),
+            driftTyres = GetDriftTyresEnabled(vehicle),
             -- no setters?
             -- leftHeadlight = GetIsLeftVehicleHeadlightDamaged(vehicle),
             -- rightHeadlight = GetIsRightVehicleHeadlightDamaged(vehicle),
@@ -253,13 +281,16 @@ end
 
 ---@param vehicle number
 ---@param props VehicleProperties
+---@param fixVehicle? boolean Fix the vehicle after props have been set. Usually required when adding extras.
 ---@return boolean?
-function lib.setVehicleProperties(vehicle, props)
-    if not DoesEntityExist(vehicle) then error(("Unable to set vehicle properties for '%s' (entity does not exist)"):
-            format(vehicle))
+function lib.setVehicleProperties(vehicle, props, fixVehicle)
+    if not DoesEntityExist(vehicle) then
+        error(("Unable to set vehicle properties for '%s' (entity does not exist)"):
+        format(vehicle))
     end
 
-    if NetworkGetEntityIsNetworked(vehicle) and NetworkGetEntityOwner(vehicle) ~= cache.playerId then error((
+    if NetworkGetEntityIsNetworked(vehicle) and NetworkGetEntityOwner(vehicle) ~= cache.playerId then
+        error((
             "Unable to set vehicle properties for '%s' (client is not entity owner)"):format(vehicle))
     end
 
@@ -268,6 +299,12 @@ function lib.setVehicleProperties(vehicle, props)
 
     SetVehicleModKit(vehicle, 0)
     SetVehicleAutoRepairDisabled(vehicle, true)
+
+    if props.extras then
+        for id, disable in pairs(props.extras) do
+            SetVehicleExtra(vehicle, tonumber(id) --[[@as number]], disable == 1)
+        end
+    end
 
     if props.plate then
         SetVehicleNumberPlateText(vehicle, props.plate)
@@ -303,16 +340,22 @@ function lib.setVehicleProperties(vehicle, props)
 
     if props.color1 then
         if type(props.color1) == 'number' then
+            ClearVehicleCustomPrimaryColour(vehicle)
             SetVehicleColours(vehicle, props.color1 --[[@as number]], colorSecondary --[[@as number]])
         else
+            if props.paintType1 then SetVehicleModColor_1(vehicle, props.paintType1, colorPrimary, pearlescentColor) end
+
             SetVehicleCustomPrimaryColour(vehicle, props.color1[1], props.color1[2], props.color1[3])
         end
     end
 
     if props.color2 then
         if type(props.color2) == 'number' then
+            ClearVehicleCustomSecondaryColour(vehicle)
             SetVehicleColours(vehicle, props.color1 or colorPrimary --[[@as number]], props.color2 --[[@as number]])
         else
+            if props.paintType2 then SetVehicleModColor_2(vehicle, props.paintType2, colorSecondary) end
+
             SetVehicleCustomSecondaryColour(vehicle, props.color2[1], props.color2[2], props.color2[3])
         end
     end
@@ -351,15 +394,9 @@ function lib.setVehicleProperties(vehicle, props)
         end
     end
 
-    if props.extras then
-        for id, disable in pairs(props.extras) do
-            SetVehicleExtra(vehicle, tonumber(id) --[[@as number]], disable == 1)
-        end
-    end
-
     if props.windows then
         for i = 1, #props.windows do
-            SmashVehicleWindow(vehicle, props.windows[i])
+            RemoveVehicleWindow(vehicle, props.windows[i])
         end
     end
 
@@ -594,6 +631,14 @@ function lib.setVehicleProperties(vehicle, props)
 
     if props.bulletProofTyres ~= nil then
         SetVehicleTyresCanBurst(vehicle, props.bulletProofTyres)
+    end
+
+    if props.driftTyres then
+        SetDriftTyresEnabled(vehicle, true)
+    end
+
+    if fixVehicle then
+        SetVehicleFixed(vehicle)
     end
 
     return true

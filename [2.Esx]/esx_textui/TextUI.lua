@@ -7,13 +7,13 @@ local function TextUI(message, typ)
     SendNUIMessage({
         action = 'show',
         message = message and message or 'ESX-TextUI',
-        type = type(typ) == "string" and typ or 'info' -- F.A.S.
+        type = type(typ) == "string" and typ or 'info'
     })
 end
 
 local function HideUI()
-   if not isShowing then return end
-   isShowing = false
+    if not isShowing then return end
+    isShowing = false
     SendNUIMessage({
         action = 'hide'
     })

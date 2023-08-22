@@ -15,8 +15,8 @@ const types = {
     ["info"]: {
         ["message"]: "infoMessage",
         ["id"]: "notifyInfo",
-    }
-}
+    },
+};
 
 // the color codes example `i ~r~love~s~ donuts`
 const codes = {
@@ -28,42 +28,41 @@ const codes = {
     "~c~": "grey",
     "~m~": "#212121",
     "~u~": "black",
-    "~o~": "orange"
-}
+    "~o~": "orange",
+};
 
-w.addEventListener('message', (event) => {
+w.addEventListener("message", (event) => {
     if (event.data.action === "show") {
         if (lastType) {
             doc.getElementById(lastType).style.display = "none";
             notification({
                 type: event.data.type,
-                message: event.data.message
+                message: event.data.message,
             });
         } else {
             notification({
                 type: event.data.type,
-                message: event.data.message
+                message: event.data.message,
             });
         }
-    } else
-    if (event.data.action === "hide") {
+    } else if (event.data.action === "hide") {
         if (lastType !== "") {
-            doc.getElementById(lastType).style.display = "none"
+            doc.getElementById(lastType).style.display = "none";
         } else {
-            console.log("There isn't a textUI displaying!?")
+            console.log("There isn't a textUI displaying!?");
         }
     }
 });
 
 const replaceColors = (str, obj) => {
-    let strToReplace = str
+    let strToReplace = str;
 
     for (let id in obj) {
-        strToReplace = strToReplace.replace(new RegExp(id, 'g'), obj[id])
+        strToReplace = strToReplace.replace(new RegExp(id, "g"), obj[id]);
     }
 
-    return strToReplace
-}
+    return strToReplace;
+};
 
 notification = (data) => {
     for (color in codes) {
@@ -79,7 +78,6 @@ notification = (data) => {
     }
 
     doc.getElementById(types[data.type]["id"]).style.display = "block";
-    lastType = types[data.type]["id"]
-    doc.getElementById(types[data.type]["message"]).innerHTML = data["message"]
-
-}
+    lastType = types[data.type]["id"];
+    doc.getElementById(types[data.type]["message"]).innerHTML = data["message"];
+};

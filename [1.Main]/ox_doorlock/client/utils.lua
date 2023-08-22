@@ -228,11 +228,17 @@ local function openUi(id)
 
 	if not NuiHasLoaded then
 		NuiHasLoaded = true
+
 		SendNuiMessage(json.encode({
 			action = 'updateDoorData',
 			data = doors
 		}, { with_hole = false }))
 		Wait(100)
+
+		SendNUIMessage({
+			action = 'setSoundFiles',
+			data = lib.callback.await('ox_doorlock:getSounds', false)
+		})
 	end
 
 	SetNuiFocus(true, true)
@@ -276,7 +282,8 @@ CreateThread(function()
 				icon = 'fas fa-user-lock',
 				onSelect = pickLock,
 				canInteract = canPickLock,
-				items = 'lockpick',
+				items = Config.LockpickItems,
+				anyItem = true,
 				distance = 1
 			}
 		})
@@ -287,10 +294,12 @@ CreateThread(function()
 				icon = 'fas fa-user-lock',
 				action = pickLock,
 				canInteract = canPickLock,
-				item = 'lockpick',
+				item = Config.LockpickItems[1],
 				distance = 1
 			}
 		}
+
+		---@cast target table
 
 		if target.qt then
 			target.exp:Object({ options = options })
