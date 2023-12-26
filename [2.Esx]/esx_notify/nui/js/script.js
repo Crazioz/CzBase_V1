@@ -1,4 +1,4 @@
-const w = window
+const w = window;
 
 // Gets the current icon it needs to use.
 const types = {
@@ -10,8 +10,8 @@ const types = {
     },
     ["info"]: {
         ["icon"]: "info",
-    }
-}
+    },
+};
 
 // the color codes example `i ~r~love~s~ donuts`
 const codes = {
@@ -23,8 +23,8 @@ const codes = {
     "~c~": "grey",
     "~m~": "#212121",
     "~u~": "black",
-    "~o~": "orange"
-}
+    "~o~": "orange",
+};
 
 w.addEventListener("message", (event) => {
     notification({
@@ -41,8 +41,8 @@ const replaceColors = (str, obj) => {
         strToReplace = strToReplace.replace(new RegExp(id, "g"), obj[id]);
     }
 
-    return strToReplace
-}
+    return strToReplace;
+};
 
 notification = (data) => {
     for (color in codes) {
@@ -53,7 +53,7 @@ notification = (data) => {
 
             let newStr = replaceColors(data["message"], objArr);
 
-            data["message"] = newStr
+            data["message"] = newStr;
         }
     }
 
@@ -71,4 +71,4 @@ notification = (data) => {
     }, data.length);
 
     return notification;
-}
+};

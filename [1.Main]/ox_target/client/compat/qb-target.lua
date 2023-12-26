@@ -135,6 +135,14 @@ local api = require 'client.api'
 exportHandler('AddBoxZone', function(name, center, length, width, options, targetoptions)
     local z = center.z
 
+    if not options.minZ then
+        options.minZ = -100
+    end
+
+    if not options.maxZ then
+        options.maxZ = 800
+    end
+
     if not options.useZ then
         z = z + math.abs(options.maxZ - options.minZ) / 2
         center = vec3(center.x, center.y, z)
@@ -260,4 +268,14 @@ end)
 
 exportHandler('RemoveGlobalPlayer', function(labels)
     api.removeGlobalPlayer(labels)
+end)
+
+local utils = require 'client.utils'
+
+exportHandler('AddEntityZone', function()
+    utils.warn('AddEntityZone is not supported by ox_target - try using addEntity/addLocalEntity.')
+end)
+
+exportHandler('RemoveTargetBone', function()
+    utils.warn('RemoveTargetBone is not supported by ox_target.')
 end)

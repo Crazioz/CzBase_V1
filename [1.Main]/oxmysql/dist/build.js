@@ -46,6 +46,1191 @@ var __privateSet = (obj, member, value, setter) => {
   return value;
 };
 
+// node_modules/.pnpm/lru-cache@7.18.3/node_modules/lru-cache/index.js
+var require_lru_cache = __commonJS({
+  "node_modules/.pnpm/lru-cache@7.18.3/node_modules/lru-cache/index.js"(exports, module2) {
+    var perf = typeof performance === "object" && performance && typeof performance.now === "function" ? performance : Date;
+    var hasAbortController = typeof AbortController === "function";
+    var AC = hasAbortController ? AbortController : class AbortController {
+      constructor() {
+        this.signal = new AS();
+      }
+      abort(reason = new Error("This operation was aborted")) {
+        this.signal.reason = this.signal.reason || reason;
+        this.signal.aborted = true;
+        this.signal.dispatchEvent({
+          type: "abort",
+          target: this.signal
+        });
+      }
+    };
+    var hasAbortSignal = typeof AbortSignal === "function";
+    var hasACAbortSignal = typeof AC.AbortSignal === "function";
+    var AS = hasAbortSignal ? AbortSignal : hasACAbortSignal ? AC.AbortController : class AbortSignal {
+      constructor() {
+        this.reason = void 0;
+        this.aborted = false;
+        this._listeners = [];
+      }
+      dispatchEvent(e2) {
+        if (e2.type === "abort") {
+          this.aborted = true;
+          this.onabort(e2);
+          this._listeners.forEach((f3) => f3(e2), this);
+        }
+      }
+      onabort() {
+      }
+      addEventListener(ev, fn) {
+        if (ev === "abort") {
+          this._listeners.push(fn);
+        }
+      }
+      removeEventListener(ev, fn) {
+        if (ev === "abort") {
+          this._listeners = this._listeners.filter((f3) => f3 !== fn);
+        }
+      }
+    };
+    var warned = /* @__PURE__ */ new Set();
+    var deprecatedOption = (opt, instead) => {
+      const code = `LRU_CACHE_OPTION_${opt}`;
+      if (shouldWarn(code)) {
+        warn(code, `${opt} option`, `options.${instead}`, LRUCache);
+      }
+    };
+    var deprecatedMethod = (method, instead) => {
+      const code = `LRU_CACHE_METHOD_${method}`;
+      if (shouldWarn(code)) {
+        const { prototype } = LRUCache;
+        const { get } = Object.getOwnPropertyDescriptor(prototype, method);
+        warn(code, `${method} method`, `cache.${instead}()`, get);
+      }
+    };
+    var deprecatedProperty = (field, instead) => {
+      const code = `LRU_CACHE_PROPERTY_${field}`;
+      if (shouldWarn(code)) {
+        const { prototype } = LRUCache;
+        const { get } = Object.getOwnPropertyDescriptor(prototype, field);
+        warn(code, `${field} property`, `cache.${instead}`, get);
+      }
+    };
+    var emitWarning = (...a) => {
+      typeof process === "object" && process && typeof process.emitWarning === "function" ? process.emitWarning(...a) : console.error(...a);
+    };
+    var shouldWarn = (code) => !warned.has(code);
+    var warn = (code, what, instead, fn) => {
+      warned.add(code);
+      const msg = `The ${what} is deprecated. Please use ${instead} instead.`;
+      emitWarning(msg, "DeprecationWarning", code, fn);
+    };
+    var isPosInt = (n) => n && n === Math.floor(n) && n > 0 && isFinite(n);
+    var getUintArray = (max) => !isPosInt(max) ? null : max <= Math.pow(2, 8) ? Uint8Array : max <= Math.pow(2, 16) ? Uint16Array : max <= Math.pow(2, 32) ? Uint32Array : max <= Number.MAX_SAFE_INTEGER ? ZeroArray : null;
+    var ZeroArray = class extends Array {
+      constructor(size) {
+        super(size);
+        this.fill(0);
+      }
+    };
+    var Stack = class {
+      constructor(max) {
+        if (max === 0) {
+          return [];
+        }
+        const UintArray = getUintArray(max);
+        this.heap = new UintArray(max);
+        this.length = 0;
+      }
+      push(n) {
+        this.heap[this.length++] = n;
+      }
+      pop() {
+        return this.heap[--this.length];
+      }
+    };
+    var LRUCache = class {
+      constructor(options = {}) {
+        const {
+          max = 0,
+          ttl,
+          ttlResolution = 1,
+          ttlAutopurge,
+          updateAgeOnGet,
+          updateAgeOnHas,
+          allowStale,
+          dispose,
+          disposeAfter,
+          noDisposeOnSet,
+          noUpdateTTL,
+          maxSize = 0,
+          maxEntrySize = 0,
+          sizeCalculation,
+          fetchMethod,
+          fetchContext,
+          noDeleteOnFetchRejection,
+          noDeleteOnStaleGet,
+          allowStaleOnFetchRejection,
+          allowStaleOnFetchAbort,
+          ignoreFetchAbort
+        } = options;
+        const { length, maxAge, stale } = options instanceof LRUCache ? {} : options;
+        if (max !== 0 && !isPosInt(max)) {
+          throw new TypeError("max option must be a nonnegative integer");
+        }
+        const UintArray = max ? getUintArray(max) : Array;
+        if (!UintArray) {
+          throw new Error("invalid max value: " + max);
+        }
+        this.max = max;
+        this.maxSize = maxSize;
+        this.maxEntrySize = maxEntrySize || this.maxSize;
+        this.sizeCalculation = sizeCalculation || length;
+        if (this.sizeCalculation) {
+          if (!this.maxSize && !this.maxEntrySize) {
+            throw new TypeError(
+              "cannot set sizeCalculation without setting maxSize or maxEntrySize"
+            );
+          }
+          if (typeof this.sizeCalculation !== "function") {
+            throw new TypeError("sizeCalculation set to non-function");
+          }
+        }
+        this.fetchMethod = fetchMethod || null;
+        if (this.fetchMethod && typeof this.fetchMethod !== "function") {
+          throw new TypeError(
+            "fetchMethod must be a function if specified"
+          );
+        }
+        this.fetchContext = fetchContext;
+        if (!this.fetchMethod && fetchContext !== void 0) {
+          throw new TypeError(
+            "cannot set fetchContext without fetchMethod"
+          );
+        }
+        this.keyMap = /* @__PURE__ */ new Map();
+        this.keyList = new Array(max).fill(null);
+        this.valList = new Array(max).fill(null);
+        this.next = new UintArray(max);
+        this.prev = new UintArray(max);
+        this.head = 0;
+        this.tail = 0;
+        this.free = new Stack(max);
+        this.initialFill = 1;
+        this.size = 0;
+        if (typeof dispose === "function") {
+          this.dispose = dispose;
+        }
+        if (typeof disposeAfter === "function") {
+          this.disposeAfter = disposeAfter;
+          this.disposed = [];
+        } else {
+          this.disposeAfter = null;
+          this.disposed = null;
+        }
+        this.noDisposeOnSet = !!noDisposeOnSet;
+        this.noUpdateTTL = !!noUpdateTTL;
+        this.noDeleteOnFetchRejection = !!noDeleteOnFetchRejection;
+        this.allowStaleOnFetchRejection = !!allowStaleOnFetchRejection;
+        this.allowStaleOnFetchAbort = !!allowStaleOnFetchAbort;
+        this.ignoreFetchAbort = !!ignoreFetchAbort;
+        if (this.maxEntrySize !== 0) {
+          if (this.maxSize !== 0) {
+            if (!isPosInt(this.maxSize)) {
+              throw new TypeError(
+                "maxSize must be a positive integer if specified"
+              );
+            }
+          }
+          if (!isPosInt(this.maxEntrySize)) {
+            throw new TypeError(
+              "maxEntrySize must be a positive integer if specified"
+            );
+          }
+          this.initializeSizeTracking();
+        }
+        this.allowStale = !!allowStale || !!stale;
+        this.noDeleteOnStaleGet = !!noDeleteOnStaleGet;
+        this.updateAgeOnGet = !!updateAgeOnGet;
+        this.updateAgeOnHas = !!updateAgeOnHas;
+        this.ttlResolution = isPosInt(ttlResolution) || ttlResolution === 0 ? ttlResolution : 1;
+        this.ttlAutopurge = !!ttlAutopurge;
+        this.ttl = ttl || maxAge || 0;
+        if (this.ttl) {
+          if (!isPosInt(this.ttl)) {
+            throw new TypeError(
+              "ttl must be a positive integer if specified"
+            );
+          }
+          this.initializeTTLTracking();
+        }
+        if (this.max === 0 && this.ttl === 0 && this.maxSize === 0) {
+          throw new TypeError(
+            "At least one of max, maxSize, or ttl is required"
+          );
+        }
+        if (!this.ttlAutopurge && !this.max && !this.maxSize) {
+          const code = "LRU_CACHE_UNBOUNDED";
+          if (shouldWarn(code)) {
+            warned.add(code);
+            const msg = "TTL caching without ttlAutopurge, max, or maxSize can result in unbounded memory consumption.";
+            emitWarning(msg, "UnboundedCacheWarning", code, LRUCache);
+          }
+        }
+        if (stale) {
+          deprecatedOption("stale", "allowStale");
+        }
+        if (maxAge) {
+          deprecatedOption("maxAge", "ttl");
+        }
+        if (length) {
+          deprecatedOption("length", "sizeCalculation");
+        }
+      }
+      getRemainingTTL(key) {
+        return this.has(key, { updateAgeOnHas: false }) ? Infinity : 0;
+      }
+      initializeTTLTracking() {
+        this.ttls = new ZeroArray(this.max);
+        this.starts = new ZeroArray(this.max);
+        this.setItemTTL = (index, ttl, start = perf.now()) => {
+          this.starts[index] = ttl !== 0 ? start : 0;
+          this.ttls[index] = ttl;
+          if (ttl !== 0 && this.ttlAutopurge) {
+            const t2 = setTimeout(() => {
+              if (this.isStale(index)) {
+                this.delete(this.keyList[index]);
+              }
+            }, ttl + 1);
+            if (t2.unref) {
+              t2.unref();
+            }
+          }
+        };
+        this.updateItemAge = (index) => {
+          this.starts[index] = this.ttls[index] !== 0 ? perf.now() : 0;
+        };
+        this.statusTTL = (status, index) => {
+          if (status) {
+            status.ttl = this.ttls[index];
+            status.start = this.starts[index];
+            status.now = cachedNow || getNow();
+            status.remainingTTL = status.now + status.ttl - status.start;
+          }
+        };
+        let cachedNow = 0;
+        const getNow = () => {
+          const n = perf.now();
+          if (this.ttlResolution > 0) {
+            cachedNow = n;
+            const t2 = setTimeout(
+              () => cachedNow = 0,
+              this.ttlResolution
+            );
+            if (t2.unref) {
+              t2.unref();
+            }
+          }
+          return n;
+        };
+        this.getRemainingTTL = (key) => {
+          const index = this.keyMap.get(key);
+          if (index === void 0) {
+            return 0;
+          }
+          return this.ttls[index] === 0 || this.starts[index] === 0 ? Infinity : this.starts[index] + this.ttls[index] - (cachedNow || getNow());
+        };
+        this.isStale = (index) => {
+          return this.ttls[index] !== 0 && this.starts[index] !== 0 && (cachedNow || getNow()) - this.starts[index] > this.ttls[index];
+        };
+      }
+      updateItemAge(_index) {
+      }
+      statusTTL(_status, _index) {
+      }
+      setItemTTL(_index, _ttl, _start) {
+      }
+      isStale(_index) {
+        return false;
+      }
+      initializeSizeTracking() {
+        this.calculatedSize = 0;
+        this.sizes = new ZeroArray(this.max);
+        this.removeItemSize = (index) => {
+          this.calculatedSize -= this.sizes[index];
+          this.sizes[index] = 0;
+        };
+        this.requireSize = (k, v, size, sizeCalculation) => {
+          if (this.isBackgroundFetch(v)) {
+            return 0;
+          }
+          if (!isPosInt(size)) {
+            if (sizeCalculation) {
+              if (typeof sizeCalculation !== "function") {
+                throw new TypeError("sizeCalculation must be a function");
+              }
+              size = sizeCalculation(v, k);
+              if (!isPosInt(size)) {
+                throw new TypeError(
+                  "sizeCalculation return invalid (expect positive integer)"
+                );
+              }
+            } else {
+              throw new TypeError(
+                "invalid size value (must be positive integer). When maxSize or maxEntrySize is used, sizeCalculation or size must be set."
+              );
+            }
+          }
+          return size;
+        };
+        this.addItemSize = (index, size, status) => {
+          this.sizes[index] = size;
+          if (this.maxSize) {
+            const maxSize = this.maxSize - this.sizes[index];
+            while (this.calculatedSize > maxSize) {
+              this.evict(true);
+            }
+          }
+          this.calculatedSize += this.sizes[index];
+          if (status) {
+            status.entrySize = size;
+            status.totalCalculatedSize = this.calculatedSize;
+          }
+        };
+      }
+      removeItemSize(_index) {
+      }
+      addItemSize(_index, _size) {
+      }
+      requireSize(_k, _v, size, sizeCalculation) {
+        if (size || sizeCalculation) {
+          throw new TypeError(
+            "cannot set size without setting maxSize or maxEntrySize on cache"
+          );
+        }
+      }
+      *indexes({ allowStale = this.allowStale } = {}) {
+        if (this.size) {
+          for (let i2 = this.tail; true; ) {
+            if (!this.isValidIndex(i2)) {
+              break;
+            }
+            if (allowStale || !this.isStale(i2)) {
+              yield i2;
+            }
+            if (i2 === this.head) {
+              break;
+            } else {
+              i2 = this.prev[i2];
+            }
+          }
+        }
+      }
+      *rindexes({ allowStale = this.allowStale } = {}) {
+        if (this.size) {
+          for (let i2 = this.head; true; ) {
+            if (!this.isValidIndex(i2)) {
+              break;
+            }
+            if (allowStale || !this.isStale(i2)) {
+              yield i2;
+            }
+            if (i2 === this.tail) {
+              break;
+            } else {
+              i2 = this.next[i2];
+            }
+          }
+        }
+      }
+      isValidIndex(index) {
+        return index !== void 0 && this.keyMap.get(this.keyList[index]) === index;
+      }
+      *entries() {
+        for (const i2 of this.indexes()) {
+          if (this.valList[i2] !== void 0 && this.keyList[i2] !== void 0 && !this.isBackgroundFetch(this.valList[i2])) {
+            yield [this.keyList[i2], this.valList[i2]];
+          }
+        }
+      }
+      *rentries() {
+        for (const i2 of this.rindexes()) {
+          if (this.valList[i2] !== void 0 && this.keyList[i2] !== void 0 && !this.isBackgroundFetch(this.valList[i2])) {
+            yield [this.keyList[i2], this.valList[i2]];
+          }
+        }
+      }
+      *keys() {
+        for (const i2 of this.indexes()) {
+          if (this.keyList[i2] !== void 0 && !this.isBackgroundFetch(this.valList[i2])) {
+            yield this.keyList[i2];
+          }
+        }
+      }
+      *rkeys() {
+        for (const i2 of this.rindexes()) {
+          if (this.keyList[i2] !== void 0 && !this.isBackgroundFetch(this.valList[i2])) {
+            yield this.keyList[i2];
+          }
+        }
+      }
+      *values() {
+        for (const i2 of this.indexes()) {
+          if (this.valList[i2] !== void 0 && !this.isBackgroundFetch(this.valList[i2])) {
+            yield this.valList[i2];
+          }
+        }
+      }
+      *rvalues() {
+        for (const i2 of this.rindexes()) {
+          if (this.valList[i2] !== void 0 && !this.isBackgroundFetch(this.valList[i2])) {
+            yield this.valList[i2];
+          }
+        }
+      }
+      [Symbol.iterator]() {
+        return this.entries();
+      }
+      find(fn, getOptions) {
+        for (const i2 of this.indexes()) {
+          const v = this.valList[i2];
+          const value = this.isBackgroundFetch(v) ? v.__staleWhileFetching : v;
+          if (value === void 0)
+            continue;
+          if (fn(value, this.keyList[i2], this)) {
+            return this.get(this.keyList[i2], getOptions);
+          }
+        }
+      }
+      forEach(fn, thisp = this) {
+        for (const i2 of this.indexes()) {
+          const v = this.valList[i2];
+          const value = this.isBackgroundFetch(v) ? v.__staleWhileFetching : v;
+          if (value === void 0)
+            continue;
+          fn.call(thisp, value, this.keyList[i2], this);
+        }
+      }
+      rforEach(fn, thisp = this) {
+        for (const i2 of this.rindexes()) {
+          const v = this.valList[i2];
+          const value = this.isBackgroundFetch(v) ? v.__staleWhileFetching : v;
+          if (value === void 0)
+            continue;
+          fn.call(thisp, value, this.keyList[i2], this);
+        }
+      }
+      get prune() {
+        deprecatedMethod("prune", "purgeStale");
+        return this.purgeStale;
+      }
+      purgeStale() {
+        let deleted = false;
+        for (const i2 of this.rindexes({ allowStale: true })) {
+          if (this.isStale(i2)) {
+            this.delete(this.keyList[i2]);
+            deleted = true;
+          }
+        }
+        return deleted;
+      }
+      dump() {
+        const arr = [];
+        for (const i2 of this.indexes({ allowStale: true })) {
+          const key = this.keyList[i2];
+          const v = this.valList[i2];
+          const value = this.isBackgroundFetch(v) ? v.__staleWhileFetching : v;
+          if (value === void 0)
+            continue;
+          const entry = { value };
+          if (this.ttls) {
+            entry.ttl = this.ttls[i2];
+            const age = perf.now() - this.starts[i2];
+            entry.start = Math.floor(Date.now() - age);
+          }
+          if (this.sizes) {
+            entry.size = this.sizes[i2];
+          }
+          arr.unshift([key, entry]);
+        }
+        return arr;
+      }
+      load(arr) {
+        this.clear();
+        for (const [key, entry] of arr) {
+          if (entry.start) {
+            const age = Date.now() - entry.start;
+            entry.start = perf.now() - age;
+          }
+          this.set(key, entry.value, entry);
+        }
+      }
+      dispose(_v, _k, _reason) {
+      }
+      set(k, v, {
+        ttl = this.ttl,
+        start,
+        noDisposeOnSet = this.noDisposeOnSet,
+        size = 0,
+        sizeCalculation = this.sizeCalculation,
+        noUpdateTTL = this.noUpdateTTL,
+        status
+      } = {}) {
+        size = this.requireSize(k, v, size, sizeCalculation);
+        if (this.maxEntrySize && size > this.maxEntrySize) {
+          if (status) {
+            status.set = "miss";
+            status.maxEntrySizeExceeded = true;
+          }
+          this.delete(k);
+          return this;
+        }
+        let index = this.size === 0 ? void 0 : this.keyMap.get(k);
+        if (index === void 0) {
+          index = this.newIndex();
+          this.keyList[index] = k;
+          this.valList[index] = v;
+          this.keyMap.set(k, index);
+          this.next[this.tail] = index;
+          this.prev[index] = this.tail;
+          this.tail = index;
+          this.size++;
+          this.addItemSize(index, size, status);
+          if (status) {
+            status.set = "add";
+          }
+          noUpdateTTL = false;
+        } else {
+          this.moveToTail(index);
+          const oldVal = this.valList[index];
+          if (v !== oldVal) {
+            if (this.isBackgroundFetch(oldVal)) {
+              oldVal.__abortController.abort(new Error("replaced"));
+            } else {
+              if (!noDisposeOnSet) {
+                this.dispose(oldVal, k, "set");
+                if (this.disposeAfter) {
+                  this.disposed.push([oldVal, k, "set"]);
+                }
+              }
+            }
+            this.removeItemSize(index);
+            this.valList[index] = v;
+            this.addItemSize(index, size, status);
+            if (status) {
+              status.set = "replace";
+              const oldValue = oldVal && this.isBackgroundFetch(oldVal) ? oldVal.__staleWhileFetching : oldVal;
+              if (oldValue !== void 0)
+                status.oldValue = oldValue;
+            }
+          } else if (status) {
+            status.set = "update";
+          }
+        }
+        if (ttl !== 0 && this.ttl === 0 && !this.ttls) {
+          this.initializeTTLTracking();
+        }
+        if (!noUpdateTTL) {
+          this.setItemTTL(index, ttl, start);
+        }
+        this.statusTTL(status, index);
+        if (this.disposeAfter) {
+          while (this.disposed.length) {
+            this.disposeAfter(...this.disposed.shift());
+          }
+        }
+        return this;
+      }
+      newIndex() {
+        if (this.size === 0) {
+          return this.tail;
+        }
+        if (this.size === this.max && this.max !== 0) {
+          return this.evict(false);
+        }
+        if (this.free.length !== 0) {
+          return this.free.pop();
+        }
+        return this.initialFill++;
+      }
+      pop() {
+        if (this.size) {
+          const val = this.valList[this.head];
+          this.evict(true);
+          return val;
+        }
+      }
+      evict(free) {
+        const head = this.head;
+        const k = this.keyList[head];
+        const v = this.valList[head];
+        if (this.isBackgroundFetch(v)) {
+          v.__abortController.abort(new Error("evicted"));
+        } else {
+          this.dispose(v, k, "evict");
+          if (this.disposeAfter) {
+            this.disposed.push([v, k, "evict"]);
+          }
+        }
+        this.removeItemSize(head);
+        if (free) {
+          this.keyList[head] = null;
+          this.valList[head] = null;
+          this.free.push(head);
+        }
+        this.head = this.next[head];
+        this.keyMap.delete(k);
+        this.size--;
+        return head;
+      }
+      has(k, { updateAgeOnHas = this.updateAgeOnHas, status } = {}) {
+        const index = this.keyMap.get(k);
+        if (index !== void 0) {
+          if (!this.isStale(index)) {
+            if (updateAgeOnHas) {
+              this.updateItemAge(index);
+            }
+            if (status)
+              status.has = "hit";
+            this.statusTTL(status, index);
+            return true;
+          } else if (status) {
+            status.has = "stale";
+            this.statusTTL(status, index);
+          }
+        } else if (status) {
+          status.has = "miss";
+        }
+        return false;
+      }
+      peek(k, { allowStale = this.allowStale } = {}) {
+        const index = this.keyMap.get(k);
+        if (index !== void 0 && (allowStale || !this.isStale(index))) {
+          const v = this.valList[index];
+          return this.isBackgroundFetch(v) ? v.__staleWhileFetching : v;
+        }
+      }
+      backgroundFetch(k, index, options, context) {
+        const v = index === void 0 ? void 0 : this.valList[index];
+        if (this.isBackgroundFetch(v)) {
+          return v;
+        }
+        const ac = new AC();
+        if (options.signal) {
+          options.signal.addEventListener(
+            "abort",
+            () => ac.abort(options.signal.reason)
+          );
+        }
+        const fetchOpts = {
+          signal: ac.signal,
+          options,
+          context
+        };
+        const cb = (v2, updateCache = false) => {
+          const { aborted } = ac.signal;
+          const ignoreAbort = options.ignoreFetchAbort && v2 !== void 0;
+          if (options.status) {
+            if (aborted && !updateCache) {
+              options.status.fetchAborted = true;
+              options.status.fetchError = ac.signal.reason;
+              if (ignoreAbort)
+                options.status.fetchAbortIgnored = true;
+            } else {
+              options.status.fetchResolved = true;
+            }
+          }
+          if (aborted && !ignoreAbort && !updateCache) {
+            return fetchFail(ac.signal.reason);
+          }
+          if (this.valList[index] === p) {
+            if (v2 === void 0) {
+              if (p.__staleWhileFetching) {
+                this.valList[index] = p.__staleWhileFetching;
+              } else {
+                this.delete(k);
+              }
+            } else {
+              if (options.status)
+                options.status.fetchUpdated = true;
+              this.set(k, v2, fetchOpts.options);
+            }
+          }
+          return v2;
+        };
+        const eb = (er) => {
+          if (options.status) {
+            options.status.fetchRejected = true;
+            options.status.fetchError = er;
+          }
+          return fetchFail(er);
+        };
+        const fetchFail = (er) => {
+          const { aborted } = ac.signal;
+          const allowStaleAborted = aborted && options.allowStaleOnFetchAbort;
+          const allowStale = allowStaleAborted || options.allowStaleOnFetchRejection;
+          const noDelete = allowStale || options.noDeleteOnFetchRejection;
+          if (this.valList[index] === p) {
+            const del = !noDelete || p.__staleWhileFetching === void 0;
+            if (del) {
+              this.delete(k);
+            } else if (!allowStaleAborted) {
+              this.valList[index] = p.__staleWhileFetching;
+            }
+          }
+          if (allowStale) {
+            if (options.status && p.__staleWhileFetching !== void 0) {
+              options.status.returnedStale = true;
+            }
+            return p.__staleWhileFetching;
+          } else if (p.__returned === p) {
+            throw er;
+          }
+        };
+        const pcall = (res, rej) => {
+          this.fetchMethod(k, v, fetchOpts).then((v2) => res(v2), rej);
+          ac.signal.addEventListener("abort", () => {
+            if (!options.ignoreFetchAbort || options.allowStaleOnFetchAbort) {
+              res();
+              if (options.allowStaleOnFetchAbort) {
+                res = (v2) => cb(v2, true);
+              }
+            }
+          });
+        };
+        if (options.status)
+          options.status.fetchDispatched = true;
+        const p = new Promise(pcall).then(cb, eb);
+        p.__abortController = ac;
+        p.__staleWhileFetching = v;
+        p.__returned = null;
+        if (index === void 0) {
+          this.set(k, p, { ...fetchOpts.options, status: void 0 });
+          index = this.keyMap.get(k);
+        } else {
+          this.valList[index] = p;
+        }
+        return p;
+      }
+      isBackgroundFetch(p) {
+        return p && typeof p === "object" && typeof p.then === "function" && Object.prototype.hasOwnProperty.call(
+          p,
+          "__staleWhileFetching"
+        ) && Object.prototype.hasOwnProperty.call(p, "__returned") && (p.__returned === p || p.__returned === null);
+      }
+      async fetch(k, {
+        allowStale = this.allowStale,
+        updateAgeOnGet = this.updateAgeOnGet,
+        noDeleteOnStaleGet = this.noDeleteOnStaleGet,
+        ttl = this.ttl,
+        noDisposeOnSet = this.noDisposeOnSet,
+        size = 0,
+        sizeCalculation = this.sizeCalculation,
+        noUpdateTTL = this.noUpdateTTL,
+        noDeleteOnFetchRejection = this.noDeleteOnFetchRejection,
+        allowStaleOnFetchRejection = this.allowStaleOnFetchRejection,
+        ignoreFetchAbort = this.ignoreFetchAbort,
+        allowStaleOnFetchAbort = this.allowStaleOnFetchAbort,
+        fetchContext = this.fetchContext,
+        forceRefresh = false,
+        status,
+        signal
+      } = {}) {
+        if (!this.fetchMethod) {
+          if (status)
+            status.fetch = "get";
+          return this.get(k, {
+            allowStale,
+            updateAgeOnGet,
+            noDeleteOnStaleGet,
+            status
+          });
+        }
+        const options = {
+          allowStale,
+          updateAgeOnGet,
+          noDeleteOnStaleGet,
+          ttl,
+          noDisposeOnSet,
+          size,
+          sizeCalculation,
+          noUpdateTTL,
+          noDeleteOnFetchRejection,
+          allowStaleOnFetchRejection,
+          allowStaleOnFetchAbort,
+          ignoreFetchAbort,
+          status,
+          signal
+        };
+        let index = this.keyMap.get(k);
+        if (index === void 0) {
+          if (status)
+            status.fetch = "miss";
+          const p = this.backgroundFetch(k, index, options, fetchContext);
+          return p.__returned = p;
+        } else {
+          const v = this.valList[index];
+          if (this.isBackgroundFetch(v)) {
+            const stale = allowStale && v.__staleWhileFetching !== void 0;
+            if (status) {
+              status.fetch = "inflight";
+              if (stale)
+                status.returnedStale = true;
+            }
+            return stale ? v.__staleWhileFetching : v.__returned = v;
+          }
+          const isStale = this.isStale(index);
+          if (!forceRefresh && !isStale) {
+            if (status)
+              status.fetch = "hit";
+            this.moveToTail(index);
+            if (updateAgeOnGet) {
+              this.updateItemAge(index);
+            }
+            this.statusTTL(status, index);
+            return v;
+          }
+          const p = this.backgroundFetch(k, index, options, fetchContext);
+          const hasStale = p.__staleWhileFetching !== void 0;
+          const staleVal = hasStale && allowStale;
+          if (status) {
+            status.fetch = hasStale && isStale ? "stale" : "refresh";
+            if (staleVal && isStale)
+              status.returnedStale = true;
+          }
+          return staleVal ? p.__staleWhileFetching : p.__returned = p;
+        }
+      }
+      get(k, {
+        allowStale = this.allowStale,
+        updateAgeOnGet = this.updateAgeOnGet,
+        noDeleteOnStaleGet = this.noDeleteOnStaleGet,
+        status
+      } = {}) {
+        const index = this.keyMap.get(k);
+        if (index !== void 0) {
+          const value = this.valList[index];
+          const fetching = this.isBackgroundFetch(value);
+          this.statusTTL(status, index);
+          if (this.isStale(index)) {
+            if (status)
+              status.get = "stale";
+            if (!fetching) {
+              if (!noDeleteOnStaleGet) {
+                this.delete(k);
+              }
+              if (status)
+                status.returnedStale = allowStale;
+              return allowStale ? value : void 0;
+            } else {
+              if (status) {
+                status.returnedStale = allowStale && value.__staleWhileFetching !== void 0;
+              }
+              return allowStale ? value.__staleWhileFetching : void 0;
+            }
+          } else {
+            if (status)
+              status.get = "hit";
+            if (fetching) {
+              return value.__staleWhileFetching;
+            }
+            this.moveToTail(index);
+            if (updateAgeOnGet) {
+              this.updateItemAge(index);
+            }
+            return value;
+          }
+        } else if (status) {
+          status.get = "miss";
+        }
+      }
+      connect(p, n) {
+        this.prev[n] = p;
+        this.next[p] = n;
+      }
+      moveToTail(index) {
+        if (index !== this.tail) {
+          if (index === this.head) {
+            this.head = this.next[index];
+          } else {
+            this.connect(this.prev[index], this.next[index]);
+          }
+          this.connect(this.tail, index);
+          this.tail = index;
+        }
+      }
+      get del() {
+        deprecatedMethod("del", "delete");
+        return this.delete;
+      }
+      delete(k) {
+        let deleted = false;
+        if (this.size !== 0) {
+          const index = this.keyMap.get(k);
+          if (index !== void 0) {
+            deleted = true;
+            if (this.size === 1) {
+              this.clear();
+            } else {
+              this.removeItemSize(index);
+              const v = this.valList[index];
+              if (this.isBackgroundFetch(v)) {
+                v.__abortController.abort(new Error("deleted"));
+              } else {
+                this.dispose(v, k, "delete");
+                if (this.disposeAfter) {
+                  this.disposed.push([v, k, "delete"]);
+                }
+              }
+              this.keyMap.delete(k);
+              this.keyList[index] = null;
+              this.valList[index] = null;
+              if (index === this.tail) {
+                this.tail = this.prev[index];
+              } else if (index === this.head) {
+                this.head = this.next[index];
+              } else {
+                this.next[this.prev[index]] = this.next[index];
+                this.prev[this.next[index]] = this.prev[index];
+              }
+              this.size--;
+              this.free.push(index);
+            }
+          }
+        }
+        if (this.disposed) {
+          while (this.disposed.length) {
+            this.disposeAfter(...this.disposed.shift());
+          }
+        }
+        return deleted;
+      }
+      clear() {
+        for (const index of this.rindexes({ allowStale: true })) {
+          const v = this.valList[index];
+          if (this.isBackgroundFetch(v)) {
+            v.__abortController.abort(new Error("deleted"));
+          } else {
+            const k = this.keyList[index];
+            this.dispose(v, k, "delete");
+            if (this.disposeAfter) {
+              this.disposed.push([v, k, "delete"]);
+            }
+          }
+        }
+        this.keyMap.clear();
+        this.valList.fill(null);
+        this.keyList.fill(null);
+        if (this.ttls) {
+          this.ttls.fill(0);
+          this.starts.fill(0);
+        }
+        if (this.sizes) {
+          this.sizes.fill(0);
+        }
+        this.head = 0;
+        this.tail = 0;
+        this.initialFill = 1;
+        this.free.length = 0;
+        this.calculatedSize = 0;
+        this.size = 0;
+        if (this.disposed) {
+          while (this.disposed.length) {
+            this.disposeAfter(...this.disposed.shift());
+          }
+        }
+      }
+      get reset() {
+        deprecatedMethod("reset", "clear");
+        return this.clear;
+      }
+      get length() {
+        deprecatedProperty("length", "size");
+        return this.size;
+      }
+      static get AbortController() {
+        return AC;
+      }
+      static get AbortSignal() {
+        return AS;
+      }
+    };
+    module2.exports = LRUCache;
+  }
+});
+
+// node_modules/.pnpm/named-placeholders@1.1.3/node_modules/named-placeholders/index.js
+var require_named_placeholders = __commonJS({
+  "node_modules/.pnpm/named-placeholders@1.1.3/node_modules/named-placeholders/index.js"(exports, module2) {
+    "use strict";
+    var RE_PARAM = /(?:\?)|(?:(?<!["'])[:@](\d+|(?:[a-zA-Z][a-zA-Z0-9_]*)))/g;
+    var DQUOTE = 34;
+    var SQUOTE = 39;
+    var BSLASH = 92;
+    function parse(query) {
+      let ppos = RE_PARAM.exec(query);
+      let curpos = 0;
+      let start = 0;
+      let end;
+      const parts = [];
+      let inQuote = false;
+      let escape = false;
+      let qchr;
+      const tokens = [];
+      let qcnt = 0;
+      let lastTokenEndPos = 0;
+      let i2;
+      if (ppos) {
+        do {
+          for (i2 = curpos, end = ppos.index; i2 < end; ++i2) {
+            let chr = query.charCodeAt(i2);
+            if (chr === BSLASH)
+              escape = !escape;
+            else {
+              if (escape) {
+                escape = false;
+                continue;
+              }
+              if (inQuote && chr === qchr) {
+                if (query.charCodeAt(i2 + 1) === qchr) {
+                  ++i2;
+                  continue;
+                }
+                inQuote = false;
+              } else if (chr === DQUOTE || chr === SQUOTE) {
+                inQuote = true;
+                qchr = chr;
+              }
+            }
+          }
+          if (!inQuote) {
+            parts.push(query.substring(start, end));
+            tokens.push(ppos[0].length === 1 ? qcnt++ : ppos[1]);
+            start = end + ppos[0].length;
+            lastTokenEndPos = start;
+          }
+          curpos = end + ppos[0].length;
+        } while (ppos = RE_PARAM.exec(query));
+        if (tokens.length) {
+          if (curpos < query.length) {
+            parts.push(query.substring(lastTokenEndPos));
+          }
+          return [parts, tokens];
+        }
+      }
+      return [query];
+    }
+    function createCompiler(config) {
+      if (!config)
+        config = {};
+      if (!config.placeholder) {
+        config.placeholder = "?";
+      }
+      let ncache = 100;
+      let cache;
+      if (typeof config.cache === "number") {
+        ncache = config.cache;
+      }
+      if (typeof config.cache === "object") {
+        cache = config.cache;
+      }
+      if (config.cache !== false && !cache) {
+        cache = new (require_lru_cache())({ max: ncache });
+      }
+      function toArrayParams(tree, params) {
+        const arr = [];
+        if (tree.length == 1) {
+          return [tree[0], []];
+        }
+        if (typeof params == "undefined")
+          throw new Error("Named query contains placeholders, but parameters object is undefined");
+        for (const key in params) {
+          const char = key[0];
+          if (char == "@" || char == ":") {
+            params[key.substring(1)] = params[key];
+            delete params[key];
+          }
+        }
+        const tokens = tree[1];
+        for (let i2 = 0; i2 < tokens.length; ++i2) {
+          arr.push(params[tokens[i2]] === void 0 ? null : params[tokens[i2]]);
+        }
+        return [tree[0], arr];
+      }
+      function noTailingSemicolon(s2) {
+        const char = s2.slice(-1);
+        if (char == ":" || char == "@") {
+          return s2.slice(0, -1);
+        }
+        return s2;
+      }
+      function join(tree) {
+        if (tree.length == 1) {
+          return tree;
+        }
+        let unnamed = noTailingSemicolon(tree[0][0]);
+        for (let i2 = 1; i2 < tree[0].length; ++i2) {
+          const char = tree[0][i2 - 1].slice(-1);
+          if (char == ":" || char == "@") {
+            unnamed += config.placeholder;
+          }
+          unnamed += config.placeholder;
+          unnamed += noTailingSemicolon(tree[0][i2]);
+        }
+        const last = tree[0][tree[0].length - 1];
+        if (tree[0].length == tree[1].length) {
+          const char = last.slice(-1);
+          if (char == ":" || char == "@") {
+            unnamed += config.placeholder;
+          }
+          unnamed += config.placeholder;
+        }
+        return [unnamed, tree[1]];
+      }
+      function compile(query, paramsObj) {
+        let tree;
+        if (cache && (tree = cache.get(query))) {
+          return toArrayParams(tree, paramsObj);
+        }
+        tree = join(parse(query));
+        if (cache) {
+          cache.set(query, tree);
+        }
+        return toArrayParams(tree, paramsObj);
+      }
+      compile.parse = parse;
+      return compile;
+    }
+    function toNumbered(q, params) {
+      const tree = parse(q);
+      const paramsArr = [];
+      if (tree.length == 1) {
+        return [tree[0], paramsArr];
+      }
+      const pIndexes = {};
+      let pLastIndex = 0;
+      let qs = "";
+      let varIndex;
+      const varNames = [];
+      for (let i2 = 0; i2 < tree[0].length; ++i2) {
+        varIndex = pIndexes[tree[1][i2]];
+        if (!varIndex) {
+          varIndex = ++pLastIndex;
+          pIndexes[tree[1][i2]] = varIndex;
+        }
+        if (tree[1][i2]) {
+          varNames[varIndex - 1] = tree[1][i2];
+          qs += tree[0][i2] + "$" + varIndex;
+        } else {
+          qs += tree[0][i2];
+        }
+      }
+      return [qs, varNames.map((n) => params[n])];
+    }
+    module2.exports = createCompiler;
+    module2.exports.toNumbered = toNumbered;
+  }
+});
+
 // node_modules/.pnpm/sqlstring@2.3.3/node_modules/sqlstring/lib/SqlString.js
 var require_SqlString = __commonJS({
   "node_modules/.pnpm/sqlstring@2.3.3/node_modules/sqlstring/lib/SqlString.js"(exports) {
@@ -1609,9 +2794,9 @@ var require_index_cjs = __commonJS({
   }
 });
 
-// node_modules/.pnpm/mysql2@3.6.0/node_modules/mysql2/lib/constants/errors.js
+// node_modules/.pnpm/mysql2@3.5.1/node_modules/mysql2/lib/constants/errors.js
 var require_errors = __commonJS({
-  "node_modules/.pnpm/mysql2@3.6.0/node_modules/mysql2/lib/constants/errors.js"(exports) {
+  "node_modules/.pnpm/mysql2@3.5.1/node_modules/mysql2/lib/constants/errors.js"(exports) {
     "use strict";
     exports.EE_CANTCREATEFILE = 1;
     exports.EE_READ = 2;
@@ -9729,9 +10914,9 @@ var require_lib = __commonJS({
   }
 });
 
-// node_modules/.pnpm/mysql2@3.6.0/node_modules/mysql2/lib/parsers/string.js
+// node_modules/.pnpm/mysql2@3.5.1/node_modules/mysql2/lib/parsers/string.js
 var require_string = __commonJS({
-  "node_modules/.pnpm/mysql2@3.6.0/node_modules/mysql2/lib/parsers/string.js"(exports) {
+  "node_modules/.pnpm/mysql2@3.5.1/node_modules/mysql2/lib/parsers/string.js"(exports) {
     "use strict";
     var Iconv = require_lib();
     exports.decode = function(buffer, encoding, start, end, options) {
@@ -9755,9 +10940,9 @@ var require_string = __commonJS({
   }
 });
 
-// node_modules/.pnpm/mysql2@3.6.0/node_modules/mysql2/lib/packets/packet.js
+// node_modules/.pnpm/mysql2@3.5.1/node_modules/mysql2/lib/packets/packet.js
 var require_packet = __commonJS({
-  "node_modules/.pnpm/mysql2@3.6.0/node_modules/mysql2/lib/packets/packet.js"(exports, module2) {
+  "node_modules/.pnpm/mysql2@3.5.1/node_modules/mysql2/lib/packets/packet.js"(exports, module2) {
     "use strict";
     var ErrorCodeToName = require_errors();
     var NativeBuffer = require("buffer").Buffer;
@@ -10515,9 +11700,9 @@ var require_packet = __commonJS({
   }
 });
 
-// node_modules/.pnpm/mysql2@3.6.0/node_modules/mysql2/lib/packet_parser.js
+// node_modules/.pnpm/mysql2@3.5.1/node_modules/mysql2/lib/packet_parser.js
 var require_packet_parser = __commonJS({
-  "node_modules/.pnpm/mysql2@3.6.0/node_modules/mysql2/lib/packet_parser.js"(exports, module2) {
+  "node_modules/.pnpm/mysql2@3.5.1/node_modules/mysql2/lib/packet_parser.js"(exports, module2) {
     "use strict";
     var Packet = require_packet();
     var MAX_PACKET_LENGTH = 16777215;
@@ -10682,9 +11867,9 @@ var require_packet_parser = __commonJS({
   }
 });
 
-// node_modules/.pnpm/mysql2@3.6.0/node_modules/mysql2/lib/packets/auth_next_factor.js
+// node_modules/.pnpm/mysql2@3.5.1/node_modules/mysql2/lib/packets/auth_next_factor.js
 var require_auth_next_factor = __commonJS({
-  "node_modules/.pnpm/mysql2@3.6.0/node_modules/mysql2/lib/packets/auth_next_factor.js"(exports, module2) {
+  "node_modules/.pnpm/mysql2@3.5.1/node_modules/mysql2/lib/packets/auth_next_factor.js"(exports, module2) {
     "use strict";
     var Packet = require_packet();
     var AuthNextFactor = class {
@@ -10716,9 +11901,9 @@ var require_auth_next_factor = __commonJS({
   }
 });
 
-// node_modules/.pnpm/mysql2@3.6.0/node_modules/mysql2/lib/packets/auth_switch_request.js
+// node_modules/.pnpm/mysql2@3.5.1/node_modules/mysql2/lib/packets/auth_switch_request.js
 var require_auth_switch_request = __commonJS({
-  "node_modules/.pnpm/mysql2@3.6.0/node_modules/mysql2/lib/packets/auth_switch_request.js"(exports, module2) {
+  "node_modules/.pnpm/mysql2@3.5.1/node_modules/mysql2/lib/packets/auth_switch_request.js"(exports, module2) {
     "use strict";
     var Packet = require_packet();
     var AuthSwitchRequest = class {
@@ -10750,9 +11935,9 @@ var require_auth_switch_request = __commonJS({
   }
 });
 
-// node_modules/.pnpm/mysql2@3.6.0/node_modules/mysql2/lib/packets/auth_switch_request_more_data.js
+// node_modules/.pnpm/mysql2@3.5.1/node_modules/mysql2/lib/packets/auth_switch_request_more_data.js
 var require_auth_switch_request_more_data = __commonJS({
-  "node_modules/.pnpm/mysql2@3.6.0/node_modules/mysql2/lib/packets/auth_switch_request_more_data.js"(exports, module2) {
+  "node_modules/.pnpm/mysql2@3.5.1/node_modules/mysql2/lib/packets/auth_switch_request_more_data.js"(exports, module2) {
     "use strict";
     var Packet = require_packet();
     var AuthSwitchRequestMoreData = class {
@@ -10781,9 +11966,9 @@ var require_auth_switch_request_more_data = __commonJS({
   }
 });
 
-// node_modules/.pnpm/mysql2@3.6.0/node_modules/mysql2/lib/packets/auth_switch_response.js
+// node_modules/.pnpm/mysql2@3.5.1/node_modules/mysql2/lib/packets/auth_switch_response.js
 var require_auth_switch_response = __commonJS({
-  "node_modules/.pnpm/mysql2@3.6.0/node_modules/mysql2/lib/packets/auth_switch_response.js"(exports, module2) {
+  "node_modules/.pnpm/mysql2@3.5.1/node_modules/mysql2/lib/packets/auth_switch_response.js"(exports, module2) {
     "use strict";
     var Packet = require_packet();
     var AuthSwitchResponse = class {
@@ -10810,9 +11995,9 @@ var require_auth_switch_response = __commonJS({
   }
 });
 
-// node_modules/.pnpm/mysql2@3.6.0/node_modules/mysql2/lib/constants/types.js
+// node_modules/.pnpm/mysql2@3.5.1/node_modules/mysql2/lib/constants/types.js
 var require_types = __commonJS({
-  "node_modules/.pnpm/mysql2@3.6.0/node_modules/mysql2/lib/constants/types.js"(exports, module2) {
+  "node_modules/.pnpm/mysql2@3.5.1/node_modules/mysql2/lib/constants/types.js"(exports, module2) {
     "use strict";
     module2.exports = {
       0: "DECIMAL",
@@ -10875,9 +12060,9 @@ var require_types = __commonJS({
   }
 });
 
-// node_modules/.pnpm/mysql2@3.6.0/node_modules/mysql2/lib/packets/binary_row.js
+// node_modules/.pnpm/mysql2@3.5.1/node_modules/mysql2/lib/packets/binary_row.js
 var require_binary_row = __commonJS({
-  "node_modules/.pnpm/mysql2@3.6.0/node_modules/mysql2/lib/packets/binary_row.js"(exports, module2) {
+  "node_modules/.pnpm/mysql2@3.5.1/node_modules/mysql2/lib/packets/binary_row.js"(exports, module2) {
     "use strict";
     var Types = require_types();
     var Packet = require_packet();
@@ -10960,9 +12145,9 @@ var require_binary_row = __commonJS({
   }
 });
 
-// node_modules/.pnpm/mysql2@3.6.0/node_modules/mysql2/lib/constants/commands.js
+// node_modules/.pnpm/mysql2@3.5.1/node_modules/mysql2/lib/constants/commands.js
 var require_commands = __commonJS({
-  "node_modules/.pnpm/mysql2@3.6.0/node_modules/mysql2/lib/constants/commands.js"(exports, module2) {
+  "node_modules/.pnpm/mysql2@3.5.1/node_modules/mysql2/lib/constants/commands.js"(exports, module2) {
     "use strict";
     module2.exports = {
       SLEEP: 0,
@@ -11001,9 +12186,9 @@ var require_commands = __commonJS({
   }
 });
 
-// node_modules/.pnpm/mysql2@3.6.0/node_modules/mysql2/lib/packets/binlog_dump.js
+// node_modules/.pnpm/mysql2@3.5.1/node_modules/mysql2/lib/packets/binlog_dump.js
 var require_binlog_dump = __commonJS({
-  "node_modules/.pnpm/mysql2@3.6.0/node_modules/mysql2/lib/packets/binlog_dump.js"(exports, module2) {
+  "node_modules/.pnpm/mysql2@3.5.1/node_modules/mysql2/lib/packets/binlog_dump.js"(exports, module2) {
     "use strict";
     var Packet = require_packet();
     var CommandCodes = require_commands();
@@ -11031,9 +12216,9 @@ var require_binlog_dump = __commonJS({
   }
 });
 
-// node_modules/.pnpm/mysql2@3.6.0/node_modules/mysql2/lib/constants/client.js
+// node_modules/.pnpm/mysql2@3.5.1/node_modules/mysql2/lib/constants/client.js
 var require_client = __commonJS({
-  "node_modules/.pnpm/mysql2@3.6.0/node_modules/mysql2/lib/constants/client.js"(exports) {
+  "node_modules/.pnpm/mysql2@3.5.1/node_modules/mysql2/lib/constants/client.js"(exports) {
     "use strict";
     exports.LONG_PASSWORD = 1;
     exports.FOUND_ROWS = 2;
@@ -11066,9 +12251,9 @@ var require_client = __commonJS({
   }
 });
 
-// node_modules/.pnpm/mysql2@3.6.0/node_modules/mysql2/lib/auth_41.js
+// node_modules/.pnpm/mysql2@3.5.1/node_modules/mysql2/lib/auth_41.js
 var require_auth_41 = __commonJS({
-  "node_modules/.pnpm/mysql2@3.6.0/node_modules/mysql2/lib/auth_41.js"(exports) {
+  "node_modules/.pnpm/mysql2@3.5.1/node_modules/mysql2/lib/auth_41.js"(exports) {
     "use strict";
     var crypto = require("crypto");
     function sha1(msg, msg1, msg2) {
@@ -11125,9 +12310,9 @@ var require_auth_41 = __commonJS({
   }
 });
 
-// node_modules/.pnpm/mysql2@3.6.0/node_modules/mysql2/lib/constants/charset_encodings.js
+// node_modules/.pnpm/mysql2@3.5.1/node_modules/mysql2/lib/constants/charset_encodings.js
 var require_charset_encodings = __commonJS({
-  "node_modules/.pnpm/mysql2@3.6.0/node_modules/mysql2/lib/constants/charset_encodings.js"(exports, module2) {
+  "node_modules/.pnpm/mysql2@3.5.1/node_modules/mysql2/lib/constants/charset_encodings.js"(exports, module2) {
     "use strict";
     module2.exports = [
       "utf8",
@@ -11443,9 +12628,9 @@ var require_charset_encodings = __commonJS({
   }
 });
 
-// node_modules/.pnpm/mysql2@3.6.0/node_modules/mysql2/lib/packets/change_user.js
+// node_modules/.pnpm/mysql2@3.5.1/node_modules/mysql2/lib/packets/change_user.js
 var require_change_user = __commonJS({
-  "node_modules/.pnpm/mysql2@3.6.0/node_modules/mysql2/lib/packets/change_user.js"(exports, module2) {
+  "node_modules/.pnpm/mysql2@3.5.1/node_modules/mysql2/lib/packets/change_user.js"(exports, module2) {
     "use strict";
     var CommandCode = require_commands();
     var ClientConstants = require_client();
@@ -11535,9 +12720,9 @@ var require_change_user = __commonJS({
   }
 });
 
-// node_modules/.pnpm/mysql2@3.6.0/node_modules/mysql2/lib/packets/close_statement.js
+// node_modules/.pnpm/mysql2@3.5.1/node_modules/mysql2/lib/packets/close_statement.js
 var require_close_statement = __commonJS({
-  "node_modules/.pnpm/mysql2@3.6.0/node_modules/mysql2/lib/packets/close_statement.js"(exports, module2) {
+  "node_modules/.pnpm/mysql2@3.5.1/node_modules/mysql2/lib/packets/close_statement.js"(exports, module2) {
     "use strict";
     var Packet = require_packet();
     var CommandCodes = require_commands();
@@ -11557,9 +12742,9 @@ var require_close_statement = __commonJS({
   }
 });
 
-// node_modules/.pnpm/mysql2@3.6.0/node_modules/mysql2/lib/constants/field_flags.js
+// node_modules/.pnpm/mysql2@3.5.1/node_modules/mysql2/lib/constants/field_flags.js
 var require_field_flags = __commonJS({
-  "node_modules/.pnpm/mysql2@3.6.0/node_modules/mysql2/lib/constants/field_flags.js"(exports) {
+  "node_modules/.pnpm/mysql2@3.5.1/node_modules/mysql2/lib/constants/field_flags.js"(exports) {
     "use strict";
     exports.NOT_NULL = 1;
     exports.PRI_KEY = 2;
@@ -11579,9 +12764,9 @@ var require_field_flags = __commonJS({
   }
 });
 
-// node_modules/.pnpm/mysql2@3.6.0/node_modules/mysql2/lib/packets/column_definition.js
+// node_modules/.pnpm/mysql2@3.5.1/node_modules/mysql2/lib/packets/column_definition.js
 var require_column_definition = __commonJS({
-  "node_modules/.pnpm/mysql2@3.6.0/node_modules/mysql2/lib/packets/column_definition.js"(exports, module2) {
+  "node_modules/.pnpm/mysql2@3.5.1/node_modules/mysql2/lib/packets/column_definition.js"(exports, module2) {
     "use strict";
     var Packet = require_packet();
     var StringParser = require_string();
@@ -11820,9 +13005,9 @@ var require_column_definition = __commonJS({
   }
 });
 
-// node_modules/.pnpm/mysql2@3.6.0/node_modules/mysql2/lib/constants/cursor.js
+// node_modules/.pnpm/mysql2@3.5.1/node_modules/mysql2/lib/constants/cursor.js
 var require_cursor = __commonJS({
-  "node_modules/.pnpm/mysql2@3.6.0/node_modules/mysql2/lib/constants/cursor.js"(exports, module2) {
+  "node_modules/.pnpm/mysql2@3.5.1/node_modules/mysql2/lib/constants/cursor.js"(exports, module2) {
     "use strict";
     module2.exports = {
       NO_CURSOR: 0,
@@ -11833,9 +13018,9 @@ var require_cursor = __commonJS({
   }
 });
 
-// node_modules/.pnpm/mysql2@3.6.0/node_modules/mysql2/lib/packets/execute.js
+// node_modules/.pnpm/mysql2@3.5.1/node_modules/mysql2/lib/packets/execute.js
 var require_execute = __commonJS({
-  "node_modules/.pnpm/mysql2@3.6.0/node_modules/mysql2/lib/packets/execute.js"(exports, module2) {
+  "node_modules/.pnpm/mysql2@3.5.1/node_modules/mysql2/lib/packets/execute.js"(exports, module2) {
     "use strict";
     var CursorType = require_cursor();
     var CommandCodes = require_commands();
@@ -11999,9 +13184,9 @@ var require_execute = __commonJS({
   }
 });
 
-// node_modules/.pnpm/mysql2@3.6.0/node_modules/mysql2/lib/packets/handshake.js
+// node_modules/.pnpm/mysql2@3.5.1/node_modules/mysql2/lib/packets/handshake.js
 var require_handshake = __commonJS({
-  "node_modules/.pnpm/mysql2@3.6.0/node_modules/mysql2/lib/packets/handshake.js"(exports, module2) {
+  "node_modules/.pnpm/mysql2@3.5.1/node_modules/mysql2/lib/packets/handshake.js"(exports, module2) {
     "use strict";
     var Packet = require_packet();
     var ClientConstants = require_client();
@@ -12101,9 +13286,9 @@ var require_handshake = __commonJS({
   }
 });
 
-// node_modules/.pnpm/mysql2@3.6.0/node_modules/mysql2/lib/packets/handshake_response.js
+// node_modules/.pnpm/mysql2@3.5.1/node_modules/mysql2/lib/packets/handshake_response.js
 var require_handshake_response = __commonJS({
-  "node_modules/.pnpm/mysql2@3.6.0/node_modules/mysql2/lib/packets/handshake_response.js"(exports, module2) {
+  "node_modules/.pnpm/mysql2@3.5.1/node_modules/mysql2/lib/packets/handshake_response.js"(exports, module2) {
     "use strict";
     var ClientConstants = require_client();
     var CharsetToEncoding = require_charset_encodings();
@@ -12241,9 +13426,9 @@ var require_handshake_response = __commonJS({
   }
 });
 
-// node_modules/.pnpm/mysql2@3.6.0/node_modules/mysql2/lib/packets/prepare_statement.js
+// node_modules/.pnpm/mysql2@3.5.1/node_modules/mysql2/lib/packets/prepare_statement.js
 var require_prepare_statement = __commonJS({
-  "node_modules/.pnpm/mysql2@3.6.0/node_modules/mysql2/lib/packets/prepare_statement.js"(exports, module2) {
+  "node_modules/.pnpm/mysql2@3.5.1/node_modules/mysql2/lib/packets/prepare_statement.js"(exports, module2) {
     "use strict";
     var Packet = require_packet();
     var CommandCodes = require_commands();
@@ -12270,9 +13455,9 @@ var require_prepare_statement = __commonJS({
   }
 });
 
-// node_modules/.pnpm/mysql2@3.6.0/node_modules/mysql2/lib/packets/prepared_statement_header.js
+// node_modules/.pnpm/mysql2@3.5.1/node_modules/mysql2/lib/packets/prepared_statement_header.js
 var require_prepared_statement_header = __commonJS({
-  "node_modules/.pnpm/mysql2@3.6.0/node_modules/mysql2/lib/packets/prepared_statement_header.js"(exports, module2) {
+  "node_modules/.pnpm/mysql2@3.5.1/node_modules/mysql2/lib/packets/prepared_statement_header.js"(exports, module2) {
     "use strict";
     var PreparedStatementHeader = class {
       constructor(packet) {
@@ -12288,9 +13473,9 @@ var require_prepared_statement_header = __commonJS({
   }
 });
 
-// node_modules/.pnpm/mysql2@3.6.0/node_modules/mysql2/lib/packets/query.js
+// node_modules/.pnpm/mysql2@3.5.1/node_modules/mysql2/lib/packets/query.js
 var require_query = __commonJS({
-  "node_modules/.pnpm/mysql2@3.6.0/node_modules/mysql2/lib/packets/query.js"(exports, module2) {
+  "node_modules/.pnpm/mysql2@3.5.1/node_modules/mysql2/lib/packets/query.js"(exports, module2) {
     "use strict";
     var Packet = require_packet();
     var CommandCode = require_commands();
@@ -12317,9 +13502,9 @@ var require_query = __commonJS({
   }
 });
 
-// node_modules/.pnpm/mysql2@3.6.0/node_modules/mysql2/lib/packets/register_slave.js
+// node_modules/.pnpm/mysql2@3.5.1/node_modules/mysql2/lib/packets/register_slave.js
 var require_register_slave = __commonJS({
-  "node_modules/.pnpm/mysql2@3.6.0/node_modules/mysql2/lib/packets/register_slave.js"(exports, module2) {
+  "node_modules/.pnpm/mysql2@3.5.1/node_modules/mysql2/lib/packets/register_slave.js"(exports, module2) {
     "use strict";
     var Packet = require_packet();
     var CommandCodes = require_commands();
@@ -12356,9 +13541,9 @@ var require_register_slave = __commonJS({
   }
 });
 
-// node_modules/.pnpm/mysql2@3.6.0/node_modules/mysql2/lib/constants/server_status.js
+// node_modules/.pnpm/mysql2@3.5.1/node_modules/mysql2/lib/constants/server_status.js
 var require_server_status = __commonJS({
-  "node_modules/.pnpm/mysql2@3.6.0/node_modules/mysql2/lib/constants/server_status.js"(exports) {
+  "node_modules/.pnpm/mysql2@3.5.1/node_modules/mysql2/lib/constants/server_status.js"(exports) {
     "use strict";
     exports.SERVER_STATUS_IN_TRANS = 1;
     exports.SERVER_STATUS_AUTOCOMMIT = 2;
@@ -12377,9 +13562,9 @@ var require_server_status = __commonJS({
   }
 });
 
-// node_modules/.pnpm/mysql2@3.6.0/node_modules/mysql2/lib/constants/encoding_charset.js
+// node_modules/.pnpm/mysql2@3.5.1/node_modules/mysql2/lib/constants/encoding_charset.js
 var require_encoding_charset = __commonJS({
-  "node_modules/.pnpm/mysql2@3.6.0/node_modules/mysql2/lib/constants/encoding_charset.js"(exports, module2) {
+  "node_modules/.pnpm/mysql2@3.5.1/node_modules/mysql2/lib/constants/encoding_charset.js"(exports, module2) {
     "use strict";
     module2.exports = {
       big5: 1,
@@ -12428,9 +13613,9 @@ var require_encoding_charset = __commonJS({
   }
 });
 
-// node_modules/.pnpm/mysql2@3.6.0/node_modules/mysql2/lib/constants/session_track.js
+// node_modules/.pnpm/mysql2@3.5.1/node_modules/mysql2/lib/constants/session_track.js
 var require_session_track = __commonJS({
-  "node_modules/.pnpm/mysql2@3.6.0/node_modules/mysql2/lib/constants/session_track.js"(exports) {
+  "node_modules/.pnpm/mysql2@3.5.1/node_modules/mysql2/lib/constants/session_track.js"(exports) {
     "use strict";
     exports.SYSTEM_VARIABLES = 0;
     exports.SCHEMA = 1;
@@ -12443,9 +13628,9 @@ var require_session_track = __commonJS({
   }
 });
 
-// node_modules/.pnpm/mysql2@3.6.0/node_modules/mysql2/lib/packets/resultset_header.js
+// node_modules/.pnpm/mysql2@3.5.1/node_modules/mysql2/lib/packets/resultset_header.js
 var require_resultset_header = __commonJS({
-  "node_modules/.pnpm/mysql2@3.6.0/node_modules/mysql2/lib/packets/resultset_header.js"(exports, module2) {
+  "node_modules/.pnpm/mysql2@3.5.1/node_modules/mysql2/lib/packets/resultset_header.js"(exports, module2) {
     "use strict";
     var Packet = require_packet();
     var ClientConstants = require_client();
@@ -12552,9 +13737,9 @@ var require_resultset_header = __commonJS({
   }
 });
 
-// node_modules/.pnpm/mysql2@3.6.0/node_modules/mysql2/lib/packets/ssl_request.js
+// node_modules/.pnpm/mysql2@3.5.1/node_modules/mysql2/lib/packets/ssl_request.js
 var require_ssl_request = __commonJS({
-  "node_modules/.pnpm/mysql2@3.6.0/node_modules/mysql2/lib/packets/ssl_request.js"(exports, module2) {
+  "node_modules/.pnpm/mysql2@3.5.1/node_modules/mysql2/lib/packets/ssl_request.js"(exports, module2) {
     "use strict";
     var ClientConstants = require_client();
     var Packet = require_packet();
@@ -12579,9 +13764,9 @@ var require_ssl_request = __commonJS({
   }
 });
 
-// node_modules/.pnpm/mysql2@3.6.0/node_modules/mysql2/lib/packets/text_row.js
+// node_modules/.pnpm/mysql2@3.5.1/node_modules/mysql2/lib/packets/text_row.js
 var require_text_row = __commonJS({
-  "node_modules/.pnpm/mysql2@3.6.0/node_modules/mysql2/lib/packets/text_row.js"(exports, module2) {
+  "node_modules/.pnpm/mysql2@3.5.1/node_modules/mysql2/lib/packets/text_row.js"(exports, module2) {
     "use strict";
     var Packet = require_packet();
     var TextRow = class {
@@ -12626,9 +13811,9 @@ var require_text_row = __commonJS({
   }
 });
 
-// node_modules/.pnpm/mysql2@3.6.0/node_modules/mysql2/lib/packets/index.js
+// node_modules/.pnpm/mysql2@3.5.1/node_modules/mysql2/lib/packets/index.js
 var require_packets = __commonJS({
-  "node_modules/.pnpm/mysql2@3.6.0/node_modules/mysql2/lib/packets/index.js"(exports, module2) {
+  "node_modules/.pnpm/mysql2@3.5.1/node_modules/mysql2/lib/packets/index.js"(exports, module2) {
     "use strict";
     var process2 = require("process");
     var AuthNextFactor = require_auth_next_factor();
@@ -12756,9 +13941,9 @@ var require_packets = __commonJS({
   }
 });
 
-// node_modules/.pnpm/mysql2@3.6.0/node_modules/mysql2/lib/commands/command.js
+// node_modules/.pnpm/mysql2@3.5.1/node_modules/mysql2/lib/commands/command.js
 var require_command = __commonJS({
-  "node_modules/.pnpm/mysql2@3.6.0/node_modules/mysql2/lib/commands/command.js"(exports, module2) {
+  "node_modules/.pnpm/mysql2@3.5.1/node_modules/mysql2/lib/commands/command.js"(exports, module2) {
     "use strict";
     var EventEmitter = require("events").EventEmitter;
     var Timers = require("timers");
@@ -12809,9 +13994,9 @@ var require_command = __commonJS({
   }
 });
 
-// node_modules/.pnpm/mysql2@3.6.0/node_modules/mysql2/lib/auth_plugins/sha256_password.js
+// node_modules/.pnpm/mysql2@3.5.1/node_modules/mysql2/lib/auth_plugins/sha256_password.js
 var require_sha256_password = __commonJS({
-  "node_modules/.pnpm/mysql2@3.6.0/node_modules/mysql2/lib/auth_plugins/sha256_password.js"(exports, module2) {
+  "node_modules/.pnpm/mysql2@3.5.1/node_modules/mysql2/lib/auth_plugins/sha256_password.js"(exports, module2) {
     "use strict";
     var PLUGIN_NAME = "sha256_password";
     var crypto = require("crypto");
@@ -12863,9 +14048,9 @@ var require_sha256_password = __commonJS({
   }
 });
 
-// node_modules/.pnpm/mysql2@3.6.0/node_modules/mysql2/lib/auth_plugins/caching_sha2_password.js
+// node_modules/.pnpm/mysql2@3.5.1/node_modules/mysql2/lib/auth_plugins/caching_sha2_password.js
 var require_caching_sha2_password = __commonJS({
-  "node_modules/.pnpm/mysql2@3.6.0/node_modules/mysql2/lib/auth_plugins/caching_sha2_password.js"(exports, module2) {
+  "node_modules/.pnpm/mysql2@3.5.1/node_modules/mysql2/lib/auth_plugins/caching_sha2_password.js"(exports, module2) {
     "use strict";
     var PLUGIN_NAME = "caching_sha2_password";
     var crypto = require("crypto");
@@ -12951,9 +14136,9 @@ var require_caching_sha2_password = __commonJS({
   }
 });
 
-// node_modules/.pnpm/mysql2@3.6.0/node_modules/mysql2/lib/auth_plugins/mysql_native_password.js
+// node_modules/.pnpm/mysql2@3.5.1/node_modules/mysql2/lib/auth_plugins/mysql_native_password.js
 var require_mysql_native_password = __commonJS({
-  "node_modules/.pnpm/mysql2@3.6.0/node_modules/mysql2/lib/auth_plugins/mysql_native_password.js"(exports, module2) {
+  "node_modules/.pnpm/mysql2@3.5.1/node_modules/mysql2/lib/auth_plugins/mysql_native_password.js"(exports, module2) {
     "use strict";
     var auth41 = require_auth_41();
     module2.exports = (pluginOptions) => ({ connection, command }) => {
@@ -12982,9 +14167,9 @@ var require_mysql_native_password = __commonJS({
   }
 });
 
-// node_modules/.pnpm/mysql2@3.6.0/node_modules/mysql2/lib/auth_plugins/mysql_clear_password.js
+// node_modules/.pnpm/mysql2@3.5.1/node_modules/mysql2/lib/auth_plugins/mysql_clear_password.js
 var require_mysql_clear_password = __commonJS({
-  "node_modules/.pnpm/mysql2@3.6.0/node_modules/mysql2/lib/auth_plugins/mysql_clear_password.js"(exports, module2) {
+  "node_modules/.pnpm/mysql2@3.5.1/node_modules/mysql2/lib/auth_plugins/mysql_clear_password.js"(exports, module2) {
     "use strict";
     function bufferFromStr(str) {
       return Buffer.from(`${str}\0`);
@@ -12999,9 +14184,9 @@ var require_mysql_clear_password = __commonJS({
   }
 });
 
-// node_modules/.pnpm/mysql2@3.6.0/node_modules/mysql2/lib/commands/auth_switch.js
+// node_modules/.pnpm/mysql2@3.5.1/node_modules/mysql2/lib/commands/auth_switch.js
 var require_auth_switch = __commonJS({
-  "node_modules/.pnpm/mysql2@3.6.0/node_modules/mysql2/lib/commands/auth_switch.js"(exports, module2) {
+  "node_modules/.pnpm/mysql2@3.5.1/node_modules/mysql2/lib/commands/auth_switch.js"(exports, module2) {
     "use strict";
     var Packets = require_packets();
     var sha256_password = require_sha256_password();
@@ -13211,9 +14396,9 @@ var require_seq_queue2 = __commonJS({
   }
 });
 
-// node_modules/.pnpm/mysql2@3.6.0/node_modules/mysql2/lib/compressed_protocol.js
+// node_modules/.pnpm/mysql2@3.5.1/node_modules/mysql2/lib/compressed_protocol.js
 var require_compressed_protocol = __commonJS({
-  "node_modules/.pnpm/mysql2@3.6.0/node_modules/mysql2/lib/compressed_protocol.js"(exports, module2) {
+  "node_modules/.pnpm/mysql2@3.5.1/node_modules/mysql2/lib/compressed_protocol.js"(exports, module2) {
     "use strict";
     var zlib2 = require("zlib");
     var PacketParser = require_packet_parser();
@@ -13312,9 +14497,9 @@ var require_compressed_protocol = __commonJS({
   }
 });
 
-// node_modules/.pnpm/mysql2@3.6.0/node_modules/mysql2/lib/commands/client_handshake.js
+// node_modules/.pnpm/mysql2@3.5.1/node_modules/mysql2/lib/commands/client_handshake.js
 var require_client_handshake = __commonJS({
-  "node_modules/.pnpm/mysql2@3.6.0/node_modules/mysql2/lib/commands/client_handshake.js"(exports, module2) {
+  "node_modules/.pnpm/mysql2@3.5.1/node_modules/mysql2/lib/commands/client_handshake.js"(exports, module2) {
     "use strict";
     var Command = require_command();
     var Packets = require_packets();
@@ -13498,9 +14683,9 @@ var require_client_handshake = __commonJS({
   }
 });
 
-// node_modules/.pnpm/mysql2@3.6.0/node_modules/mysql2/lib/commands/server_handshake.js
+// node_modules/.pnpm/mysql2@3.5.1/node_modules/mysql2/lib/commands/server_handshake.js
 var require_server_handshake = __commonJS({
-  "node_modules/.pnpm/mysql2@3.6.0/node_modules/mysql2/lib/commands/server_handshake.js"(exports, module2) {
+  "node_modules/.pnpm/mysql2@3.5.1/node_modules/mysql2/lib/commands/server_handshake.js"(exports, module2) {
     "use strict";
     var CommandCode = require_commands();
     var Errors = require_errors();
@@ -13649,9 +14834,9 @@ var require_server_handshake = __commonJS({
   }
 });
 
-// node_modules/.pnpm/mysql2@3.6.0/node_modules/mysql2/lib/constants/charsets.js
+// node_modules/.pnpm/mysql2@3.5.1/node_modules/mysql2/lib/constants/charsets.js
 var require_charsets = __commonJS({
-  "node_modules/.pnpm/mysql2@3.6.0/node_modules/mysql2/lib/constants/charsets.js"(exports) {
+  "node_modules/.pnpm/mysql2@3.5.1/node_modules/mysql2/lib/constants/charsets.js"(exports) {
     "use strict";
     exports.BIG5_CHINESE_CI = 1;
     exports.LATIN2_CZECH_CS = 2;
@@ -13969,9 +15154,9 @@ var require_charsets = __commonJS({
   }
 });
 
-// node_modules/.pnpm/mysql2@3.6.0/node_modules/mysql2/lib/helpers.js
+// node_modules/.pnpm/mysql2@3.5.1/node_modules/mysql2/lib/helpers.js
 var require_helpers = __commonJS({
-  "node_modules/.pnpm/mysql2@3.6.0/node_modules/mysql2/lib/helpers.js"(exports) {
+  "node_modules/.pnpm/mysql2@3.5.1/node_modules/mysql2/lib/helpers.js"(exports) {
     "use strict";
     function srcEscape(str) {
       return JSON.stringify({
@@ -14190,9 +15375,9 @@ var require_generate_function = __commonJS({
   }
 });
 
-// node_modules/.pnpm/mysql2@3.6.0/node_modules/mysql2/lib/parsers/parser_cache.js
+// node_modules/.pnpm/mysql2@3.5.1/node_modules/mysql2/lib/parsers/parser_cache.js
 var require_parser_cache = __commonJS({
-  "node_modules/.pnpm/mysql2@3.6.0/node_modules/mysql2/lib/parsers/parser_cache.js"(exports, module2) {
+  "node_modules/.pnpm/mysql2@3.5.1/node_modules/mysql2/lib/parsers/parser_cache.js"(exports, module2) {
     "use strict";
     var LRU = require_index_cjs().default;
     var parserCache = new LRU({
@@ -14230,9 +15415,9 @@ var require_parser_cache = __commonJS({
   }
 });
 
-// node_modules/.pnpm/mysql2@3.6.0/node_modules/mysql2/lib/parsers/text_parser.js
+// node_modules/.pnpm/mysql2@3.5.1/node_modules/mysql2/lib/parsers/text_parser.js
 var require_text_parser = __commonJS({
-  "node_modules/.pnpm/mysql2@3.6.0/node_modules/mysql2/lib/parsers/text_parser.js"(exports, module2) {
+  "node_modules/.pnpm/mysql2@3.5.1/node_modules/mysql2/lib/parsers/text_parser.js"(exports, module2) {
     "use strict";
     var Types = require_types();
     var Charsets = require_charsets();
@@ -14406,9 +15591,9 @@ var require_text_parser = __commonJS({
   }
 });
 
-// node_modules/.pnpm/mysql2@3.6.0/node_modules/mysql2/lib/commands/query.js
+// node_modules/.pnpm/mysql2@3.5.1/node_modules/mysql2/lib/commands/query.js
 var require_query2 = __commonJS({
-  "node_modules/.pnpm/mysql2@3.6.0/node_modules/mysql2/lib/commands/query.js"(exports, module2) {
+  "node_modules/.pnpm/mysql2@3.5.1/node_modules/mysql2/lib/commands/query.js"(exports, module2) {
     "use strict";
     var process2 = require("process");
     var Timers = require("timers");
@@ -14693,9 +15878,9 @@ var require_query2 = __commonJS({
   }
 });
 
-// node_modules/.pnpm/mysql2@3.6.0/node_modules/mysql2/lib/commands/close_statement.js
+// node_modules/.pnpm/mysql2@3.5.1/node_modules/mysql2/lib/commands/close_statement.js
 var require_close_statement2 = __commonJS({
-  "node_modules/.pnpm/mysql2@3.6.0/node_modules/mysql2/lib/commands/close_statement.js"(exports, module2) {
+  "node_modules/.pnpm/mysql2@3.5.1/node_modules/mysql2/lib/commands/close_statement.js"(exports, module2) {
     "use strict";
     var Command = require_command();
     var Packets = require_packets();
@@ -14713,9 +15898,9 @@ var require_close_statement2 = __commonJS({
   }
 });
 
-// node_modules/.pnpm/mysql2@3.6.0/node_modules/mysql2/lib/parsers/binary_parser.js
+// node_modules/.pnpm/mysql2@3.5.1/node_modules/mysql2/lib/parsers/binary_parser.js
 var require_binary_parser = __commonJS({
-  "node_modules/.pnpm/mysql2@3.6.0/node_modules/mysql2/lib/parsers/binary_parser.js"(exports, module2) {
+  "node_modules/.pnpm/mysql2@3.5.1/node_modules/mysql2/lib/parsers/binary_parser.js"(exports, module2) {
     "use strict";
     var FieldFlags = require_field_flags();
     var Charsets = require_charsets();
@@ -14862,9 +16047,9 @@ var require_binary_parser = __commonJS({
   }
 });
 
-// node_modules/.pnpm/mysql2@3.6.0/node_modules/mysql2/lib/commands/execute.js
+// node_modules/.pnpm/mysql2@3.5.1/node_modules/mysql2/lib/commands/execute.js
 var require_execute2 = __commonJS({
-  "node_modules/.pnpm/mysql2@3.6.0/node_modules/mysql2/lib/commands/execute.js"(exports, module2) {
+  "node_modules/.pnpm/mysql2@3.5.1/node_modules/mysql2/lib/commands/execute.js"(exports, module2) {
     "use strict";
     var Command = require_command();
     var Query = require_query2();
@@ -14953,9 +16138,9 @@ var require_execute2 = __commonJS({
   }
 });
 
-// node_modules/.pnpm/mysql2@3.6.0/node_modules/mysql2/lib/commands/prepare.js
+// node_modules/.pnpm/mysql2@3.5.1/node_modules/mysql2/lib/commands/prepare.js
 var require_prepare = __commonJS({
-  "node_modules/.pnpm/mysql2@3.6.0/node_modules/mysql2/lib/commands/prepare.js"(exports, module2) {
+  "node_modules/.pnpm/mysql2@3.5.1/node_modules/mysql2/lib/commands/prepare.js"(exports, module2) {
     "use strict";
     var Packets = require_packets();
     var Command = require_command();
@@ -15085,9 +16270,9 @@ var require_prepare = __commonJS({
   }
 });
 
-// node_modules/.pnpm/mysql2@3.6.0/node_modules/mysql2/lib/commands/ping.js
+// node_modules/.pnpm/mysql2@3.5.1/node_modules/mysql2/lib/commands/ping.js
 var require_ping = __commonJS({
-  "node_modules/.pnpm/mysql2@3.6.0/node_modules/mysql2/lib/commands/ping.js"(exports, module2) {
+  "node_modules/.pnpm/mysql2@3.5.1/node_modules/mysql2/lib/commands/ping.js"(exports, module2) {
     "use strict";
     var Command = require_command();
     var CommandCode = require_commands();
@@ -15118,9 +16303,9 @@ var require_ping = __commonJS({
   }
 });
 
-// node_modules/.pnpm/mysql2@3.6.0/node_modules/mysql2/lib/commands/register_slave.js
+// node_modules/.pnpm/mysql2@3.5.1/node_modules/mysql2/lib/commands/register_slave.js
 var require_register_slave2 = __commonJS({
-  "node_modules/.pnpm/mysql2@3.6.0/node_modules/mysql2/lib/commands/register_slave.js"(exports, module2) {
+  "node_modules/.pnpm/mysql2@3.5.1/node_modules/mysql2/lib/commands/register_slave.js"(exports, module2) {
     "use strict";
     var Command = require_command();
     var Packets = require_packets();
@@ -15146,9 +16331,9 @@ var require_register_slave2 = __commonJS({
   }
 });
 
-// node_modules/.pnpm/mysql2@3.6.0/node_modules/mysql2/lib/packets/binlog_query_statusvars.js
+// node_modules/.pnpm/mysql2@3.5.1/node_modules/mysql2/lib/packets/binlog_query_statusvars.js
 var require_binlog_query_statusvars = __commonJS({
-  "node_modules/.pnpm/mysql2@3.6.0/node_modules/mysql2/lib/packets/binlog_query_statusvars.js"(exports, module2) {
+  "node_modules/.pnpm/mysql2@3.5.1/node_modules/mysql2/lib/packets/binlog_query_statusvars.js"(exports, module2) {
     "use strict";
     var keys = {
       FLAGS2: 0,
@@ -15257,9 +16442,9 @@ var require_binlog_query_statusvars = __commonJS({
   }
 });
 
-// node_modules/.pnpm/mysql2@3.6.0/node_modules/mysql2/lib/commands/binlog_dump.js
+// node_modules/.pnpm/mysql2@3.5.1/node_modules/mysql2/lib/commands/binlog_dump.js
 var require_binlog_dump2 = __commonJS({
-  "node_modules/.pnpm/mysql2@3.6.0/node_modules/mysql2/lib/commands/binlog_dump.js"(exports, module2) {
+  "node_modules/.pnpm/mysql2@3.5.1/node_modules/mysql2/lib/commands/binlog_dump.js"(exports, module2) {
     "use strict";
     var Command = require_command();
     var Packets = require_packets();
@@ -15354,9 +16539,9 @@ var require_binlog_dump2 = __commonJS({
   }
 });
 
-// node_modules/.pnpm/mysql2@3.6.0/node_modules/mysql2/lib/commands/change_user.js
+// node_modules/.pnpm/mysql2@3.5.1/node_modules/mysql2/lib/commands/change_user.js
 var require_change_user2 = __commonJS({
-  "node_modules/.pnpm/mysql2@3.6.0/node_modules/mysql2/lib/commands/change_user.js"(exports, module2) {
+  "node_modules/.pnpm/mysql2@3.5.1/node_modules/mysql2/lib/commands/change_user.js"(exports, module2) {
     "use strict";
     var Command = require_command();
     var Packets = require_packets();
@@ -15409,9 +16594,9 @@ var require_change_user2 = __commonJS({
   }
 });
 
-// node_modules/.pnpm/mysql2@3.6.0/node_modules/mysql2/lib/commands/quit.js
+// node_modules/.pnpm/mysql2@3.5.1/node_modules/mysql2/lib/commands/quit.js
 var require_quit = __commonJS({
-  "node_modules/.pnpm/mysql2@3.6.0/node_modules/mysql2/lib/commands/quit.js"(exports, module2) {
+  "node_modules/.pnpm/mysql2@3.5.1/node_modules/mysql2/lib/commands/quit.js"(exports, module2) {
     "use strict";
     var Command = require_command();
     var CommandCode = require_commands();
@@ -15440,9 +16625,9 @@ var require_quit = __commonJS({
   }
 });
 
-// node_modules/.pnpm/mysql2@3.6.0/node_modules/mysql2/lib/commands/index.js
+// node_modules/.pnpm/mysql2@3.5.1/node_modules/mysql2/lib/commands/index.js
 var require_commands2 = __commonJS({
-  "node_modules/.pnpm/mysql2@3.6.0/node_modules/mysql2/lib/commands/index.js"(exports, module2) {
+  "node_modules/.pnpm/mysql2@3.5.1/node_modules/mysql2/lib/commands/index.js"(exports, module2) {
     "use strict";
     var ClientHandshake = require_client_handshake();
     var ServerHandshake = require_server_handshake();
@@ -15471,12 +16656,12 @@ var require_commands2 = __commonJS({
   }
 });
 
-// node_modules/.pnpm/mysql2@3.6.0/node_modules/mysql2/package.json
+// node_modules/.pnpm/mysql2@3.5.1/node_modules/mysql2/package.json
 var require_package = __commonJS({
-  "node_modules/.pnpm/mysql2@3.6.0/node_modules/mysql2/package.json"(exports, module2) {
+  "node_modules/.pnpm/mysql2@3.5.1/node_modules/mysql2/package.json"(exports, module2) {
     module2.exports = {
       name: "mysql2",
-      version: "3.6.0",
+      version: "3.5.1",
       description: "fast mysql driver. Implements core protocol, prepared statements, ssl and compression in native JS",
       main: "index.js",
       directories: {
@@ -15567,9 +16752,9 @@ var require_package = __commonJS({
   }
 });
 
-// node_modules/.pnpm/mysql2@3.6.0/node_modules/mysql2/lib/constants/ssl_profiles.js
+// node_modules/.pnpm/mysql2@3.5.1/node_modules/mysql2/lib/constants/ssl_profiles.js
 var require_ssl_profiles = __commonJS({
-  "node_modules/.pnpm/mysql2@3.6.0/node_modules/mysql2/lib/constants/ssl_profiles.js"(exports) {
+  "node_modules/.pnpm/mysql2@3.5.1/node_modules/mysql2/lib/constants/ssl_profiles.js"(exports) {
     "use strict";
     exports["Amazon RDS"] = {
       ca: [
@@ -15635,9 +16820,9 @@ var require_ssl_profiles = __commonJS({
   }
 });
 
-// node_modules/.pnpm/mysql2@3.6.0/node_modules/mysql2/lib/connection_config.js
+// node_modules/.pnpm/mysql2@3.5.1/node_modules/mysql2/lib/connection_config.js
 var require_connection_config = __commonJS({
-  "node_modules/.pnpm/mysql2@3.6.0/node_modules/mysql2/lib/connection_config.js"(exports, module2) {
+  "node_modules/.pnpm/mysql2@3.5.1/node_modules/mysql2/lib/connection_config.js"(exports, module2) {
     "use strict";
     var { URL: URL2 } = require("url");
     var ClientConstants = require_client();
@@ -15661,7 +16846,6 @@ var require_connection_config = __commonJS({
       flags: 1,
       host: 1,
       insecureAuth: 1,
-      infileStreamFactory: 1,
       isServer: 1,
       keepAliveInitialDelay: 1,
       localAddress: 1,
@@ -15732,7 +16916,6 @@ var require_connection_config = __commonJS({
         this.database = options.database;
         this.connectTimeout = isNaN(options.connectTimeout) ? 10 * 1e3 : options.connectTimeout;
         this.insecureAuth = options.insecureAuth || false;
-        this.infileStreamFactory = options.infileStreamFactory || void 0;
         this.supportBigNumbers = options.supportBigNumbers || false;
         this.bigNumberStrings = options.bigNumberStrings || false;
         this.decimalNumbers = options.decimalNumbers || false;
@@ -15873,9 +17056,9 @@ var require_connection_config = __commonJS({
   }
 });
 
-// node_modules/.pnpm/mysql2@3.6.0/node_modules/mysql2/lib/connection.js
+// node_modules/.pnpm/mysql2@3.5.1/node_modules/mysql2/lib/connection.js
 var require_connection = __commonJS({
-  "node_modules/.pnpm/mysql2@3.6.0/node_modules/mysql2/lib/connection.js"(exports, module2) {
+  "node_modules/.pnpm/mysql2@3.5.1/node_modules/mysql2/lib/connection.js"(exports, module2) {
     "use strict";
     var Net = require("net");
     var Tls = require("tls");
@@ -16349,14 +17532,9 @@ var require_connection = __commonJS({
         return stmt;
       }
       execute(sql, values, cb) {
-        let options = {
-          infileStreamFactory: this.config.infileStreamFactory
-        };
+        let options = {};
         if (typeof sql === "object") {
-          options = {
-            ...options,
-            ...sql
-          };
+          options = sql;
           if (typeof values === "function") {
             cb = values;
           } else {
@@ -16577,14 +17755,10 @@ var require_connection = __commonJS({
       }
       static createQuery(sql, values, cb, config) {
         let options = {
-          rowsAsArray: config.rowsAsArray,
-          infileStreamFactory: config.infileStreamFactory
+          rowsAsArray: config.rowsAsArray
         };
         if (typeof sql === "object") {
-          options = {
-            ...options,
-            ...sql
-          };
+          options = sql;
           if (typeof values === "function") {
             cb = values;
           } else if (values !== void 0) {
@@ -16608,9 +17782,9 @@ var require_connection = __commonJS({
   }
 });
 
-// node_modules/.pnpm/mysql2@3.6.0/node_modules/mysql2/lib/pool_connection.js
+// node_modules/.pnpm/mysql2@3.5.1/node_modules/mysql2/lib/pool_connection.js
 var require_pool_connection = __commonJS({
-  "node_modules/.pnpm/mysql2@3.6.0/node_modules/mysql2/lib/pool_connection.js"(exports, module2) {
+  "node_modules/.pnpm/mysql2@3.5.1/node_modules/mysql2/lib/pool_connection.js"(exports, module2) {
     "use strict";
     var Connection = require_mysql2().Connection;
     var PoolConnection = class extends Connection {
@@ -16663,9 +17837,9 @@ var require_pool_connection = __commonJS({
   }
 });
 
-// node_modules/.pnpm/mysql2@3.6.0/node_modules/mysql2/lib/pool.js
+// node_modules/.pnpm/mysql2@3.5.1/node_modules/mysql2/lib/pool.js
 var require_pool = __commonJS({
-  "node_modules/.pnpm/mysql2@3.6.0/node_modules/mysql2/lib/pool.js"(exports, module2) {
+  "node_modules/.pnpm/mysql2@3.5.1/node_modules/mysql2/lib/pool.js"(exports, module2) {
     "use strict";
     var process2 = require("process");
     var mysql = require_mysql2();
@@ -16872,9 +18046,9 @@ var require_pool = __commonJS({
   }
 });
 
-// node_modules/.pnpm/mysql2@3.6.0/node_modules/mysql2/lib/pool_config.js
+// node_modules/.pnpm/mysql2@3.5.1/node_modules/mysql2/lib/pool_config.js
 var require_pool_config = __commonJS({
-  "node_modules/.pnpm/mysql2@3.6.0/node_modules/mysql2/lib/pool_config.js"(exports, module2) {
+  "node_modules/.pnpm/mysql2@3.5.1/node_modules/mysql2/lib/pool_config.js"(exports, module2) {
     "use strict";
     var ConnectionConfig = require_connection_config();
     var PoolConfig = class {
@@ -16894,9 +18068,9 @@ var require_pool_config = __commonJS({
   }
 });
 
-// node_modules/.pnpm/mysql2@3.6.0/node_modules/mysql2/lib/pool_cluster.js
+// node_modules/.pnpm/mysql2@3.5.1/node_modules/mysql2/lib/pool_cluster.js
 var require_pool_cluster = __commonJS({
-  "node_modules/.pnpm/mysql2@3.6.0/node_modules/mysql2/lib/pool_cluster.js"(exports, module2) {
+  "node_modules/.pnpm/mysql2@3.5.1/node_modules/mysql2/lib/pool_cluster.js"(exports, module2) {
     "use strict";
     var process2 = require("process");
     var Pool2 = require_pool();
@@ -17131,9 +18305,9 @@ var require_pool_cluster = __commonJS({
   }
 });
 
-// node_modules/.pnpm/mysql2@3.6.0/node_modules/mysql2/lib/server.js
+// node_modules/.pnpm/mysql2@3.5.1/node_modules/mysql2/lib/server.js
 var require_server = __commonJS({
-  "node_modules/.pnpm/mysql2@3.6.0/node_modules/mysql2/lib/server.js"(exports, module2) {
+  "node_modules/.pnpm/mysql2@3.5.1/node_modules/mysql2/lib/server.js"(exports, module2) {
     "use strict";
     var net = require("net");
     var EventEmitter = require("events").EventEmitter;
@@ -17166,9 +18340,9 @@ var require_server = __commonJS({
   }
 });
 
-// node_modules/.pnpm/mysql2@3.6.0/node_modules/mysql2/lib/auth_plugins/index.js
+// node_modules/.pnpm/mysql2@3.5.1/node_modules/mysql2/lib/auth_plugins/index.js
 var require_auth_plugins = __commonJS({
-  "node_modules/.pnpm/mysql2@3.6.0/node_modules/mysql2/lib/auth_plugins/index.js"(exports, module2) {
+  "node_modules/.pnpm/mysql2@3.5.1/node_modules/mysql2/lib/auth_plugins/index.js"(exports, module2) {
     "use strict";
     module2.exports = {
       caching_sha2_password: require_caching_sha2_password(),
@@ -17179,9 +18353,9 @@ var require_auth_plugins = __commonJS({
   }
 });
 
-// node_modules/.pnpm/mysql2@3.6.0/node_modules/mysql2/index.js
+// node_modules/.pnpm/mysql2@3.5.1/node_modules/mysql2/index.js
 var require_mysql2 = __commonJS({
-  "node_modules/.pnpm/mysql2@3.6.0/node_modules/mysql2/index.js"(exports) {
+  "node_modules/.pnpm/mysql2@3.5.1/node_modules/mysql2/index.js"(exports) {
     "use strict";
     var SqlString = require_sqlstring();
     var Connection = require_connection();
@@ -17250,9 +18424,9 @@ var require_mysql2 = __commonJS({
   }
 });
 
-// node_modules/.pnpm/mysql2@3.6.0/node_modules/mysql2/promise.js
+// node_modules/.pnpm/mysql2@3.5.1/node_modules/mysql2/promise.js
 var require_promise = __commonJS({
-  "node_modules/.pnpm/mysql2@3.6.0/node_modules/mysql2/promise.js"(exports) {
+  "node_modules/.pnpm/mysql2@3.5.1/node_modules/mysql2/promise.js"(exports) {
     "use strict";
     var core = require_mysql2();
     var EventEmitter = require("events").EventEmitter;
@@ -17645,7 +18819,7 @@ var require_promise = __commonJS({
         super();
         this.poolCluster = poolCluster;
         this.Promise = thePromise || Promise;
-        inheritEvents(poolCluster, this, ["warn", "remove"]);
+        inheritEvents(poolCluster, this, ["acquire", "connection", "enqueue", "release"]);
       }
       getConnection() {
         const corePoolCluster = this.poolCluster;
@@ -17759,1191 +18933,6 @@ var require_promise = __commonJS({
     exports.clearParserCache = function() {
       parserCache.clearCache();
     };
-  }
-});
-
-// node_modules/.pnpm/lru-cache@7.18.3/node_modules/lru-cache/index.js
-var require_lru_cache = __commonJS({
-  "node_modules/.pnpm/lru-cache@7.18.3/node_modules/lru-cache/index.js"(exports, module2) {
-    var perf = typeof performance === "object" && performance && typeof performance.now === "function" ? performance : Date;
-    var hasAbortController = typeof AbortController === "function";
-    var AC = hasAbortController ? AbortController : class AbortController {
-      constructor() {
-        this.signal = new AS();
-      }
-      abort(reason = new Error("This operation was aborted")) {
-        this.signal.reason = this.signal.reason || reason;
-        this.signal.aborted = true;
-        this.signal.dispatchEvent({
-          type: "abort",
-          target: this.signal
-        });
-      }
-    };
-    var hasAbortSignal = typeof AbortSignal === "function";
-    var hasACAbortSignal = typeof AC.AbortSignal === "function";
-    var AS = hasAbortSignal ? AbortSignal : hasACAbortSignal ? AC.AbortController : class AbortSignal {
-      constructor() {
-        this.reason = void 0;
-        this.aborted = false;
-        this._listeners = [];
-      }
-      dispatchEvent(e2) {
-        if (e2.type === "abort") {
-          this.aborted = true;
-          this.onabort(e2);
-          this._listeners.forEach((f3) => f3(e2), this);
-        }
-      }
-      onabort() {
-      }
-      addEventListener(ev, fn) {
-        if (ev === "abort") {
-          this._listeners.push(fn);
-        }
-      }
-      removeEventListener(ev, fn) {
-        if (ev === "abort") {
-          this._listeners = this._listeners.filter((f3) => f3 !== fn);
-        }
-      }
-    };
-    var warned = /* @__PURE__ */ new Set();
-    var deprecatedOption = (opt, instead) => {
-      const code = `LRU_CACHE_OPTION_${opt}`;
-      if (shouldWarn(code)) {
-        warn(code, `${opt} option`, `options.${instead}`, LRUCache);
-      }
-    };
-    var deprecatedMethod = (method, instead) => {
-      const code = `LRU_CACHE_METHOD_${method}`;
-      if (shouldWarn(code)) {
-        const { prototype } = LRUCache;
-        const { get } = Object.getOwnPropertyDescriptor(prototype, method);
-        warn(code, `${method} method`, `cache.${instead}()`, get);
-      }
-    };
-    var deprecatedProperty = (field, instead) => {
-      const code = `LRU_CACHE_PROPERTY_${field}`;
-      if (shouldWarn(code)) {
-        const { prototype } = LRUCache;
-        const { get } = Object.getOwnPropertyDescriptor(prototype, field);
-        warn(code, `${field} property`, `cache.${instead}`, get);
-      }
-    };
-    var emitWarning = (...a) => {
-      typeof process === "object" && process && typeof process.emitWarning === "function" ? process.emitWarning(...a) : console.error(...a);
-    };
-    var shouldWarn = (code) => !warned.has(code);
-    var warn = (code, what, instead, fn) => {
-      warned.add(code);
-      const msg = `The ${what} is deprecated. Please use ${instead} instead.`;
-      emitWarning(msg, "DeprecationWarning", code, fn);
-    };
-    var isPosInt = (n) => n && n === Math.floor(n) && n > 0 && isFinite(n);
-    var getUintArray = (max) => !isPosInt(max) ? null : max <= Math.pow(2, 8) ? Uint8Array : max <= Math.pow(2, 16) ? Uint16Array : max <= Math.pow(2, 32) ? Uint32Array : max <= Number.MAX_SAFE_INTEGER ? ZeroArray : null;
-    var ZeroArray = class extends Array {
-      constructor(size) {
-        super(size);
-        this.fill(0);
-      }
-    };
-    var Stack = class {
-      constructor(max) {
-        if (max === 0) {
-          return [];
-        }
-        const UintArray = getUintArray(max);
-        this.heap = new UintArray(max);
-        this.length = 0;
-      }
-      push(n) {
-        this.heap[this.length++] = n;
-      }
-      pop() {
-        return this.heap[--this.length];
-      }
-    };
-    var LRUCache = class {
-      constructor(options = {}) {
-        const {
-          max = 0,
-          ttl,
-          ttlResolution = 1,
-          ttlAutopurge,
-          updateAgeOnGet,
-          updateAgeOnHas,
-          allowStale,
-          dispose,
-          disposeAfter,
-          noDisposeOnSet,
-          noUpdateTTL,
-          maxSize = 0,
-          maxEntrySize = 0,
-          sizeCalculation,
-          fetchMethod,
-          fetchContext,
-          noDeleteOnFetchRejection,
-          noDeleteOnStaleGet,
-          allowStaleOnFetchRejection,
-          allowStaleOnFetchAbort,
-          ignoreFetchAbort
-        } = options;
-        const { length, maxAge, stale } = options instanceof LRUCache ? {} : options;
-        if (max !== 0 && !isPosInt(max)) {
-          throw new TypeError("max option must be a nonnegative integer");
-        }
-        const UintArray = max ? getUintArray(max) : Array;
-        if (!UintArray) {
-          throw new Error("invalid max value: " + max);
-        }
-        this.max = max;
-        this.maxSize = maxSize;
-        this.maxEntrySize = maxEntrySize || this.maxSize;
-        this.sizeCalculation = sizeCalculation || length;
-        if (this.sizeCalculation) {
-          if (!this.maxSize && !this.maxEntrySize) {
-            throw new TypeError(
-              "cannot set sizeCalculation without setting maxSize or maxEntrySize"
-            );
-          }
-          if (typeof this.sizeCalculation !== "function") {
-            throw new TypeError("sizeCalculation set to non-function");
-          }
-        }
-        this.fetchMethod = fetchMethod || null;
-        if (this.fetchMethod && typeof this.fetchMethod !== "function") {
-          throw new TypeError(
-            "fetchMethod must be a function if specified"
-          );
-        }
-        this.fetchContext = fetchContext;
-        if (!this.fetchMethod && fetchContext !== void 0) {
-          throw new TypeError(
-            "cannot set fetchContext without fetchMethod"
-          );
-        }
-        this.keyMap = /* @__PURE__ */ new Map();
-        this.keyList = new Array(max).fill(null);
-        this.valList = new Array(max).fill(null);
-        this.next = new UintArray(max);
-        this.prev = new UintArray(max);
-        this.head = 0;
-        this.tail = 0;
-        this.free = new Stack(max);
-        this.initialFill = 1;
-        this.size = 0;
-        if (typeof dispose === "function") {
-          this.dispose = dispose;
-        }
-        if (typeof disposeAfter === "function") {
-          this.disposeAfter = disposeAfter;
-          this.disposed = [];
-        } else {
-          this.disposeAfter = null;
-          this.disposed = null;
-        }
-        this.noDisposeOnSet = !!noDisposeOnSet;
-        this.noUpdateTTL = !!noUpdateTTL;
-        this.noDeleteOnFetchRejection = !!noDeleteOnFetchRejection;
-        this.allowStaleOnFetchRejection = !!allowStaleOnFetchRejection;
-        this.allowStaleOnFetchAbort = !!allowStaleOnFetchAbort;
-        this.ignoreFetchAbort = !!ignoreFetchAbort;
-        if (this.maxEntrySize !== 0) {
-          if (this.maxSize !== 0) {
-            if (!isPosInt(this.maxSize)) {
-              throw new TypeError(
-                "maxSize must be a positive integer if specified"
-              );
-            }
-          }
-          if (!isPosInt(this.maxEntrySize)) {
-            throw new TypeError(
-              "maxEntrySize must be a positive integer if specified"
-            );
-          }
-          this.initializeSizeTracking();
-        }
-        this.allowStale = !!allowStale || !!stale;
-        this.noDeleteOnStaleGet = !!noDeleteOnStaleGet;
-        this.updateAgeOnGet = !!updateAgeOnGet;
-        this.updateAgeOnHas = !!updateAgeOnHas;
-        this.ttlResolution = isPosInt(ttlResolution) || ttlResolution === 0 ? ttlResolution : 1;
-        this.ttlAutopurge = !!ttlAutopurge;
-        this.ttl = ttl || maxAge || 0;
-        if (this.ttl) {
-          if (!isPosInt(this.ttl)) {
-            throw new TypeError(
-              "ttl must be a positive integer if specified"
-            );
-          }
-          this.initializeTTLTracking();
-        }
-        if (this.max === 0 && this.ttl === 0 && this.maxSize === 0) {
-          throw new TypeError(
-            "At least one of max, maxSize, or ttl is required"
-          );
-        }
-        if (!this.ttlAutopurge && !this.max && !this.maxSize) {
-          const code = "LRU_CACHE_UNBOUNDED";
-          if (shouldWarn(code)) {
-            warned.add(code);
-            const msg = "TTL caching without ttlAutopurge, max, or maxSize can result in unbounded memory consumption.";
-            emitWarning(msg, "UnboundedCacheWarning", code, LRUCache);
-          }
-        }
-        if (stale) {
-          deprecatedOption("stale", "allowStale");
-        }
-        if (maxAge) {
-          deprecatedOption("maxAge", "ttl");
-        }
-        if (length) {
-          deprecatedOption("length", "sizeCalculation");
-        }
-      }
-      getRemainingTTL(key) {
-        return this.has(key, { updateAgeOnHas: false }) ? Infinity : 0;
-      }
-      initializeTTLTracking() {
-        this.ttls = new ZeroArray(this.max);
-        this.starts = new ZeroArray(this.max);
-        this.setItemTTL = (index, ttl, start = perf.now()) => {
-          this.starts[index] = ttl !== 0 ? start : 0;
-          this.ttls[index] = ttl;
-          if (ttl !== 0 && this.ttlAutopurge) {
-            const t2 = setTimeout(() => {
-              if (this.isStale(index)) {
-                this.delete(this.keyList[index]);
-              }
-            }, ttl + 1);
-            if (t2.unref) {
-              t2.unref();
-            }
-          }
-        };
-        this.updateItemAge = (index) => {
-          this.starts[index] = this.ttls[index] !== 0 ? perf.now() : 0;
-        };
-        this.statusTTL = (status, index) => {
-          if (status) {
-            status.ttl = this.ttls[index];
-            status.start = this.starts[index];
-            status.now = cachedNow || getNow();
-            status.remainingTTL = status.now + status.ttl - status.start;
-          }
-        };
-        let cachedNow = 0;
-        const getNow = () => {
-          const n = perf.now();
-          if (this.ttlResolution > 0) {
-            cachedNow = n;
-            const t2 = setTimeout(
-              () => cachedNow = 0,
-              this.ttlResolution
-            );
-            if (t2.unref) {
-              t2.unref();
-            }
-          }
-          return n;
-        };
-        this.getRemainingTTL = (key) => {
-          const index = this.keyMap.get(key);
-          if (index === void 0) {
-            return 0;
-          }
-          return this.ttls[index] === 0 || this.starts[index] === 0 ? Infinity : this.starts[index] + this.ttls[index] - (cachedNow || getNow());
-        };
-        this.isStale = (index) => {
-          return this.ttls[index] !== 0 && this.starts[index] !== 0 && (cachedNow || getNow()) - this.starts[index] > this.ttls[index];
-        };
-      }
-      updateItemAge(_index) {
-      }
-      statusTTL(_status, _index) {
-      }
-      setItemTTL(_index, _ttl, _start) {
-      }
-      isStale(_index) {
-        return false;
-      }
-      initializeSizeTracking() {
-        this.calculatedSize = 0;
-        this.sizes = new ZeroArray(this.max);
-        this.removeItemSize = (index) => {
-          this.calculatedSize -= this.sizes[index];
-          this.sizes[index] = 0;
-        };
-        this.requireSize = (k, v, size, sizeCalculation) => {
-          if (this.isBackgroundFetch(v)) {
-            return 0;
-          }
-          if (!isPosInt(size)) {
-            if (sizeCalculation) {
-              if (typeof sizeCalculation !== "function") {
-                throw new TypeError("sizeCalculation must be a function");
-              }
-              size = sizeCalculation(v, k);
-              if (!isPosInt(size)) {
-                throw new TypeError(
-                  "sizeCalculation return invalid (expect positive integer)"
-                );
-              }
-            } else {
-              throw new TypeError(
-                "invalid size value (must be positive integer). When maxSize or maxEntrySize is used, sizeCalculation or size must be set."
-              );
-            }
-          }
-          return size;
-        };
-        this.addItemSize = (index, size, status) => {
-          this.sizes[index] = size;
-          if (this.maxSize) {
-            const maxSize = this.maxSize - this.sizes[index];
-            while (this.calculatedSize > maxSize) {
-              this.evict(true);
-            }
-          }
-          this.calculatedSize += this.sizes[index];
-          if (status) {
-            status.entrySize = size;
-            status.totalCalculatedSize = this.calculatedSize;
-          }
-        };
-      }
-      removeItemSize(_index) {
-      }
-      addItemSize(_index, _size) {
-      }
-      requireSize(_k, _v, size, sizeCalculation) {
-        if (size || sizeCalculation) {
-          throw new TypeError(
-            "cannot set size without setting maxSize or maxEntrySize on cache"
-          );
-        }
-      }
-      *indexes({ allowStale = this.allowStale } = {}) {
-        if (this.size) {
-          for (let i2 = this.tail; true; ) {
-            if (!this.isValidIndex(i2)) {
-              break;
-            }
-            if (allowStale || !this.isStale(i2)) {
-              yield i2;
-            }
-            if (i2 === this.head) {
-              break;
-            } else {
-              i2 = this.prev[i2];
-            }
-          }
-        }
-      }
-      *rindexes({ allowStale = this.allowStale } = {}) {
-        if (this.size) {
-          for (let i2 = this.head; true; ) {
-            if (!this.isValidIndex(i2)) {
-              break;
-            }
-            if (allowStale || !this.isStale(i2)) {
-              yield i2;
-            }
-            if (i2 === this.tail) {
-              break;
-            } else {
-              i2 = this.next[i2];
-            }
-          }
-        }
-      }
-      isValidIndex(index) {
-        return index !== void 0 && this.keyMap.get(this.keyList[index]) === index;
-      }
-      *entries() {
-        for (const i2 of this.indexes()) {
-          if (this.valList[i2] !== void 0 && this.keyList[i2] !== void 0 && !this.isBackgroundFetch(this.valList[i2])) {
-            yield [this.keyList[i2], this.valList[i2]];
-          }
-        }
-      }
-      *rentries() {
-        for (const i2 of this.rindexes()) {
-          if (this.valList[i2] !== void 0 && this.keyList[i2] !== void 0 && !this.isBackgroundFetch(this.valList[i2])) {
-            yield [this.keyList[i2], this.valList[i2]];
-          }
-        }
-      }
-      *keys() {
-        for (const i2 of this.indexes()) {
-          if (this.keyList[i2] !== void 0 && !this.isBackgroundFetch(this.valList[i2])) {
-            yield this.keyList[i2];
-          }
-        }
-      }
-      *rkeys() {
-        for (const i2 of this.rindexes()) {
-          if (this.keyList[i2] !== void 0 && !this.isBackgroundFetch(this.valList[i2])) {
-            yield this.keyList[i2];
-          }
-        }
-      }
-      *values() {
-        for (const i2 of this.indexes()) {
-          if (this.valList[i2] !== void 0 && !this.isBackgroundFetch(this.valList[i2])) {
-            yield this.valList[i2];
-          }
-        }
-      }
-      *rvalues() {
-        for (const i2 of this.rindexes()) {
-          if (this.valList[i2] !== void 0 && !this.isBackgroundFetch(this.valList[i2])) {
-            yield this.valList[i2];
-          }
-        }
-      }
-      [Symbol.iterator]() {
-        return this.entries();
-      }
-      find(fn, getOptions) {
-        for (const i2 of this.indexes()) {
-          const v = this.valList[i2];
-          const value = this.isBackgroundFetch(v) ? v.__staleWhileFetching : v;
-          if (value === void 0)
-            continue;
-          if (fn(value, this.keyList[i2], this)) {
-            return this.get(this.keyList[i2], getOptions);
-          }
-        }
-      }
-      forEach(fn, thisp = this) {
-        for (const i2 of this.indexes()) {
-          const v = this.valList[i2];
-          const value = this.isBackgroundFetch(v) ? v.__staleWhileFetching : v;
-          if (value === void 0)
-            continue;
-          fn.call(thisp, value, this.keyList[i2], this);
-        }
-      }
-      rforEach(fn, thisp = this) {
-        for (const i2 of this.rindexes()) {
-          const v = this.valList[i2];
-          const value = this.isBackgroundFetch(v) ? v.__staleWhileFetching : v;
-          if (value === void 0)
-            continue;
-          fn.call(thisp, value, this.keyList[i2], this);
-        }
-      }
-      get prune() {
-        deprecatedMethod("prune", "purgeStale");
-        return this.purgeStale;
-      }
-      purgeStale() {
-        let deleted = false;
-        for (const i2 of this.rindexes({ allowStale: true })) {
-          if (this.isStale(i2)) {
-            this.delete(this.keyList[i2]);
-            deleted = true;
-          }
-        }
-        return deleted;
-      }
-      dump() {
-        const arr = [];
-        for (const i2 of this.indexes({ allowStale: true })) {
-          const key = this.keyList[i2];
-          const v = this.valList[i2];
-          const value = this.isBackgroundFetch(v) ? v.__staleWhileFetching : v;
-          if (value === void 0)
-            continue;
-          const entry = { value };
-          if (this.ttls) {
-            entry.ttl = this.ttls[i2];
-            const age = perf.now() - this.starts[i2];
-            entry.start = Math.floor(Date.now() - age);
-          }
-          if (this.sizes) {
-            entry.size = this.sizes[i2];
-          }
-          arr.unshift([key, entry]);
-        }
-        return arr;
-      }
-      load(arr) {
-        this.clear();
-        for (const [key, entry] of arr) {
-          if (entry.start) {
-            const age = Date.now() - entry.start;
-            entry.start = perf.now() - age;
-          }
-          this.set(key, entry.value, entry);
-        }
-      }
-      dispose(_v, _k, _reason) {
-      }
-      set(k, v, {
-        ttl = this.ttl,
-        start,
-        noDisposeOnSet = this.noDisposeOnSet,
-        size = 0,
-        sizeCalculation = this.sizeCalculation,
-        noUpdateTTL = this.noUpdateTTL,
-        status
-      } = {}) {
-        size = this.requireSize(k, v, size, sizeCalculation);
-        if (this.maxEntrySize && size > this.maxEntrySize) {
-          if (status) {
-            status.set = "miss";
-            status.maxEntrySizeExceeded = true;
-          }
-          this.delete(k);
-          return this;
-        }
-        let index = this.size === 0 ? void 0 : this.keyMap.get(k);
-        if (index === void 0) {
-          index = this.newIndex();
-          this.keyList[index] = k;
-          this.valList[index] = v;
-          this.keyMap.set(k, index);
-          this.next[this.tail] = index;
-          this.prev[index] = this.tail;
-          this.tail = index;
-          this.size++;
-          this.addItemSize(index, size, status);
-          if (status) {
-            status.set = "add";
-          }
-          noUpdateTTL = false;
-        } else {
-          this.moveToTail(index);
-          const oldVal = this.valList[index];
-          if (v !== oldVal) {
-            if (this.isBackgroundFetch(oldVal)) {
-              oldVal.__abortController.abort(new Error("replaced"));
-            } else {
-              if (!noDisposeOnSet) {
-                this.dispose(oldVal, k, "set");
-                if (this.disposeAfter) {
-                  this.disposed.push([oldVal, k, "set"]);
-                }
-              }
-            }
-            this.removeItemSize(index);
-            this.valList[index] = v;
-            this.addItemSize(index, size, status);
-            if (status) {
-              status.set = "replace";
-              const oldValue = oldVal && this.isBackgroundFetch(oldVal) ? oldVal.__staleWhileFetching : oldVal;
-              if (oldValue !== void 0)
-                status.oldValue = oldValue;
-            }
-          } else if (status) {
-            status.set = "update";
-          }
-        }
-        if (ttl !== 0 && this.ttl === 0 && !this.ttls) {
-          this.initializeTTLTracking();
-        }
-        if (!noUpdateTTL) {
-          this.setItemTTL(index, ttl, start);
-        }
-        this.statusTTL(status, index);
-        if (this.disposeAfter) {
-          while (this.disposed.length) {
-            this.disposeAfter(...this.disposed.shift());
-          }
-        }
-        return this;
-      }
-      newIndex() {
-        if (this.size === 0) {
-          return this.tail;
-        }
-        if (this.size === this.max && this.max !== 0) {
-          return this.evict(false);
-        }
-        if (this.free.length !== 0) {
-          return this.free.pop();
-        }
-        return this.initialFill++;
-      }
-      pop() {
-        if (this.size) {
-          const val = this.valList[this.head];
-          this.evict(true);
-          return val;
-        }
-      }
-      evict(free) {
-        const head = this.head;
-        const k = this.keyList[head];
-        const v = this.valList[head];
-        if (this.isBackgroundFetch(v)) {
-          v.__abortController.abort(new Error("evicted"));
-        } else {
-          this.dispose(v, k, "evict");
-          if (this.disposeAfter) {
-            this.disposed.push([v, k, "evict"]);
-          }
-        }
-        this.removeItemSize(head);
-        if (free) {
-          this.keyList[head] = null;
-          this.valList[head] = null;
-          this.free.push(head);
-        }
-        this.head = this.next[head];
-        this.keyMap.delete(k);
-        this.size--;
-        return head;
-      }
-      has(k, { updateAgeOnHas = this.updateAgeOnHas, status } = {}) {
-        const index = this.keyMap.get(k);
-        if (index !== void 0) {
-          if (!this.isStale(index)) {
-            if (updateAgeOnHas) {
-              this.updateItemAge(index);
-            }
-            if (status)
-              status.has = "hit";
-            this.statusTTL(status, index);
-            return true;
-          } else if (status) {
-            status.has = "stale";
-            this.statusTTL(status, index);
-          }
-        } else if (status) {
-          status.has = "miss";
-        }
-        return false;
-      }
-      peek(k, { allowStale = this.allowStale } = {}) {
-        const index = this.keyMap.get(k);
-        if (index !== void 0 && (allowStale || !this.isStale(index))) {
-          const v = this.valList[index];
-          return this.isBackgroundFetch(v) ? v.__staleWhileFetching : v;
-        }
-      }
-      backgroundFetch(k, index, options, context) {
-        const v = index === void 0 ? void 0 : this.valList[index];
-        if (this.isBackgroundFetch(v)) {
-          return v;
-        }
-        const ac = new AC();
-        if (options.signal) {
-          options.signal.addEventListener(
-            "abort",
-            () => ac.abort(options.signal.reason)
-          );
-        }
-        const fetchOpts = {
-          signal: ac.signal,
-          options,
-          context
-        };
-        const cb = (v2, updateCache = false) => {
-          const { aborted } = ac.signal;
-          const ignoreAbort = options.ignoreFetchAbort && v2 !== void 0;
-          if (options.status) {
-            if (aborted && !updateCache) {
-              options.status.fetchAborted = true;
-              options.status.fetchError = ac.signal.reason;
-              if (ignoreAbort)
-                options.status.fetchAbortIgnored = true;
-            } else {
-              options.status.fetchResolved = true;
-            }
-          }
-          if (aborted && !ignoreAbort && !updateCache) {
-            return fetchFail(ac.signal.reason);
-          }
-          if (this.valList[index] === p) {
-            if (v2 === void 0) {
-              if (p.__staleWhileFetching) {
-                this.valList[index] = p.__staleWhileFetching;
-              } else {
-                this.delete(k);
-              }
-            } else {
-              if (options.status)
-                options.status.fetchUpdated = true;
-              this.set(k, v2, fetchOpts.options);
-            }
-          }
-          return v2;
-        };
-        const eb = (er) => {
-          if (options.status) {
-            options.status.fetchRejected = true;
-            options.status.fetchError = er;
-          }
-          return fetchFail(er);
-        };
-        const fetchFail = (er) => {
-          const { aborted } = ac.signal;
-          const allowStaleAborted = aborted && options.allowStaleOnFetchAbort;
-          const allowStale = allowStaleAborted || options.allowStaleOnFetchRejection;
-          const noDelete = allowStale || options.noDeleteOnFetchRejection;
-          if (this.valList[index] === p) {
-            const del = !noDelete || p.__staleWhileFetching === void 0;
-            if (del) {
-              this.delete(k);
-            } else if (!allowStaleAborted) {
-              this.valList[index] = p.__staleWhileFetching;
-            }
-          }
-          if (allowStale) {
-            if (options.status && p.__staleWhileFetching !== void 0) {
-              options.status.returnedStale = true;
-            }
-            return p.__staleWhileFetching;
-          } else if (p.__returned === p) {
-            throw er;
-          }
-        };
-        const pcall = (res, rej) => {
-          this.fetchMethod(k, v, fetchOpts).then((v2) => res(v2), rej);
-          ac.signal.addEventListener("abort", () => {
-            if (!options.ignoreFetchAbort || options.allowStaleOnFetchAbort) {
-              res();
-              if (options.allowStaleOnFetchAbort) {
-                res = (v2) => cb(v2, true);
-              }
-            }
-          });
-        };
-        if (options.status)
-          options.status.fetchDispatched = true;
-        const p = new Promise(pcall).then(cb, eb);
-        p.__abortController = ac;
-        p.__staleWhileFetching = v;
-        p.__returned = null;
-        if (index === void 0) {
-          this.set(k, p, { ...fetchOpts.options, status: void 0 });
-          index = this.keyMap.get(k);
-        } else {
-          this.valList[index] = p;
-        }
-        return p;
-      }
-      isBackgroundFetch(p) {
-        return p && typeof p === "object" && typeof p.then === "function" && Object.prototype.hasOwnProperty.call(
-          p,
-          "__staleWhileFetching"
-        ) && Object.prototype.hasOwnProperty.call(p, "__returned") && (p.__returned === p || p.__returned === null);
-      }
-      async fetch(k, {
-        allowStale = this.allowStale,
-        updateAgeOnGet = this.updateAgeOnGet,
-        noDeleteOnStaleGet = this.noDeleteOnStaleGet,
-        ttl = this.ttl,
-        noDisposeOnSet = this.noDisposeOnSet,
-        size = 0,
-        sizeCalculation = this.sizeCalculation,
-        noUpdateTTL = this.noUpdateTTL,
-        noDeleteOnFetchRejection = this.noDeleteOnFetchRejection,
-        allowStaleOnFetchRejection = this.allowStaleOnFetchRejection,
-        ignoreFetchAbort = this.ignoreFetchAbort,
-        allowStaleOnFetchAbort = this.allowStaleOnFetchAbort,
-        fetchContext = this.fetchContext,
-        forceRefresh = false,
-        status,
-        signal
-      } = {}) {
-        if (!this.fetchMethod) {
-          if (status)
-            status.fetch = "get";
-          return this.get(k, {
-            allowStale,
-            updateAgeOnGet,
-            noDeleteOnStaleGet,
-            status
-          });
-        }
-        const options = {
-          allowStale,
-          updateAgeOnGet,
-          noDeleteOnStaleGet,
-          ttl,
-          noDisposeOnSet,
-          size,
-          sizeCalculation,
-          noUpdateTTL,
-          noDeleteOnFetchRejection,
-          allowStaleOnFetchRejection,
-          allowStaleOnFetchAbort,
-          ignoreFetchAbort,
-          status,
-          signal
-        };
-        let index = this.keyMap.get(k);
-        if (index === void 0) {
-          if (status)
-            status.fetch = "miss";
-          const p = this.backgroundFetch(k, index, options, fetchContext);
-          return p.__returned = p;
-        } else {
-          const v = this.valList[index];
-          if (this.isBackgroundFetch(v)) {
-            const stale = allowStale && v.__staleWhileFetching !== void 0;
-            if (status) {
-              status.fetch = "inflight";
-              if (stale)
-                status.returnedStale = true;
-            }
-            return stale ? v.__staleWhileFetching : v.__returned = v;
-          }
-          const isStale = this.isStale(index);
-          if (!forceRefresh && !isStale) {
-            if (status)
-              status.fetch = "hit";
-            this.moveToTail(index);
-            if (updateAgeOnGet) {
-              this.updateItemAge(index);
-            }
-            this.statusTTL(status, index);
-            return v;
-          }
-          const p = this.backgroundFetch(k, index, options, fetchContext);
-          const hasStale = p.__staleWhileFetching !== void 0;
-          const staleVal = hasStale && allowStale;
-          if (status) {
-            status.fetch = hasStale && isStale ? "stale" : "refresh";
-            if (staleVal && isStale)
-              status.returnedStale = true;
-          }
-          return staleVal ? p.__staleWhileFetching : p.__returned = p;
-        }
-      }
-      get(k, {
-        allowStale = this.allowStale,
-        updateAgeOnGet = this.updateAgeOnGet,
-        noDeleteOnStaleGet = this.noDeleteOnStaleGet,
-        status
-      } = {}) {
-        const index = this.keyMap.get(k);
-        if (index !== void 0) {
-          const value = this.valList[index];
-          const fetching = this.isBackgroundFetch(value);
-          this.statusTTL(status, index);
-          if (this.isStale(index)) {
-            if (status)
-              status.get = "stale";
-            if (!fetching) {
-              if (!noDeleteOnStaleGet) {
-                this.delete(k);
-              }
-              if (status)
-                status.returnedStale = allowStale;
-              return allowStale ? value : void 0;
-            } else {
-              if (status) {
-                status.returnedStale = allowStale && value.__staleWhileFetching !== void 0;
-              }
-              return allowStale ? value.__staleWhileFetching : void 0;
-            }
-          } else {
-            if (status)
-              status.get = "hit";
-            if (fetching) {
-              return value.__staleWhileFetching;
-            }
-            this.moveToTail(index);
-            if (updateAgeOnGet) {
-              this.updateItemAge(index);
-            }
-            return value;
-          }
-        } else if (status) {
-          status.get = "miss";
-        }
-      }
-      connect(p, n) {
-        this.prev[n] = p;
-        this.next[p] = n;
-      }
-      moveToTail(index) {
-        if (index !== this.tail) {
-          if (index === this.head) {
-            this.head = this.next[index];
-          } else {
-            this.connect(this.prev[index], this.next[index]);
-          }
-          this.connect(this.tail, index);
-          this.tail = index;
-        }
-      }
-      get del() {
-        deprecatedMethod("del", "delete");
-        return this.delete;
-      }
-      delete(k) {
-        let deleted = false;
-        if (this.size !== 0) {
-          const index = this.keyMap.get(k);
-          if (index !== void 0) {
-            deleted = true;
-            if (this.size === 1) {
-              this.clear();
-            } else {
-              this.removeItemSize(index);
-              const v = this.valList[index];
-              if (this.isBackgroundFetch(v)) {
-                v.__abortController.abort(new Error("deleted"));
-              } else {
-                this.dispose(v, k, "delete");
-                if (this.disposeAfter) {
-                  this.disposed.push([v, k, "delete"]);
-                }
-              }
-              this.keyMap.delete(k);
-              this.keyList[index] = null;
-              this.valList[index] = null;
-              if (index === this.tail) {
-                this.tail = this.prev[index];
-              } else if (index === this.head) {
-                this.head = this.next[index];
-              } else {
-                this.next[this.prev[index]] = this.next[index];
-                this.prev[this.next[index]] = this.prev[index];
-              }
-              this.size--;
-              this.free.push(index);
-            }
-          }
-        }
-        if (this.disposed) {
-          while (this.disposed.length) {
-            this.disposeAfter(...this.disposed.shift());
-          }
-        }
-        return deleted;
-      }
-      clear() {
-        for (const index of this.rindexes({ allowStale: true })) {
-          const v = this.valList[index];
-          if (this.isBackgroundFetch(v)) {
-            v.__abortController.abort(new Error("deleted"));
-          } else {
-            const k = this.keyList[index];
-            this.dispose(v, k, "delete");
-            if (this.disposeAfter) {
-              this.disposed.push([v, k, "delete"]);
-            }
-          }
-        }
-        this.keyMap.clear();
-        this.valList.fill(null);
-        this.keyList.fill(null);
-        if (this.ttls) {
-          this.ttls.fill(0);
-          this.starts.fill(0);
-        }
-        if (this.sizes) {
-          this.sizes.fill(0);
-        }
-        this.head = 0;
-        this.tail = 0;
-        this.initialFill = 1;
-        this.free.length = 0;
-        this.calculatedSize = 0;
-        this.size = 0;
-        if (this.disposed) {
-          while (this.disposed.length) {
-            this.disposeAfter(...this.disposed.shift());
-          }
-        }
-      }
-      get reset() {
-        deprecatedMethod("reset", "clear");
-        return this.clear;
-      }
-      get length() {
-        deprecatedProperty("length", "size");
-        return this.size;
-      }
-      static get AbortController() {
-        return AC;
-      }
-      static get AbortSignal() {
-        return AS;
-      }
-    };
-    module2.exports = LRUCache;
-  }
-});
-
-// node_modules/.pnpm/named-placeholders@1.1.3/node_modules/named-placeholders/index.js
-var require_named_placeholders = __commonJS({
-  "node_modules/.pnpm/named-placeholders@1.1.3/node_modules/named-placeholders/index.js"(exports, module2) {
-    "use strict";
-    var RE_PARAM = /(?:\?)|(?:(?<!["'])[:@](\d+|(?:[a-zA-Z][a-zA-Z0-9_]*)))/g;
-    var DQUOTE = 34;
-    var SQUOTE = 39;
-    var BSLASH = 92;
-    function parse(query) {
-      let ppos = RE_PARAM.exec(query);
-      let curpos = 0;
-      let start = 0;
-      let end;
-      const parts = [];
-      let inQuote = false;
-      let escape = false;
-      let qchr;
-      const tokens = [];
-      let qcnt = 0;
-      let lastTokenEndPos = 0;
-      let i2;
-      if (ppos) {
-        do {
-          for (i2 = curpos, end = ppos.index; i2 < end; ++i2) {
-            let chr = query.charCodeAt(i2);
-            if (chr === BSLASH)
-              escape = !escape;
-            else {
-              if (escape) {
-                escape = false;
-                continue;
-              }
-              if (inQuote && chr === qchr) {
-                if (query.charCodeAt(i2 + 1) === qchr) {
-                  ++i2;
-                  continue;
-                }
-                inQuote = false;
-              } else if (chr === DQUOTE || chr === SQUOTE) {
-                inQuote = true;
-                qchr = chr;
-              }
-            }
-          }
-          if (!inQuote) {
-            parts.push(query.substring(start, end));
-            tokens.push(ppos[0].length === 1 ? qcnt++ : ppos[1]);
-            start = end + ppos[0].length;
-            lastTokenEndPos = start;
-          }
-          curpos = end + ppos[0].length;
-        } while (ppos = RE_PARAM.exec(query));
-        if (tokens.length) {
-          if (curpos < query.length) {
-            parts.push(query.substring(lastTokenEndPos));
-          }
-          return [parts, tokens];
-        }
-      }
-      return [query];
-    }
-    function createCompiler(config) {
-      if (!config)
-        config = {};
-      if (!config.placeholder) {
-        config.placeholder = "?";
-      }
-      let ncache = 100;
-      let cache;
-      if (typeof config.cache === "number") {
-        ncache = config.cache;
-      }
-      if (typeof config.cache === "object") {
-        cache = config.cache;
-      }
-      if (config.cache !== false && !cache) {
-        cache = new (require_lru_cache())({ max: ncache });
-      }
-      function toArrayParams(tree, params) {
-        const arr = [];
-        if (tree.length == 1) {
-          return [tree[0], []];
-        }
-        if (typeof params == "undefined")
-          throw new Error("Named query contains placeholders, but parameters object is undefined");
-        for (const key in params) {
-          const char = key[0];
-          if (char == "@" || char == ":") {
-            params[key.substring(1)] = params[key];
-            delete params[key];
-          }
-        }
-        const tokens = tree[1];
-        for (let i2 = 0; i2 < tokens.length; ++i2) {
-          arr.push(params[tokens[i2]] === void 0 ? null : params[tokens[i2]]);
-        }
-        return [tree[0], arr];
-      }
-      function noTailingSemicolon(s2) {
-        const char = s2.slice(-1);
-        if (char == ":" || char == "@") {
-          return s2.slice(0, -1);
-        }
-        return s2;
-      }
-      function join(tree) {
-        if (tree.length == 1) {
-          return tree;
-        }
-        let unnamed = noTailingSemicolon(tree[0][0]);
-        for (let i2 = 1; i2 < tree[0].length; ++i2) {
-          const char = tree[0][i2 - 1].slice(-1);
-          if (char == ":" || char == "@") {
-            unnamed += config.placeholder;
-          }
-          unnamed += config.placeholder;
-          unnamed += noTailingSemicolon(tree[0][i2]);
-        }
-        const last = tree[0][tree[0].length - 1];
-        if (tree[0].length == tree[1].length) {
-          const char = last.slice(-1);
-          if (char == ":" || char == "@") {
-            unnamed += config.placeholder;
-          }
-          unnamed += config.placeholder;
-        }
-        return [unnamed, tree[1]];
-      }
-      function compile(query, paramsObj) {
-        let tree;
-        if (cache && (tree = cache.get(query))) {
-          return toArrayParams(tree, paramsObj);
-        }
-        tree = join(parse(query));
-        if (cache) {
-          cache.set(query, tree);
-        }
-        return toArrayParams(tree, paramsObj);
-      }
-      compile.parse = parse;
-      return compile;
-    }
-    function toNumbered(q, params) {
-      const tree = parse(q);
-      const paramsArr = [];
-      if (tree.length == 1) {
-        return [tree[0], paramsArr];
-      }
-      const pIndexes = {};
-      let pLastIndex = 0;
-      let qs = "";
-      let varIndex;
-      const varNames = [];
-      for (let i2 = 0; i2 < tree[0].length; ++i2) {
-        varIndex = pIndexes[tree[1][i2]];
-        if (!varIndex) {
-          varIndex = ++pLastIndex;
-          pIndexes[tree[1][i2]] = varIndex;
-        }
-        if (tree[1][i2]) {
-          varNames[varIndex - 1] = tree[1][i2];
-          qs += tree[0][i2] + "$" + varIndex;
-        } else {
-          qs += tree[0][i2];
-        }
-      }
-      return [qs, varNames.map((n) => params[n])];
-    }
-    module2.exports = createCompiler;
-    module2.exports.toNumbered = toNumbered;
   }
 });
 
@@ -22929,10 +22918,10 @@ var init_esm_min = __esm({
   }
 });
 
-// node_modules/.pnpm/node-fetch@3.3.2/node_modules/node-fetch/src/errors/base.js
+// node_modules/.pnpm/node-fetch@3.3.1/node_modules/node-fetch/src/errors/base.js
 var FetchBaseError;
 var init_base = __esm({
-  "node_modules/.pnpm/node-fetch@3.3.2/node_modules/node-fetch/src/errors/base.js"() {
+  "node_modules/.pnpm/node-fetch@3.3.1/node_modules/node-fetch/src/errors/base.js"() {
     FetchBaseError = class extends Error {
       constructor(message, type) {
         super(message);
@@ -22949,10 +22938,10 @@ var init_base = __esm({
   }
 });
 
-// node_modules/.pnpm/node-fetch@3.3.2/node_modules/node-fetch/src/errors/fetch-error.js
+// node_modules/.pnpm/node-fetch@3.3.1/node_modules/node-fetch/src/errors/fetch-error.js
 var FetchError;
 var init_fetch_error = __esm({
-  "node_modules/.pnpm/node-fetch@3.3.2/node_modules/node-fetch/src/errors/fetch-error.js"() {
+  "node_modules/.pnpm/node-fetch@3.3.1/node_modules/node-fetch/src/errors/fetch-error.js"() {
     init_base();
     FetchError = class extends FetchBaseError {
       constructor(message, type, systemError) {
@@ -22966,10 +22955,10 @@ var init_fetch_error = __esm({
   }
 });
 
-// node_modules/.pnpm/node-fetch@3.3.2/node_modules/node-fetch/src/utils/is.js
+// node_modules/.pnpm/node-fetch@3.3.1/node_modules/node-fetch/src/utils/is.js
 var NAME, isURLSearchParameters, isBlob, isAbortSignal, isDomainOrSubdomain, isSameProtocol;
 var init_is = __esm({
-  "node_modules/.pnpm/node-fetch@3.3.2/node_modules/node-fetch/src/utils/is.js"() {
+  "node_modules/.pnpm/node-fetch@3.3.1/node_modules/node-fetch/src/utils/is.js"() {
     NAME = Symbol.toStringTag;
     isURLSearchParameters = (object) => {
       return typeof object === "object" && typeof object.append === "function" && typeof object.delete === "function" && typeof object.get === "function" && typeof object.getAll === "function" && typeof object.has === "function" && typeof object.set === "function" && typeof object.sort === "function" && object[NAME] === "URLSearchParams";
@@ -23051,7 +23040,7 @@ var init_from = __esm({
   }
 });
 
-// node_modules/.pnpm/node-fetch@3.3.2/node_modules/node-fetch/src/utils/multipart-parser.js
+// node_modules/.pnpm/node-fetch@3.3.1/node_modules/node-fetch/src/utils/multipart-parser.js
 var multipart_parser_exports = {};
 __export(multipart_parser_exports, {
   toFormData: () => toFormData
@@ -23145,7 +23134,7 @@ async function toFormData(Body2, ct) {
 }
 var s, S, f2, F, LF, CR, SPACE, HYPHEN, COLON, A, Z, lower, noop, MultipartParser;
 var init_multipart_parser = __esm({
-  "node_modules/.pnpm/node-fetch@3.3.2/node_modules/node-fetch/src/utils/multipart-parser.js"() {
+  "node_modules/.pnpm/node-fetch@3.3.1/node_modules/node-fetch/src/utils/multipart-parser.js"() {
     init_from();
     init_esm_min();
     s = 0;
@@ -23404,7 +23393,7 @@ var init_multipart_parser = __esm({
   }
 });
 
-// node_modules/.pnpm/node-fetch@3.3.2/node_modules/node-fetch/src/body.js
+// node_modules/.pnpm/node-fetch@3.3.1/node_modules/node-fetch/src/body.js
 async function consumeBody(data) {
   if (data[INTERNALS].disturbed) {
     throw new TypeError(`body used already for: ${data.url}`);
@@ -23451,7 +23440,7 @@ async function consumeBody(data) {
 }
 var import_node_stream, import_node_util, import_node_buffer, pipeline, INTERNALS, Body, clone, getNonSpecFormDataBoundary, extractContentType, getTotalBytes, writeToStream;
 var init_body = __esm({
-  "node_modules/.pnpm/node-fetch@3.3.2/node_modules/node-fetch/src/body.js"() {
+  "node_modules/.pnpm/node-fetch@3.3.1/node_modules/node-fetch/src/body.js"() {
     import_node_stream = __toESM(require("node:stream"), 1);
     import_node_util = require("node:util");
     import_node_buffer = require("node:buffer");
@@ -23637,7 +23626,7 @@ var init_body = __esm({
   }
 });
 
-// node_modules/.pnpm/node-fetch@3.3.2/node_modules/node-fetch/src/headers.js
+// node_modules/.pnpm/node-fetch@3.3.1/node_modules/node-fetch/src/headers.js
 function fromRawHeaders(headers = []) {
   return new Headers(
     headers.reduce((result, value, index, array) => {
@@ -23658,7 +23647,7 @@ function fromRawHeaders(headers = []) {
 }
 var import_node_util2, import_node_http, validateHeaderName, validateHeaderValue, Headers;
 var init_headers = __esm({
-  "node_modules/.pnpm/node-fetch@3.3.2/node_modules/node-fetch/src/headers.js"() {
+  "node_modules/.pnpm/node-fetch@3.3.1/node_modules/node-fetch/src/headers.js"() {
     import_node_util2 = require("node:util");
     import_node_http = __toESM(require("node:http"), 1);
     validateHeaderName = typeof import_node_http.default.validateHeaderName === "function" ? import_node_http.default.validateHeaderName : (name) => {
@@ -23811,10 +23800,10 @@ var init_headers = __esm({
   }
 });
 
-// node_modules/.pnpm/node-fetch@3.3.2/node_modules/node-fetch/src/utils/is-redirect.js
+// node_modules/.pnpm/node-fetch@3.3.1/node_modules/node-fetch/src/utils/is-redirect.js
 var redirectStatus, isRedirect;
 var init_is_redirect = __esm({
-  "node_modules/.pnpm/node-fetch@3.3.2/node_modules/node-fetch/src/utils/is-redirect.js"() {
+  "node_modules/.pnpm/node-fetch@3.3.1/node_modules/node-fetch/src/utils/is-redirect.js"() {
     redirectStatus = /* @__PURE__ */ new Set([301, 302, 303, 307, 308]);
     isRedirect = (code) => {
       return redirectStatus.has(code);
@@ -23822,10 +23811,10 @@ var init_is_redirect = __esm({
   }
 });
 
-// node_modules/.pnpm/node-fetch@3.3.2/node_modules/node-fetch/src/response.js
+// node_modules/.pnpm/node-fetch@3.3.1/node_modules/node-fetch/src/response.js
 var INTERNALS2, Response;
 var init_response = __esm({
-  "node_modules/.pnpm/node-fetch@3.3.2/node_modules/node-fetch/src/response.js"() {
+  "node_modules/.pnpm/node-fetch@3.3.1/node_modules/node-fetch/src/response.js"() {
     init_headers();
     init_body();
     init_is_redirect();
@@ -23935,10 +23924,10 @@ var init_response = __esm({
   }
 });
 
-// node_modules/.pnpm/node-fetch@3.3.2/node_modules/node-fetch/src/utils/get-search.js
+// node_modules/.pnpm/node-fetch@3.3.1/node_modules/node-fetch/src/utils/get-search.js
 var getSearch;
 var init_get_search = __esm({
-  "node_modules/.pnpm/node-fetch@3.3.2/node_modules/node-fetch/src/utils/get-search.js"() {
+  "node_modules/.pnpm/node-fetch@3.3.1/node_modules/node-fetch/src/utils/get-search.js"() {
     getSearch = (parsedURL) => {
       if (parsedURL.search) {
         return parsedURL.search;
@@ -23950,7 +23939,7 @@ var init_get_search = __esm({
   }
 });
 
-// node_modules/.pnpm/node-fetch@3.3.2/node_modules/node-fetch/src/utils/referrer.js
+// node_modules/.pnpm/node-fetch@3.3.1/node_modules/node-fetch/src/utils/referrer.js
 function stripURLForUseAsAReferrer(url, originOnly = false) {
   if (url == null) {
     return "no-referrer";
@@ -24078,7 +24067,7 @@ function parseReferrerPolicyFromHeader(headers) {
 }
 var import_node_net, ReferrerPolicy, DEFAULT_REFERRER_POLICY;
 var init_referrer = __esm({
-  "node_modules/.pnpm/node-fetch@3.3.2/node_modules/node-fetch/src/utils/referrer.js"() {
+  "node_modules/.pnpm/node-fetch@3.3.1/node_modules/node-fetch/src/utils/referrer.js"() {
     import_node_net = require("node:net");
     ReferrerPolicy = /* @__PURE__ */ new Set([
       "",
@@ -24095,10 +24084,10 @@ var init_referrer = __esm({
   }
 });
 
-// node_modules/.pnpm/node-fetch@3.3.2/node_modules/node-fetch/src/request.js
+// node_modules/.pnpm/node-fetch@3.3.1/node_modules/node-fetch/src/request.js
 var import_node_url, import_node_util3, INTERNALS3, isRequest, doBadDataWarn, Request, getNodeRequestOptions;
 var init_request = __esm({
-  "node_modules/.pnpm/node-fetch@3.3.2/node_modules/node-fetch/src/request.js"() {
+  "node_modules/.pnpm/node-fetch@3.3.1/node_modules/node-fetch/src/request.js"() {
     import_node_url = require("node:url");
     import_node_util3 = require("node:util");
     init_headers();
@@ -24271,6 +24260,9 @@ var init_request = __esm({
       if (typeof agent === "function") {
         agent = agent(parsedURL);
       }
+      if (!headers.has("Connection") && !agent) {
+        headers.set("Connection", "close");
+      }
       const search = getSearch(parsedURL);
       const options = {
         path: parsedURL.pathname + search,
@@ -24287,10 +24279,10 @@ var init_request = __esm({
   }
 });
 
-// node_modules/.pnpm/node-fetch@3.3.2/node_modules/node-fetch/src/errors/abort-error.js
+// node_modules/.pnpm/node-fetch@3.3.1/node_modules/node-fetch/src/errors/abort-error.js
 var AbortError;
 var init_abort_error = __esm({
-  "node_modules/.pnpm/node-fetch@3.3.2/node_modules/node-fetch/src/errors/abort-error.js"() {
+  "node_modules/.pnpm/node-fetch@3.3.1/node_modules/node-fetch/src/errors/abort-error.js"() {
     init_base();
     AbortError = class extends FetchBaseError {
       constructor(message, type = "aborted") {
@@ -24300,7 +24292,7 @@ var init_abort_error = __esm({
   }
 });
 
-// node_modules/.pnpm/node-fetch@3.3.2/node_modules/node-fetch/src/index.js
+// node_modules/.pnpm/node-fetch@3.3.1/node_modules/node-fetch/src/index.js
 async function fetch(url, options_) {
   return new Promise((resolve, reject) => {
     const request = new Request(url, options_);
@@ -24564,7 +24556,7 @@ function fixResponseChunkedTransferBadEnding(request, errorCallback) {
 }
 var import_node_http2, import_node_https, import_node_zlib, import_node_stream2, import_node_buffer2, supportedSchemas;
 var init_src = __esm({
-  "node_modules/.pnpm/node-fetch@3.3.2/node_modules/node-fetch/src/index.js"() {
+  "node_modules/.pnpm/node-fetch@3.3.1/node_modules/node-fetch/src/index.js"() {
     import_node_http2 = __toESM(require("node:http"), 1);
     import_node_https = __toESM(require("node:https"), 1);
     import_node_zlib = __toESM(require("node:zlib"), 1);
@@ -24612,7 +24604,6 @@ var init_update = __esm({
         for (let i2 = 1; i2 < currentVersion.length; i2++) {
           const current = parseInt(currentVersion[i2]);
           const latest = parseInt(latestVersion[i2]);
-          console.log(current, latest);
           if (current !== latest) {
             if (current < latest)
               return console.log(
@@ -24627,9 +24618,6 @@ ${release.html_url}^0`
     })();
   }
 });
-
-// src/database/index.ts
-var import_promise = __toESM(require_promise());
 
 // src/utils/typeCast.ts
 var BINARY_CHARSET = 63;
@@ -24725,12 +24713,15 @@ var connectionOptions = (() => {
     return connectionInfo;
   }, {});
   convertNamedPlaceholders = options.namedPlaceholders === "false" ? null : require_named_placeholders()();
-  for (const key in ["dateStrings", "flags", "ssl"]) {
+  for (const key of ["dateStrings", "flags", "ssl"]) {
     const value = options[key];
     if (typeof value === "string") {
       try {
         options[key] = JSON.parse(value);
-      } catch {
+      } catch (err) {
+        console.log(
+          `^3Failed to parse property ${key} in configuration (${err})!^0`
+        );
       }
     }
   }
@@ -24776,35 +24767,35 @@ RegisterCommand(
   true
 );
 
-// src/database/index.ts
+// src/utils/sleep.ts
+function sleep(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+// src/database/connection.ts
+var import_promise = __toESM(require_promise());
+
+// src/utils/scheduleTick.ts
+var resourceName = GetCurrentResourceName();
+async function scheduleTick() {
+  ScheduleResourceTick(resourceName);
+}
+
+// src/database/connection.ts
 var pool;
 var isServerConnected = false;
 var dbVersion = "";
 async function waitForConnection() {
-  if (!isServerConnected) {
-    return await new Promise((resolve) => {
-      (function wait() {
-        if (isServerConnected) {
-          return resolve(true);
-        }
-        setTimeout(wait);
-      })();
-    });
+  while (!isServerConnected) {
+    await sleep(0);
   }
 }
-function setConnectionPool() {
-  pool = (0, import_promise.createPool)(connectionOptions);
-  pool.on("connection", (connection) => {
-    connection.query(mysql_transaction_isolation_level);
-  });
-}
-setInterval(() => {
-  setDebug();
-}, 1e3);
-setTimeout(async () => {
-  setDebug();
-  setConnectionPool();
+async function createConnectionPool() {
   try {
+    pool = (0, import_promise.createPool)(connectionOptions);
+    pool.on("connection", (connection2) => {
+      connection2.query(mysql_transaction_isolation_level);
+    });
     const connection = await pool.getConnection();
     const [result] = await connection.query("SELECT VERSION() as version");
     dbVersion = `^5[${result[0].version}]`;
@@ -24812,12 +24803,19 @@ setTimeout(async () => {
     console.log(`${dbVersion} ^2Database server connection established!^0`);
     isServerConnected = true;
   } catch (err) {
+    isServerConnected = false;
     console.log(
       `^3Unable to establish a connection to the database (${err.code})!
 ^1Error ${err.errno}: ${err.message}^0`
     );
   }
-});
+}
+async function getPoolConnection() {
+  if (!isServerConnected)
+    await waitForConnection();
+  scheduleTick();
+  return pool.getConnection();
+}
 
 // src/utils/parseArguments.ts
 var parseArguments = (query, parameters) => {
@@ -24884,7 +24882,7 @@ var parseResponse = (type, result) => {
 };
 
 // src/logger/index.ts
-function printError(invokingResource, cb, isPromise, ...args) {
+function logError(invokingResource, cb, isPromise, ...args) {
   const err = `${invokingResource} was unable to execute a query!
 ${args.join("\n")}`;
   if (cb && isPromise)
@@ -25025,24 +25023,17 @@ onNet(
   }
 );
 
-// src/utils/scheduleTick.ts
-var resourceName = GetCurrentResourceName();
-async function scheduleTick() {
-  ScheduleResourceTick(resourceName);
-}
-
 // src/database/rawQuery.ts
 var rawQuery = async (type, invokingResource, query, parameters, cb, isPromise) => {
   cb = setCallback(parameters, cb);
   try {
     [query, parameters] = parseArguments(query, parameters);
   } catch (err) {
-    return printError(invokingResource, cb, isPromise, `Query: ${query}`, err.message);
+    return logError(invokingResource, cb, isPromise, `Query: ${query}`, err.message);
   }
-  if (!isServerConnected)
-    await waitForConnection();
-  scheduleTick();
-  const connection = await pool.getConnection();
+  const connection = await getPoolConnection();
+  if (!connection)
+    return;
   try {
     const hasProfiler = await runProfiler(connection, invokingResource);
     const [result] = await connection.query(query, parameters);
@@ -25062,7 +25053,7 @@ var rawQuery = async (type, invokingResource, query, parameters, cb, isPromise) 
         }
       }
   } catch (err) {
-    printError(invokingResource, cb, isPromise, `Query: ${query}`, JSON.stringify(parameters), err.message);
+    logError(invokingResource, cb, isPromise, `Query: ${query}`, JSON.stringify(parameters), err.message);
     TriggerEvent("oxmysql:error", {
       query,
       parameters,
@@ -25073,98 +25064,6 @@ var rawQuery = async (type, invokingResource, query, parameters, cb, isPromise) 
   } finally {
     connection.release();
   }
-};
-
-// src/utils/parseTransaction.ts
-var isTransactionQuery = (query) => query.query !== void 0;
-var parseTransaction = (queries, parameters) => {
-  if (!Array.isArray(queries))
-    throw new Error(`Transaction queries must be array, received '${typeof queries}'.`);
-  if (!parameters || typeof parameters === "function")
-    parameters = [];
-  if (Array.isArray(queries[0])) {
-    const transactions2 = queries.map((query) => {
-      if (typeof query[1] !== "object")
-        throw new Error(`Transaction parameters must be array or object, received '${typeof query[1]}'.`);
-      const [parsedQuery, parsedParameters] = parseArguments(query[0], query[1]);
-      return { query: parsedQuery, params: parsedParameters };
-    });
-    return transactions2;
-  }
-  const transactions = queries.map((query) => {
-    if (!isTransactionQuery(query) && !(query.parameters || query.values)) {
-      return { query };
-    }
-    const [parsedQuery, parsedParameters] = parseArguments(
-      isTransactionQuery(query) ? query.query : query,
-      isTransactionQuery(query) ? query.parameters || query.values : parameters
-    );
-    return { query: parsedQuery, params: parsedParameters };
-  });
-  return transactions;
-};
-
-// src/database/rawTransaction.ts
-var transactionError = (queries, parameters) => {
-  `${queries.map((query) => `${query.query} ${JSON.stringify(query.params || [])}`).join("\n")}
-${JSON.stringify(
-    parameters
-  )}`;
-};
-var rawTransaction = async (invokingResource, queries, parameters, cb, isPromise) => {
-  let transactions;
-  cb = setCallback(parameters, cb);
-  try {
-    transactions = parseTransaction(queries, parameters);
-  } catch (err) {
-    return printError(invokingResource, cb, isPromise, err.message);
-  }
-  if (!isServerConnected)
-    await waitForConnection();
-  scheduleTick();
-  const connection = await pool.getConnection();
-  let response = false;
-  try {
-    const hasProfiler = await runProfiler(connection, invokingResource);
-    await connection.beginTransaction();
-    const transactionsLength = transactions.length;
-    for (let i2 = 0; i2 < transactionsLength; i2++) {
-      const transaction = transactions[i2];
-      await connection.query(transaction.query, transaction.params);
-      if (hasProfiler && (i2 > 0 && i2 % 100 === 0 || i2 === transactionsLength - 1)) {
-        await profileBatchStatements(connection, invokingResource, transactions, null, i2 < 100 ? 0 : i2);
-      }
-    }
-    await connection.commit();
-    response = true;
-  } catch (err) {
-    await connection.rollback().catch(() => {
-    });
-    const transactionErrorMessage = err.sql || transactionError(transactions, parameters);
-    const msg = `${invokingResource} was unable to complete a transaction!
-${transactionErrorMessage}
-${err.message}`;
-    console.error(msg);
-    TriggerEvent("oxmysql:transaction-error", {
-      query: transactionErrorMessage,
-      parameters,
-      message: err.message,
-      err,
-      resource: invokingResource
-    });
-  } finally {
-    connection.release();
-  }
-  if (cb)
-    try {
-      cb(response);
-    } catch (err) {
-      if (typeof err === "string") {
-        if (err.includes("SCRIPT ERROR:"))
-          return console.log(err);
-        console.log(`^1SCRIPT ERROR in invoking resource ${invokingResource}: ${err}^0`);
-      }
-    }
 };
 
 // src/utils/parseExecute.ts
@@ -25227,12 +25126,11 @@ var rawExecute = async (invokingResource, query, parameters, cb, isPromise, unpa
     placeholders = query.split("?").length - 1;
     parameters = parseExecute(placeholders, parameters);
   } catch (err) {
-    return printError(invokingResource, cb, isPromise, query, err.message);
+    return logError(invokingResource, cb, isPromise, query, err.message);
   }
-  if (!isServerConnected)
-    await waitForConnection();
-  scheduleTick();
-  const connection = await pool.getConnection();
+  const connection = await getPoolConnection();
+  if (!connection)
+    return;
   try {
     const hasProfiler = await runProfiler(connection, invokingResource);
     const parametersLength = parameters.length == 0 ? 1 : parameters.length;
@@ -25248,10 +25146,10 @@ var rawExecute = async (invokingResource, query, parameters, cb, isPromise, unpa
       if (cb) {
         if (Array.isArray(result) && result.length > 1) {
           for (const value of result) {
-            response.push(parseResponse(type, value));
+            response.push(unpack ? parseResponse(type, value) : value);
           }
         } else
-          response.push(parseResponse(type, result));
+          response.push(unpack ? parseResponse(type, result) : result);
       }
       if (hasProfiler && (index > 0 && index % 100 === 0 || index === parametersLength - 1)) {
         await profileBatchStatements(connection, invokingResource, query, parameters, index < 100 ? 0 : index);
@@ -25280,7 +25178,7 @@ var rawExecute = async (invokingResource, query, parameters, cb, isPromise, unpa
       }
     }
   } catch (err) {
-    printError(invokingResource, cb, isPromise, `Query: ${query}`, err.message);
+    logError(invokingResource, cb, isPromise, `Query: ${query}`, err.message);
     TriggerEvent("oxmysql:error", {
       query,
       parameters,
@@ -25292,6 +25190,107 @@ var rawExecute = async (invokingResource, query, parameters, cb, isPromise, unpa
     connection.release();
   }
 };
+
+// src/utils/parseTransaction.ts
+var isTransactionQuery = (query) => query.query !== void 0;
+var parseTransaction = (queries, parameters) => {
+  if (!Array.isArray(queries))
+    throw new Error(`Transaction queries must be array, received '${typeof queries}'.`);
+  if (!parameters || typeof parameters === "function")
+    parameters = [];
+  if (Array.isArray(queries[0])) {
+    const transactions2 = queries.map((query) => {
+      if (typeof query[1] !== "object")
+        throw new Error(`Transaction parameters must be array or object, received '${typeof query[1]}'.`);
+      const [parsedQuery, parsedParameters] = parseArguments(query[0], query[1]);
+      return { query: parsedQuery, params: parsedParameters };
+    });
+    return transactions2;
+  }
+  const transactions = queries.map((query) => {
+    const [parsedQuery, parsedParameters] = parseArguments(
+      isTransactionQuery(query) ? query.query : query,
+      isTransactionQuery(query) ? query.parameters || query.values : parameters
+    );
+    return { query: parsedQuery, params: parsedParameters };
+  });
+  return transactions;
+};
+
+// src/database/rawTransaction.ts
+var transactionError = (queries, parameters) => {
+  `${queries.map((query) => `${query.query} ${JSON.stringify(query.params || [])}`).join("\n")}
+${JSON.stringify(
+    parameters
+  )}`;
+};
+var rawTransaction = async (invokingResource, queries, parameters, cb, isPromise) => {
+  let transactions;
+  cb = setCallback(parameters, cb);
+  try {
+    transactions = parseTransaction(queries, parameters);
+  } catch (err) {
+    return logError(invokingResource, cb, isPromise, err.message);
+  }
+  const connection = await getPoolConnection();
+  if (!connection)
+    return;
+  let response = false;
+  try {
+    const hasProfiler = await runProfiler(connection, invokingResource);
+    await connection.beginTransaction();
+    const transactionsLength = transactions.length;
+    for (let i2 = 0; i2 < transactionsLength; i2++) {
+      const transaction = transactions[i2];
+      await connection.query(transaction.query, transaction.params);
+      if (hasProfiler && (i2 > 0 && i2 % 100 === 0 || i2 === transactionsLength - 1)) {
+        await profileBatchStatements(connection, invokingResource, transactions, null, i2 < 100 ? 0 : i2);
+      }
+    }
+    await connection.commit();
+    response = true;
+  } catch (err) {
+    await connection.rollback().catch(() => {
+    });
+    const transactionErrorMessage = err.sql || transactionError(transactions, parameters);
+    const msg = `${invokingResource} was unable to complete a transaction!
+${transactionErrorMessage}
+${err.message}`;
+    console.error(msg);
+    TriggerEvent("oxmysql:transaction-error", {
+      query: transactionErrorMessage,
+      parameters,
+      message: err.message,
+      err,
+      resource: invokingResource
+    });
+  } finally {
+    connection.release();
+  }
+  if (cb)
+    try {
+      cb(response);
+    } catch (err) {
+      if (typeof err === "string") {
+        if (err.includes("SCRIPT ERROR:"))
+          return console.log(err);
+        console.log(`^1SCRIPT ERROR in invoking resource ${invokingResource}: ${err}^0`);
+      }
+    }
+};
+
+// src/database/index.ts
+setTimeout(async () => {
+  setDebug();
+  while (!isServerConnected) {
+    await createConnectionPool();
+    if (!isServerConnected)
+      await sleep(3e4);
+  }
+});
+setInterval(() => {
+  setDebug();
+}, 1e3);
 
 // src/index.ts
 Promise.resolve().then(() => init_update());

@@ -111,23 +111,23 @@ Locales["fr"] = {
         },
         components = {
             title = "Vêtements",
-            drawable = "Drawable",
+            drawable = "Article",
             texture = "Texture",
             mask = "Masque",
-            upperBody = "Haut du Corps",
-            lowerBody = "Bas du Corps",
+            upperBody = "Veste",
+            lowerBody = "Pantalon",
             bags = "Sacs et parachute",
             shoes = "Chaussures",
             scarfAndChains = "Écharpe et chaînes",
             shirt = "T-Shirt",
-            bodyArmor = "Body armor",
+            bodyArmor = "Gilet par balle",
             decals = "Decals",
             jackets = "Vestes",
             head = "Tête"
         },
         props = {
             title = "Props",
-            drawable = "Drawable",
+            drawable = "Article",
             texture = "Texture",
             hats = "Chapeaux et casques",
             glasses = "Lunettes",
@@ -314,6 +314,9 @@ Locales["fr"] = {
         },
         gangoutfits = {
             title = "Ouvre le menu des tenues de gang"
+        },
+        bossmanagedoutfits = {
+            title = "Ouvre le menu des tenues gérées par le patron"
         }
     },
     textUI = {
