@@ -16,7 +16,7 @@ ac = {
 	useCommand = true,
 
 	-- Default keybind for the '/radio' command.
-	commandKey = 'F10',
+	commandKey = '',
 
 	-- Whether to disconnect from radio when there is no radio item in player's inventory.
 	noRadioDisconnect = true,

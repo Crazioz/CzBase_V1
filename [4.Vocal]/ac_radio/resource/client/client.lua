@@ -1,8 +1,9 @@
-local presetFreq = nil ---@type number | nil
+local Voice = exports['pma-voice']
+
 local radioProp = nil ---@type number | nil
 local volumeState = nil ---@type number | nil
+local requestedFrequency = nil ---@type number | nil
 local uiOpened = false
-local voice = exports['pma-voice']
 
 
 
@@ -38,37 +39,39 @@ local function removeRadioProp()
 end
 
 ---@param channel number?
+---@return false | number
 local function joinRadio(channel)
-	if not channel then return end
+	if not channel then return false end
+
 	channel = round(channel, ac.decimalStep)
 
 	if channel <= ac.maximumFrequencies and channel > 0 then
-		voice:setVoiceProperty('radioEnabled', true)
-		voice:setRadioChannel(channel)
-		notify('success', locale('channel_join', channel))
+		Voice:setVoiceProperty('radioEnabled', true)
+		Voice:setRadioChannel(channel)
+
+		if not ac.restrictedChannels[channel] then
+			notify('success', locale('channel_join', channel))
+		end
+
+		return channel
 	else
 		notify('error', locale('channel_unavailable'))
+		return false
 	end
 end
 
 local function leaveRadio()
-	voice:removePlayerFromRadio()
-	voice:setVoiceProperty('radioEnabled', false)
+	Voice:removePlayerFromRadio()
+	Voice:setVoiceProperty('radioEnabled', false)
 end
 
 
 
----@class ChannelData
----@field channel number
-
----@class PresetData
----@field preset number
-
 RegisterNUICallback('close', function()
 	setNuiFocus(false)
 
-	if presetFreq then
-		presetFreq = nil
+	if requestedFrequency then
+		requestedFrequency = nil
 	end
 
 	local ped = PlayerPedId()
@@ -85,9 +88,11 @@ RegisterNUICallback('close', function()
 	uiOpened = false
 end)
 
----@param data ChannelData
-RegisterNUICallback('join', function(data)
-	joinRadio(data?.channel)
+---@param frequency number
+---@param cb fun(frequency: false | number)
+RegisterNUICallback('join', function(frequency, cb)
+	local roundedFrequency = joinRadio(frequency)
+	cb(roundedFrequency)
 end)
 
 RegisterNUICallback('leave', function()
@@ -96,34 +101,34 @@ RegisterNUICallback('leave', function()
 end)
 
 RegisterNUICallback('volume_up', function()
-	local volume = volumeState and volumeState * 0.01 or voice:getRadioVolume()
+	local volume = volumeState or Voice:getRadioVolume()
 
 	if volumeState then
 		volumeState = nil
 		notify('inform', locale('volume_unmute'), 1000)
 	end
 
-	if volume <= 0.9 then
-		local newVolume = math.floor((volume + 0.1) * 100)
-		voice:setRadioVolume(newVolume)
-		notify('inform', locale('volume_up', newVolume), 1500, 'volume-high')
+	if volume <= 90 then
+		volume += 10
+		Voice:setRadioVolume(volume)
+		notify('inform', locale('volume_up', math.floor(volume)), 1500, 'volume-high')
 	else
 		notify('error', locale('volume_max'), 2500)
 	end
 end)
 
 RegisterNUICallback('volume_down', function()
-	local volume = volumeState and volumeState * 0.01 or voice:getRadioVolume()
+	local volume = volumeState or Voice:getRadioVolume()
 
 	if volumeState then
 		volumeState = nil
 		notify('inform', locale('volume_unmute'), 1000)
 	end
 
-	if volume >= 0.2 then
-		local newVolume = math.floor((volume - 0.1) * 100)
-		voice:setRadioVolume(newVolume)
-		notify('inform', locale('volume_down', newVolume), 1500, 'volume-low')
+	if volume >= 20 then
+		volume -= 10
+		Voice:setRadioVolume(volume)
+		notify('inform', locale('volume_down', math.floor(volume)), 1500, 'volume-low')
 	else
 		notify('error', locale('volume_min'), 2500)
 	end
@@ -131,47 +136,46 @@ end)
 
 RegisterNUICallback('volume_mute', function()
 	if volumeState then
-		voice:setRadioVolume(volumeState)
+		Voice:setRadioVolume(volumeState)
 		volumeState = nil
 		notify('success', locale('volume_unmute'), 5000, 'volume-high')
 	else
-		volumeState = math.floor(voice:getRadioVolume() * 100)
-		voice:setRadioVolume(0)
+		volumeState = Voice:getRadioVolume()
+		Voice:setRadioVolume(0)
 		notify('error', locale('volume_mute'), 5000, 'volume-xmark')
 	end
 end)
 
----@param data PresetData
----@param cb fun(preset: number)
-RegisterNUICallback('preset_join', function(data, cb)
-	if not data?.preset then return end
-	local preset = tonumber(GetResourceKvpString('ac_radio:preset_'.. data.preset))
-	if preset then
-		joinRadio(preset)
-		cb(preset)
-	else
+---@param presetId number
+---@param cb fun(preset: false | number)
+RegisterNUICallback('preset_join', function(presetId, cb)
+	local frequency = tonumber(GetResourceKvpString('ac_radio:preset_'.. presetId))
+	if not frequency then
 		notify('error', locale('preset_not_found'))
+	else
+		local roundedFrequency = joinRadio(frequency)
+		cb(roundedFrequency)
 	end
 end)
 
----@param data ChannelData
-RegisterNUICallback('preset_request', function(data)
-	if data?.channel then
+---@param frequency number
+RegisterNUICallback('preset_request', function(frequency)
+	if frequency then
 		notify('inform', locale('preset_choose'), 10000)
-		presetFreq = data.channel
+		requestedFrequency = utils.round(frequency, utils.decimalStep)
 	end
 end)
 
----@param data PresetData
-RegisterNUICallback('preset_set', function(data)
-	if not presetFreq then return end
+---@param presetId number
+RegisterNUICallback('preset_set', function(presetId)
+	if not requestedFrequency then return end
 
-	if not data?.preset then
+	if not presetId then
 		notify('error', locale('preset_invalid'))
 	else
-		SetResourceKvp('ac_radio:preset_'.. data.preset, presetFreq --[[@as string]])
-		notify('success', locale('preset_set', presetFreq))
-		presetFreq = nil
+		SetResourceKvp('ac_radio:preset_'.. presetId, tostring(requestedFrequency))
+		notify('success', locale('preset_set', requestedFrequency))
+		requestedFrequency = nil
 	end
 end)
 
@@ -190,12 +194,12 @@ end
 
 TriggerEvent('chat:addSuggestion', '/radio:clear', locale('command_clear'))
 RegisterCommand('radio:clear', function()
-	for i=1, 2 do DeleteResourceKvp('ac_radio:preset_'..i) end
+	for i = 1, 2 do DeleteResourceKvp('ac_radio:preset_'..i) end
 	notify('success', locale('preset_clear'))
 end, false)
 
 RegisterNetEvent('ac_radio:disableRadio', function()
-	voice:setVoiceProperty('radioEnabled', false)
+	Voice:setVoiceProperty('radioEnabled', false)
 end)
 
 RegisterNetEvent('ac_radio:openRadio', openRadio)
@@ -207,8 +211,7 @@ AddEventHandler('onResourceStop', function(resource)
 		removeRadioProp()
 		leaveRadio()
 		if uiOpened then
-			SetNuiFocus(false, false)
-			SetNuiFocusKeepInput(false)
+			setNuiFocus(false)
 		end
 	end
 end)

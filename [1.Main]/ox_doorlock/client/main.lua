@@ -1,13 +1,8 @@
-if not LoadResourceFile(lib.name, 'web/build/index.html') then
+if not LoadResourceFile(cache.resource, 'web/build/index.html') then
 	error('Unable to load UI. Build ox_doorlock or download the latest release.\n	^3https://github.com/overextended/ox_doorlock/releases/latest/download/ox_doorlock.zip^0')
 end
 
-do
-	local success, msg = lib.checkDependency('ox_lib', '3.0.0')
-	if not success then error(msg) end
-end
-
-lib.locale()
+if not lib.checkDependency('ox_lib', '3.14.0', true) then return end
 
 local function createDoor(door)
 	local double = door.doors

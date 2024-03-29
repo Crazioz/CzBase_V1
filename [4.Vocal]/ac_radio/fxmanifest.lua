@@ -4,7 +4,7 @@ lua54 'yes'
 
 name 'ac_radio'
 author 'ANTOND.#8507'
-version '1.0.8'
+version '1.2.0'
 description 'A framework-standalone radio UI for FiveM'
 repository 'https://github.com/antond15/ac_radio'
 
@@ -25,15 +25,11 @@ client_scripts {
   'resource/client/client.lua'
 }
 
-ui_page 'html/index.html'
+ui_page 'web/index.html'
 
 files {
-  'locales/*.lua',
-  'html/index.html',
-  'html/style.css',
-  'html/script.js',
-  'html/assets/technology.ttf',
-  'html/assets/radio.png'
+  'web/**',
+  'locales/*.lua'
 }
 
 
