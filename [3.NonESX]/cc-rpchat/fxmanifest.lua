@@ -3,12 +3,15 @@ games { 'rdr3', 'gta5' }
 
 author 'Concept Collective <contact@conceptcollective.net>'
 description 'A FiveM RP Chat resource utilising cc-chat.'
-version '1.3.1'
+version '1.4.2'
 
 lua54 'yes'
 
-server_script 'server/main.lua'
+server_script 'server/*.lua'
 client_script 'client/*.lua'
-shared_script 'config.lua'
+shared_scripts {
+    --'@ox_lib/init.lua',
+    'config.lua',
+}
 
 dependency 'cc-chat'

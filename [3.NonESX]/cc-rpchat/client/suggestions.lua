@@ -3,6 +3,10 @@ Citizen.CreateThread(function()
       { name="Message", help="Out of character message." }
     })
 
+    TriggerEvent('chat:addSuggestion', '/me', 'Send a message in the third person. (Proximity Chat)', {
+        { name="Action", help="Action." }
+    })
+
     TriggerEvent('chat:addSuggestion', '/do', 'Send an action message. (Proximity Chat)', {
     { name="Action", help="Action." }
     })

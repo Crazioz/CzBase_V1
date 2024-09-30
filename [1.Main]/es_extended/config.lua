@@ -23,8 +23,8 @@ Config.StartingAccountMoney = { bank = 50000 }
 Config.StartingInventoryItems = false -- table/false
 
 Config.DefaultSpawns = { -- If you want to have more spawn positions and select them randomly uncomment commented code or add more locations
-{ x = -206.14570617676, y = -1013.4982299805, z = 30.13796043396, heading =  205.8 },
---{x = 224.9865, y = -865.0871, z = 30.2922, heading = 1.0},
+    { x = -206.14570617676, y = -1013.4982299805, z = 30.13796043396, heading =  205.8 },
+    --{x = 224.9865, y = -865.0871, z = 30.2922, heading = 1.0},
     --{x = 227.8436, y = -866.0400, z = 30.2922, heading = 1.0},
     --{x = 230.6051, y = -867.1450, z = 30.2922, heading = 1.0},
     --{x = 233.5459, y = -868.2626, z = 30.2922, heading = 1.0}
@@ -36,30 +36,30 @@ Config.AdminGroups = {
 }
 
 Config.EnablePaycheck = true -- enable paycheck
-Config.LogPaycheck = true -- Logs paychecks to a nominated Discord channel via webhook (default is false)
+Config.LogPaycheck = false -- Logs paychecks to a nominated Discord channel via webhook (default is false)
 Config.EnableSocietyPayouts = true -- pay from the society account that the player is employed at? Requirement: esx_society
-Config.MaxWeight = 54 -- the max inventory weight without backpack
-Config.PaycheckInterval = 7 * 60000 -- how often to recieve pay checks in milliseconds
+Config.MaxWeight = 54 -- the max inventory weight without a backpack
+Config.PaycheckInterval = 7 * 60000 -- how often to receive paychecks in milliseconds
 Config.EnableDebug = false -- Use Debug options?
 Config.EnableDefaultInventory = false -- Display the default Inventory ( F2 )
 Config.EnableWantedLevel = false -- Use Normal GTA wanted Level?
 Config.EnablePVP = true -- Allow Player to player combat
 
 Config.Multichar = GetResourceState("esx_multicharacter") ~= "missing"
-Config.Identity = true -- Select a characters identity data before they have loaded in (this happens by default with multichar)
+Config.Identity = true -- Select a character identity data before they have loaded in (this happens by default with multichar)
 Config.DistanceGive = 6.0 -- Max distance when giving items, weapons etc.
 
 Config.AdminLogging = false -- Logs the usage of certain commands by those with group.admin ace permissions (default is false)
 
 Config.DisableHealthRegeneration = false -- Player will no longer regenerate health
-Config.DisableVehicleRewards = true -- Disables Player Recieving weapons from vehicles
+Config.DisableVehicleRewards = true -- Disables Player Receiving weapons from vehicles
 Config.DisableNPCDrops = true -- stops NPCs from dropping weapons on death
 Config.DisableDispatchServices = true -- Disable Dispatch services
 Config.DisableScenarios = true -- Disable Scenarios
 Config.DisableWeaponWheel = true -- Disables default weapon wheel
-Config.DisableAimAssist = true -- disables AIM assist (mainly on controllers)
-Config.DisableVehicleSeatShuff = true -- Disables vehicle seat shuff
-Config.DisableDisplayAmmo = true -- Disable ammunition display
+Config.DisableAimAssist = false -- disables AIM assist (mainly on controllers)
+Config.DisableVehicleSeatShuff = false -- Disables vehicle seat shuff
+Config.DisableDisplayAmmo = false -- Disable ammunition display
 Config.RemoveHudComponents = {
     [1] = false, --WANTED_STARS,
     [2] = false, --WEAPON_ICON
@@ -85,12 +85,12 @@ Config.RemoveHudComponents = {
     [22] = false, --HUD_WEAPONS
 }
 
-Config.SpawnVehMaxUpgrades = true -- admin vehicles spawn with max vehcle settings
+Config.SpawnVehMaxUpgrades = true -- admin vehicles spawn with max vehicle settings
 Config.CustomAIPlates = "........" -- Custom plates for AI vehicles
 -- Pattern string format
 --1 will lead to a random number from 0-9.
 --A will lead to a random letter from A-Z.
--- . will lead to a random letter or number, with 50% probability of being either.
+-- . will lead to a random letter or number, with a 50% probability of being either.
 --^1 will lead to a literal 1 being emitted.
 --^A will lead to a literal A being emitted.
 --Any other character will lead to said character being emitted.

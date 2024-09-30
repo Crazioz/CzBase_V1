@@ -1,5 +1,6 @@
 local _GetPlayerPed = GetPlayerPed
 local _GetEntityCoords = GetEntityCoords
+local _GetEntityHeading = GetEntityHeading
 local _ExecuteCommand = ExecuteCommand
 local _SetEntityCoords = SetEntityCoords
 local _SetEntityHeading = SetEntityHeading
@@ -76,12 +77,24 @@ function CreateExtendedPlayer(playerId, identifier, group, accounts, inventory, 
     end
 
     ---@param vector boolean
-    ---@return vector3 | table
-    function self.getCoords(vector)
+    ---@param heading boolean  
+    ---@return vector3 | vector4 | table
+    function self.getCoords(vector, heading)
         local ped <const> = _GetPlayerPed(self.source)
-        local coordinates <const> = _GetEntityCoords(ped)
+        local entityCoords <const> = _GetEntityCoords(ped)
+        local entityHeading <const> = _GetEntityHeading(ped)
 
-        return vector and coordinates or { x = coordinates.x, y = coordinates.y, z = coordinates.z }
+        local coordinates = { x = entityCoords.x, y = entityCoords.y, z = entityCoords.z }
+
+        if vector then
+            coordinates = (heading and vector4(entityCoords.xyz, entityHeading) or entityCoords)
+        else
+            if heading then
+                coordinates.heading = entityHeading
+            end
+        end
+
+        return coordinates
     end
 
     ---@param reason string
@@ -127,9 +140,16 @@ function CreateExtendedPlayer(playerId, identifier, group, accounts, inventory, 
     ---@param newGroup string
     ---@return void
     function self.setGroup(newGroup)
+        local lastGroup = self.group
+
         _ExecuteCommand(("remove_principal identifier.%s group.%s"):format(self.license, self.group))
+
         self.group = newGroup
+
+        _TriggerEvent("esx:setGroup", self.source, self.group, lastGroup)
+        self.triggerEvent("esx:setGroup", self.group, lastGroup)
         Player(self.source).state:set("group", self.group, true)
+
         _ExecuteCommand(("add_principal identifier.%s group.%s"):format(self.license, self.group))
     end
 
@@ -475,7 +495,7 @@ function CreateExtendedPlayer(playerId, identifier, group, accounts, inventory, 
             skin_female = gradeObject.skin_female and json.decode(gradeObject.skin_female) or {},
         }
 
-        TriggerEvent("esx:setJob", self.source, self.job, lastJob)
+        _TriggerEvent("esx:setJob", self.source, self.job, lastJob)
         self.triggerEvent("esx:setJob", self.job, lastJob)
         Player(self.source).state:set("job", self.job, true)
     end

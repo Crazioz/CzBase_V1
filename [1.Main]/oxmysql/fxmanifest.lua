@@ -5,7 +5,7 @@ lua54 'yes'
 
 name 'oxmysql'
 author 'Overextended'
-version '2.9.1'
+version '2.11.2'
 license 'LGPL-3.0-or-later'
 repository 'https://github.com/overextended/oxmysql.git'
 description 'FXServer to MySQL communication via node-mysql2'
